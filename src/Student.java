@@ -17,7 +17,7 @@ public class Student {
             Error Occurred! Do you want to try again?
             1. Yes
             2. No""";
-    private final static String courseEntryPrompt = """
+    private final static String courseEnteredPrompt = """
             Please enter the option number of what you want to do.
             1) Open course
             2) View points
@@ -51,6 +51,7 @@ public class Student {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
+            readCourseListsFile();
             System.out.println(courseSelectionPrompt);
             String selectedCourse = scan.nextLine();
             if (selectedCourse == null || !courseExists(selectedCourse)) {
@@ -65,8 +66,41 @@ public class Student {
                     }
                 } while (tryAgain != 1 && tryAgain != 2);
             } else {
-                String
+                String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
+                course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
+                course.readForumListFile();
+                openCourseMainMethod();
             }
         } while (loop);
+    }
+
+    public void openCourseMainMethod() throws Exception {
+        Scanner scan = new Scanner(System.in);
+        boolean loop = false;
+        int option = 0;
+        while (option != 5) {
+            do {
+                System.out.println(courseEnteredPrompt);
+                option = scan.nextInt();
+                scan.nextLine();
+                if (option < 1 || option > 5) {
+                    int tryAgain;
+                    do {
+                        loop = false;
+                        System.out.println(tryAgainPrompt);
+                        tryAgain = scan.nextInt();
+                        scan.nextLine();
+                        if (tryAgain == 1) {
+                            loop = true;
+                        }
+                    } while (tryAgain != 1 && tryAgain != 2);
+                } else {
+                    switch (option) {
+                        case 1 -> course.studentDiscussionForumOpened();
+                        case 2 -> course.viewPoints();
+                    }
+                }
+            } while (loop);
+        }
     }
 }

@@ -1,14 +1,24 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Accounts {
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private boolean ifTeacher;
+    private static String accountsFile = "AccountsFile.txt";
+    private static String username;
+    private static String password;
+    private static String firstName;
+    private static String lastName;
+    private static boolean ifTeacher;
+    private static Main main;
+    private final static String welcomeMessage = "Welcome! ";
+    private final static String initialPrompt = """
+            What would you like to do today?
+            1) Login to my account
+            2) Create new account
+            3) Exit""";
     private final static String tryAgainPrompt = "Error! Do you want to try again?\n" + "1. Yes\n" + "2. No";
     private final static String usernamePrompt = "Please enter your username.";
     private final static String passwordPrompt = "Please enter your password";
@@ -20,6 +30,7 @@ public class Accounts {
     private static final  String accountCreationSuccess = "Your account was successfully created";
     private final static String accountTypePrompt = "Are you a teacher or a student?\n" + "1. Teacher\n" + "2. Student";
     String filename = "AccountDetails.txt";
+    static ArrayList<ArrayList<String>> accountDetailsArray = null;
 
     public Accounts(String username, String password, String firstName, String lastName, boolean ifTeacher) {
         this.username = username;
@@ -29,7 +40,7 @@ public class Accounts {
         this.ifTeacher = ifTeacher;
     }
 
-    public String toString() {
+    public static String convertToString() {
         String output = username + "---";
         output += password + "---";
         output += firstName + "---";
@@ -42,39 +53,40 @@ public class Accounts {
         return output;
     }
 
-    public void writeToFile() throws FileNotFoundException {
-        FileOutputStream fos = new FileOutputStream(filename, true);
+    public static void writeToFile() throws FileNotFoundException {
+        FileOutputStream fos = new FileOutputStream(accountsFile, true);
         PrintWriter pw = new PrintWriter(fos);
-        pw.println(toString());
+        pw.println(convertToString());
         pw.close();
     }
 
-    public ArrayList<ArrayList<String>> readFile() throws IOException {
-        ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
-        File f = new File(filename);
+    public static void readFile() throws IOException {
+        ArrayList<ArrayList<String>> output = new ArrayList<>();
+        File f = new File(accountsFile);
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split(";");
-            ArrayList<String> singleLine = new ArrayList<String>(Arrays.asList(separatedLine));
+            String[] separatedLine = line.split("---");
+            ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
         }
         bfr.close();
-        return output;
+        accountDetailsArray = output;
     }
 
-    public boolean checkUsernameAvailability(String username) throws IOException {
+    public static boolean checkUsernameAvailability(String username) throws IOException {
         boolean output = false;
         int i = 0;
-        ArrayList<ArrayList<String>> accountDetails = readFile();
-        while (!output && i < accountDetails.size()) {
-            output = accountDetails.get(i).get(0).equalsIgnoreCase(username);
+        readFile();
+        while (!output && i < accountDetailsArray.size()) {
+            output = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
             i++;
         }
         return output;
     }
-    public void getNewAccountDetails() throws IOException {
+
+    public static void getNewAccountDetails() throws IOException {
         boolean accountSet;
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
@@ -82,13 +94,13 @@ public class Accounts {
             accountSet = true;
             System.out.println(setUsernamePrompt);
             System.out.println("All usernames are case insensitive.");
-            String username = scan.nextLine();
+            username = scan.nextLine();
             System.out.println(setPasswordPrompt);
             String password = scan.nextLine();
             System.out.println(setFirstNamePrompt);
-            String firstName = scan.nextLine();
+            firstName = scan.nextLine();
             System.out.println(setLastNamePrompt);
-            String lastName = scan.nextLine();
+            lastName = scan.nextLine();
             System.out.println(accountTypePrompt);
             int accountType = scan.nextInt();
             scan.nextLine();
@@ -134,39 +146,51 @@ public class Accounts {
         } while (loop);
         scan.close();
         if (accountSet) {
+            username = username.toLowerCase();
             writeToFile();
             System.out.println(accountCreationSuccess);
         }
     }
 
-    public int securityCheck() throws IOException {
+    public static void findAccount(String username) throws IOException {
+        readFile();
+        for (int i = 0; i < accountDetailsArray.size(); i++) {
+            if (accountDetailsArray.get(i).get(0).equals(username)) {
+                firstName = accountDetailsArray.get(i).get(2);
+                lastName = accountDetailsArray.get(i).get(3);
+                ifTeacher = accountDetailsArray.get(i).get(4).equals("teacher");
+            }
+        }
+    }
+
+    public static int securityCheck() throws IOException {
         int output = 0;
         boolean loop = false;
         Scanner scan = new Scanner(System.in);
 
         do {
             System.out.println(usernamePrompt);
-            String username = scan.nextLine();
+            username = scan.nextLine();
             System.out.println(passwordPrompt);
             String password = scan.nextLine();
             if (username == null || password == null) {
                 System.out.println("The details entered were invalid");
             } else {
-                ArrayList<ArrayList<String>> accountDetails = readFile();
+                readFile();
                 int i = 0;
                 boolean usernameFound = false;
                 boolean passwordMatch = false;
-                while (i < accountDetails.size() && !usernameFound) {
-                    usernameFound = accountDetails.get(i).get(0).equalsIgnoreCase(username);
+                while (i < accountDetailsArray.size() && !usernameFound) {
+                    usernameFound = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
                     i++;
                 }
                 if (usernameFound) {
-                    passwordMatch = accountDetails.get(i - 1).get(1).equals(password);
+                    passwordMatch = accountDetailsArray.get(i - 1).get(1).equals(password);
                 }
                 if (usernameFound && passwordMatch) {
-                    if (accountDetails.get(i - 1).get(4).equals("teacher")) {
+                    if (accountDetailsArray.get(i - 1).get(4).equals("teacher")) {
                         output = 1;
-                    } else if (accountDetails.get(i - 1).get(4).equals("student")) {
+                    } else if (accountDetailsArray.get(i - 1).get(4).equals("student")) {
                         output = 2;
                     }
                 }
@@ -193,5 +217,34 @@ public class Accounts {
 
     public String getName() {
         return firstName + " " + lastName;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Scanner scan = new Scanner(System.in);
+        boolean loop = false;
+        int option = 0;
+        System.out.println(welcomeMessage);
+        while (option != 3) {
+            System.out.println(initialPrompt);
+            option = scan.nextInt();
+            scan.nextLine();
+            if (option < 1 || option > 3) {
+                System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
+            } else {
+                switch(option) {
+                    case 1 -> {
+                        int accountCheck = securityCheck();
+                        if (accountCheck != 0) {
+                            findAccount(username);
+                            main = new Main(username, firstName, lastName, ifTeacher);
+                            main.accountMainMethod();
+                        }
+                    }
+                    case 2 -> {
+                        getNewAccountDetails();
+                    }
+                }
+            }
+        }
     }
 }

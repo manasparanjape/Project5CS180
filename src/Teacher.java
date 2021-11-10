@@ -7,7 +7,7 @@ public class Teacher {
     String firstName;
     String lastName;
     private Course course;
-    private final String coursesListFileName;
+    private final String coursesListFileName = "CoursesList.txt";
 
     private final static String newCourseNamePrompt = "What would you like to name the new course?";
     private final static String newCourseCreated = "New course has been created!";
@@ -25,12 +25,11 @@ public class Teacher {
             5) Exit course""";
     private ArrayList<String> courseList;
 
-    public Teacher (String username, String firstName, String lastName, Course course, String coursesListFileName) {
+    public Teacher (String username, String firstName, String lastName, Course course) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
-        this.coursesListFileName = coursesListFileName;
     }
 
     public void readCourseListsFile() throws IOException {

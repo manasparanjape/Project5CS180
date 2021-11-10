@@ -237,12 +237,12 @@ public class DiscussionForum {
                     upvotes++;
                     messagesArray.get(messageNumber).set(4, Integer.toString(upvotes));
                     writeToMessagesFile();
-                    ArrayList<String> temp = messagesArray.get(messageNumber);
+                    /*ArrayList<String> temp = messagesArray.get(messageNumber);
                     int index = sortedUpvotesArray.indexOf(temp);
                     temp = sortedUpvotesArray.get(index);
                     sortUpvotesArray();
                     int newIndex = sortedUpvotesArray.indexOf(temp);
-                    messagesArray.set()
+                    messagesArray.set()*/
                 }
             }
         } while (loop);
@@ -374,7 +374,7 @@ public class DiscussionForum {
         pw.close();
     }
 
-    public void sortUpvotesArray() {
+    /*public void sortUpvotesArray() {
         for (int i = 0; i < sortedUpvotesArray.size(); i++) {
             if (Integer.parseInt(sortedUpvotesArray.get(i).get(3)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(3))) {
                 ArrayList<String> temp = sortedUpvotesArray.get(i);
@@ -388,5 +388,5 @@ public class DiscussionForum {
         for (int i = 0; i < messagesArray.size(); i++) {
             messagesArray.get(i).set(7, sortedUpvotesArray.);
         }
-    }
+    }*/
 }
