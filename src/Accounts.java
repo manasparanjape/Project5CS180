@@ -30,10 +30,10 @@ public class Accounts {
     }
 
     public String toString() {
-        String output = username + "; ";
-        output += password + "; ";
-        output += firstName + "; ";
-        output += lastName + "; ";
+        String output = username + "---";
+        output += password + "---";
+        output += firstName + "---";
+        output += lastName + "---";
         if (ifTeacher) {
             output += "teacher";
         } else {

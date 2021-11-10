@@ -129,7 +129,7 @@ public class DiscussionForum {
             } else {
                 String fullName = firstName + lastName;
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-                ArrayList<String> newPostArray = new ArrayList<>(7);
+                ArrayList<String> newPostArray = new ArrayList<>(8);
                 newPostArray.set(0, Integer.toString(messagesArray.size() + 1));
                 newPostArray.set(1, newPost);
                 newPostArray.set(2, fullName);
