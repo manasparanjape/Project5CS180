@@ -28,7 +28,10 @@ public class Accounts {
     private static final String setLastNamePrompt = "Enter your last name:";
     private static final String usernameUnavailablePrompt = "The username you entered is unavailable.";
     private static final  String accountCreationSuccess = "Your account was successfully created";
-    private final static String accountTypePrompt = "Are you a teacher or a student?\n" + "1. Teacher\n" + "2. Student";
+    private final static String accountTypePrompt = """
+            Are you a teacher or a student?
+            1. Teacher
+            2. Student""";
     String filename = "AccountDetails.txt";
     static ArrayList<ArrayList<String>> accountDetailsArray = null;
 
@@ -70,6 +73,7 @@ public class Accounts {
             String[] separatedLine = line.split("---");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
+            line = bfr.readLine();
         }
         bfr.close();
         accountDetailsArray = output;
@@ -79,6 +83,7 @@ public class Accounts {
         boolean output = false;
         int i = 0;
         readFile();
+        System.out.println(accountDetailsArray.size());
         while (!output && i < accountDetailsArray.size()) {
             output = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
             i++;
@@ -96,14 +101,14 @@ public class Accounts {
             System.out.println("All usernames are case insensitive.");
             username = scan.nextLine();
             System.out.println(setPasswordPrompt);
-            String password = scan.nextLine();
+            password = scan.nextLine();
             System.out.println(setFirstNamePrompt);
             firstName = scan.nextLine();
             System.out.println(setLastNamePrompt);
             lastName = scan.nextLine();
             System.out.println(accountTypePrompt);
-            int accountType = scan.nextInt();
-            scan.nextLine();
+            String accountType = scan.nextLine();
+            //scan.nextLine();
 
             if (username == null) {
                 accountSet = false;
@@ -124,23 +129,23 @@ public class Accounts {
                 accountSet = false;
                 System.out.println("The last name you entered is invalid.");
             }
-            if (accountType != 1 && accountType != 2) {
+            if (!accountType.equals("1") && !accountType.equals("2")) {
                 accountSet = false;
                 System.out.println("Please choose a valid account type.");
             }
 
             if (!accountSet) {
                 System.out.println(tryAgainPrompt);
-                int tryAgain;
+                String tryAgain;
                 do {
-                    tryAgain = scan.nextInt();
+                    tryAgain = scan.nextLine();
                     scan.nextLine();
-                    if (tryAgain == 1) {
+                    if (tryAgain.equals("1")) {
                         loop = true;
-                    } else if (tryAgain == 2) {
+                    } else if (tryAgain.equals("2")) {
                         loop = false;
                     }
-                } while (tryAgain != 1 && tryAgain != 2);
+                } while (!tryAgain.equals("1") && !tryAgain.equals("2"));
             }
 
         } while (loop);
@@ -200,6 +205,7 @@ public class Accounts {
                 System.out.println(tryAgainPrompt);
                 int tryAgain;
                 do {
+                    loop = false;
                     tryAgain = scan.nextInt();
                     scan.nextLine();
                     if (tryAgain == 1) {
@@ -210,8 +216,7 @@ public class Accounts {
                 } while (tryAgain != 1 && tryAgain != 2);
             }
         } while (loop);
-        scan.close();
-
+        //scan.close();
         return output;
     }
 
@@ -234,17 +239,23 @@ public class Accounts {
                 switch(option) {
                     case 1 -> {
                         int accountCheck = securityCheck();
-                        if (accountCheck != 0) {
+                        if (accountCheck == 1) {
                             findAccount(username);
-                            main = new Main(username, firstName, lastName, ifTeacher);
+                            main = new Main(username, firstName, lastName, true);
+                            main.accountMainMethod();
+                        } else if (accountCheck == 2) {
+                            findAccount(username);
+                            main = new Main(username, firstName, lastName, false);
                             main.accountMainMethod();
                         }
                     }
                     case 2 -> {
+                        System.out.println("Check1");
                         getNewAccountDetails();
                     }
                 }
             }
         }
+        scan.close();
     }
 }

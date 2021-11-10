@@ -22,7 +22,7 @@ public class Student {
             1) Open course
             2) View points
             3) Exit course""";
-    private ArrayList<String> courseList;
+    private ArrayList<String> courseList = new ArrayList<>();
 
     public Student(String username, String firstName, String lastName, Course course, String coursesListFileName) {
         this.username = username;
@@ -37,6 +37,7 @@ public class Student {
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
+        System.out.println(line);
         while (line != null) {
             courseList.add(line);
             line = bfr.readLine();
@@ -44,7 +45,11 @@ public class Student {
     }
 
     public boolean courseExists(String courseName) {
-        return courseList.contains(courseName);
+        if (courseList == null) {
+            return false;
+        } else {
+            return courseList.contains(courseName);
+        }
     }
 
     public void openCourse() throws Exception {

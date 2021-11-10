@@ -30,9 +30,9 @@ public class Main {
     public void teacherMainMethod() throws Exception {
         teacher = new Teacher(username, firstName, lastName, null);
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
         int option = 0;
         while (option != 3) {
+            //scan.nextLine();
             System.out.println(teacherAccountEnteredPrompt);
             option = scan.nextInt();
             scan.nextLine();
@@ -45,12 +45,12 @@ public class Main {
                 }
             }
         }
+        //scan.close();
     }
 
     public void studentMainMethod() throws Exception {
         student = new Student(username, firstName, lastName, null, "CoursesList.txt");
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
         int option = 0;
         while (option != 2) {
             System.out.println(studentAccountEnteredPrompt);
@@ -64,6 +64,7 @@ public class Main {
                 }
             }
         }
+        //scan.close();
     }
 
     public void accountMainMethod() throws Exception {

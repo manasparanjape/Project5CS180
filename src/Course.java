@@ -44,7 +44,7 @@ public class Course {
             5) Change topic
             6) Exit forum""";
 
-    private ArrayList<String> forumList;
+    private ArrayList<String> forumList = new ArrayList<>();
 
     public Course(String courseName, String username, String firstName, String lastName, DiscussionForum discussionForum, String discussionBoardsListFileName /*String discussionsPointsFileName*/) {
         this.courseName = courseName;
@@ -69,7 +69,11 @@ public class Course {
     }
 
     public boolean discussionForumExists(String forumName) {
-        return forumList.contains(forumName);
+        if (forumList == null) {
+            return false;
+        } else {
+            return forumList.contains(forumName);
+        }
     }
 
     public void createForum() throws Exception {

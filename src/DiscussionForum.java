@@ -26,8 +26,8 @@ public class DiscussionForum {
     private String firstName;
     private String lastName;
     private String username;
-    private ArrayList<ArrayList<String>> messagesArray;
-    private ArrayList<ArrayList<String>> pointsArray;
+    private ArrayList<ArrayList<String>> messagesArray = new ArrayList<>();
+    private ArrayList<ArrayList<String>> pointsArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> sortedUpvotesArray;
 
     private final static String tryAgainPrompt = """

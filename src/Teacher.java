@@ -23,7 +23,7 @@ public class Teacher {
             3) Delete discussion forum
             4) View dashboard
             5) Exit course""";
-    private ArrayList<String> courseList;
+    private ArrayList<String> courseList = new ArrayList<>();
 
     public Teacher (String username, String firstName, String lastName, Course course) {
         this.username = username;
@@ -44,7 +44,11 @@ public class Teacher {
     }
 
     public boolean courseExists(String courseName) {
-        return courseList.contains(courseName);
+        if (courseList == null) {
+            return false;
+        } else {
+            return courseList.contains(courseName);
+        }
     }
 
     public void createCourse() throws FileNotFoundException {
