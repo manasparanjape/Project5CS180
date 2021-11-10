@@ -7,11 +7,12 @@ import java.util.Scanner;
 
 public class Student {
     private final String username;
-    private final String password;
     private final String firstName;
     private final String lastName;
     private Course course;
     private final String coursesListFileName;
+
+    private final static String courseSelectionPrompt = "Which course would you like to open?";
     private final static String tryAgainPrompt = """
             Error Occurred! Do you want to try again?
             1. Yes
@@ -23,9 +24,8 @@ public class Student {
             3) Exit course""";
     private ArrayList<String> courseList;
 
-    public Student(String username, String password, String firstName, String lastName, Course course, String coursesListFileName) {
+    public Student(String username, String firstName, String lastName, Course course, String coursesListFileName) {
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
@@ -47,11 +47,11 @@ public class Student {
         return courseList.contains(courseName);
     }
 
-    public void viewCourse() throws Exception {
+    public void openCourse() throws Exception {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
-            System.out.println(courseEntryPrompt);
+            System.out.println(courseSelectionPrompt);
             String selectedCourse = scan.nextLine();
             if (selectedCourse == null || !courseExists(selectedCourse)) {
                 int tryAgain;
@@ -65,7 +65,7 @@ public class Student {
                     }
                 } while (tryAgain != 1 && tryAgain != 2);
             } else {
-                switch()
+                String
             }
         } while (loop);
     }

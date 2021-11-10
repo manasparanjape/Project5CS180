@@ -15,7 +15,7 @@ public class Course {
     private final String firstName;
     private final String lastName;
     private final String discussionBoardsListFileName;
-    private final String discussionsPointsFileName;
+    //private final String discussionsPointsFileName;
     private DiscussionForum discussionForum;
     private final static String tryAgainPrompt = """
             Error Occurred! Do you want to try again?
@@ -46,14 +46,14 @@ public class Course {
 
     private ArrayList<String> forumList;
 
-    public Course(String courseName, String username, String firstName, String lastName, DiscussionForum discussionForum, String discussionBoardsListFileName, String discussionsPointsFileName) {
+    public Course(String courseName, String username, String firstName, String lastName, DiscussionForum discussionForum, String discussionBoardsListFileName /*String discussionsPointsFileName*/) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.discussionForum = discussionForum;
         this.discussionBoardsListFileName = discussionBoardsListFileName;
-        this.discussionsPointsFileName = discussionsPointsFileName;
+        //this.discussionsPointsFileName = discussionsPointsFileName;
     }
 
     public void readForumListFile() throws Exception {
@@ -90,13 +90,13 @@ public class Course {
                     }
                 } while (tryAgain != 1 && tryAgain != 2);
             } else {
-                FileOutputStream fos = new FileOutputStream(courseName + " - " + newForumName + " - messages" + ".txt", false);
+                FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", false);
                 PrintWriter pw = new PrintWriter(fos);
                 pw.println(newForumName);
                 fos = new FileOutputStream(discussionBoardsListFileName, true);
                 pw = new PrintWriter(fos);
                 pw.println(newForumName);
-                fos = new FileOutputStream(courseName + " - " + newForumName + " - points" + ".txt");
+                fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt");
                 pw = new PrintWriter(fos);
                 pw.println("");
                 System.out.println(newForumCreated);
@@ -125,9 +125,9 @@ public class Course {
                 FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName);
                 PrintWriter pw = new PrintWriter(fos);
                 forumList.remove(toDeleteForum);
-                File f = new File(courseName + " - " + toDeleteForum + " - messages" + ".txt");
+                File f = new File(courseName + "-" + toDeleteForum + "-messages" + ".txt");
                 if (f.delete()) {
-                    f = new File(courseName + " - " + toDeleteForum + " - points" + ".txt");
+                    f = new File(courseName + "-" + toDeleteForum + "-points" + ".txt");
                     if (f.delete()) {
                         System.out.println(forumDeleted);
                     }
@@ -139,8 +139,8 @@ public class Course {
     public void viewPoints() throws IOException {
         String output = "";
         for (int i = 0; i < forumList.size(); i++) {
-            File f = new File(courseName + " - " + forumList.get(i) + " - points" + ".txt");
             output += forumList.get(i) + ": ";
+            File f = new File(courseName + "-" + forumList.get(i) + "-points" + ".txt");
             FileReader fr = new FileReader(f);
             BufferedReader bfr = new BufferedReader(fr);
             String line = bfr.readLine();
@@ -160,36 +160,11 @@ public class Course {
         System.out.println(output);
     }
 
-    public void studentOptions() throws Exception {
-        Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            readForumListFile();
-            System.out.println(forumSelectionPrompt);
-            String selectedForum = scan.nextLine();
-            if (selectedForum == null || discussionForumExists(selectedForum)) {
-                int tryAgain;
-                do {
-                    loop = false;
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                String discussionForumMessagesFileName = courseName + " - " + selectedForum + " - messages" + ".txt";
-                String discussionForumPointsFileName = courseName + " - " + selectedForum + " - points" + ".txt";
-                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username);
-                discussionForum.readMessagesFile();
-                discussionForum.readPointsFile();
-                showDiscussionForumMainMethodStudent();
-            }
-        } while (loop);
+    public void showDashboard() {
+
     }
 
-    public void teacherOptions() throws Exception {
+    public void studentDiscussionForumOpened() throws Exception {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
@@ -208,8 +183,37 @@ public class Course {
                     }
                 } while (tryAgain != 1 && tryAgain != 2);
             } else {
-                String discussionForumMessagesFileName = courseName + " - " + selectedForum + " - messages" + ".txt";
-                String discussionForumPointsFileName = courseName + " - " + selectedForum + " - points" + ".txt";
+                String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
+                String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
+                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username);
+                discussionForum.readMessagesFile();
+                discussionForum.readPointsFile();
+                showDiscussionForumMainMethodStudent();
+            }
+        } while (loop);
+    }
+
+    public void teacherDiscussionForumOpened() throws Exception {
+        Scanner scan = new Scanner(System.in);
+        boolean loop = false;
+        do {
+            readForumListFile();
+            System.out.println(forumSelectionPrompt);
+            String selectedForum = scan.nextLine();
+            if (selectedForum == null || !discussionForumExists(selectedForum)) {
+                int tryAgain;
+                do {
+                    loop = false;
+                    System.out.println(tryAgainPrompt);
+                    tryAgain = scan.nextInt();
+                    scan.nextLine();
+                    if (tryAgain == 1) {
+                        loop = true;
+                    }
+                } while (tryAgain != 1 && tryAgain != 2);
+            } else {
+                String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
+                String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
                 discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username);
                 discussionForum.readMessagesFile();
                 discussionForum.readPointsFile();
@@ -254,7 +258,7 @@ public class Course {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         int option = 0;
-        while (option != 5) {
+        while (option != 6) {
             do {
                 System.out.println(discussionForumEnteredTeacherPrompt);
                 option = scan.nextInt();
