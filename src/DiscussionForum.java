@@ -13,6 +13,8 @@ Methods required:
 
 import javax.annotation.processing.Filer;
 import java.io.*;
+import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,11 +25,13 @@ public class DiscussionForum {
     private String forumName;
     private String messagesFileName;
     private String pointsFileName;
+    private String upvotesFile;
     private String firstName;
     private String lastName;
     private String username;
     private ArrayList<ArrayList<String>> messagesArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> pointsArray = new ArrayList<>();
+    private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> sortedUpvotesArray;
 
     private final static String tryAgainPrompt = """
@@ -42,13 +46,46 @@ public class DiscussionForum {
     private final static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want to view.";
     private final static String gradingStudentPrompt = "Please enter the number of point you wish to assign this student.";
 
-    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName, String lastName, String username) {
+    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName, String lastName, String username, String upvotesFile) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
+        this.upvotesFile = upvotesFile;
+    }
+
+    public void readUpvotesFile() throws IOException {
+        File f = new File(upvotesFile);
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<ArrayList<String>> output = new ArrayList<>();
+        String line = bfr.readLine();
+        while (line != null) {
+            String[] separatedLine = line.split("---");
+            System.out.println(separatedLine);
+            ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
+            output.add(singleLine);
+            line = bfr.readLine();
+        }
+        bfr.close();
+        upvotesArray = output;
+    }
+
+    public boolean checkAlreadyUpvoted(int messageNumber) {
+        boolean output = false;
+        String messageNumberString = Integer.toString(messageNumber);
+        for (int i = 0; i < upvotesArray.size(); i++) {
+            if (upvotesArray.get(i).get(0).equals(username)) {
+                for (int j = 1; j < upvotesArray.get(i).size(); j++) {
+                    if (upvotesArray.get(i).get(j).equals(messageNumberString)) {
+                        output = true;
+                    }
+                }
+            }
+        }
+        return output;
     }
 
     public void readMessagesFile() throws Exception {
@@ -70,6 +107,16 @@ public class DiscussionForum {
         }
         bfr.close();
         messagesArray = output;
+    }
+
+    public boolean checkUsernameInUpvotesArray() {
+        boolean output = false;
+        for (int i = 0; i < upvotesArray.size(); i++) {
+            if (upvotesArray.get(i).get(0).equals(username)) {
+                output = true;
+            }
+        }
+        return output;
     }
 
     public void printMessages() throws Exception {
@@ -235,7 +282,7 @@ public class DiscussionForum {
         do {
             System.out.println(upvotePrompt);
             int messageNumber = scan.nextInt();
-            if (messageNumber < 0 || messageNumber > messagesArray.size()) {
+            if (messageNumber < 0 || messageNumber > messagesArray.size() || checkAlreadyUpvoted(messageNumber)) {
                 int tryAgain;
                 do {
                     loop = false;
@@ -248,19 +295,47 @@ public class DiscussionForum {
                 } while (tryAgain != 1 && tryAgain != 2);
             } else {
                 if (messageNumber > 0) {
-                    int upvotes = Integer.parseInt(messagesArray.get(messageNumber).get(4));
+                    int upvotes = Integer.parseInt(messagesArray.get(messageNumber - 1).get(4));
                     upvotes++;
-                    messagesArray.get(messageNumber).set(4, Integer.toString(upvotes));
+                    messagesArray.get(messageNumber - 1).set(4, Integer.toString(upvotes));
+                    if (checkUsernameInUpvotesArray()) {
+                        for (int i = 0; i < upvotesArray.size(); i++) {
+                            if (upvotesArray.get(i).get(0).equals(username)) {
+                                upvotesArray.get(i).add(Integer.toString(messageNumber));
+                            }
+                        }
+                    } else {
+                        ArrayList<String> newUpvoteArray = new ArrayList<>();
+                        newUpvoteArray.add(username);
+                        newUpvoteArray.add(Integer.toString(messageNumber));
+                        upvotesArray.add(newUpvoteArray);
+                    }
                     writeToMessagesFile();
-                    /*ArrayList<String> temp = messagesArray.get(messageNumber);
-                    int index = sortedUpvotesArray.indexOf(temp);
-                    temp = sortedUpvotesArray.get(index);
-                    sortUpvotesArray();
-                    int newIndex = sortedUpvotesArray.indexOf(temp);
-                    messagesArray.set()*/
+                    writeToUpvotesFile();
                 }
+                /*ArrayList<String> temp = messagesArray.get(messageNumber);
+                int index = sortedUpvotesArray.indexOf(temp);
+                temp = sortedUpvotesArray.get(index);
+                sortUpvotesArray();
+                int newIndex = sortedUpvotesArray.indexOf(temp);
+                messagesArray.set()*/
             }
         } while (loop);
+    }
+
+    public void writeToUpvotesFile() throws FileNotFoundException {
+        FileOutputStream fos = new FileOutputStream(upvotesFile);
+        PrintWriter pw = new PrintWriter(fos);
+        String toWrite = "";
+        for (int i = 0; i < upvotesArray.size(); i++) {
+            for (int j = 0; j < upvotesArray.get(i).size(); j++) {
+                toWrite += upvotesArray.get(i).get(j) + "---";
+            }
+            toWrite = toWrite.substring(0, toWrite.length() - 3) + "\n";
+        }
+        toWrite = toWrite.substring(0, toWrite.length() - 1);
+        pw.println(toWrite);
+        pw.close();
     }
 
     public void changeTopic() throws Exception {

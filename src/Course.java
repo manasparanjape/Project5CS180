@@ -98,7 +98,10 @@ public class Course {
                 FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", false);
                 PrintWriter pw = new PrintWriter(fos);
                 pw.println(newForumName);
-                fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt");
+                fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
+                pw = new PrintWriter(fos);
+                pw.println("");
+                fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
                 pw = new PrintWriter(fos);
                 pw.println("");
                 fos = new FileOutputStream(discussionBoardsListFileName, true);
@@ -191,9 +194,11 @@ public class Course {
             } else {
                 String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
                 String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
-                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username);
+                String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
+                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
                 discussionForum.readMessagesFile();
                 discussionForum.readPointsFile();
+                discussionForum.readUpvotesFile();
                 showDiscussionForumMainMethodStudent();
             }
         } while (loop);
@@ -220,9 +225,11 @@ public class Course {
             } else {
                 String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
                 String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
-                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username);
+                String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
+                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
                 discussionForum.readMessagesFile();
                 discussionForum.readPointsFile();
+                discussionForum.readUpvotesFile();
                 showDiscussionForumMainMethodTeacher();
             }
         } while (loop);
