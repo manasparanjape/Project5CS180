@@ -57,12 +57,16 @@ public class DiscussionForum {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
         String line = bfr.readLine();
-        line = bfr.readLine();
+        //line = bfr.readLine();
         while (line != null) {
             String[] separatedLine = line.split("---");
             ArrayList<String> singleLine = new ArrayList<String>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
+        }
+        output.remove(0);
+        if (output.size() > 0) {
+            output.remove(output.size() - 1);
         }
         bfr.close();
         messagesArray = output;
@@ -71,7 +75,7 @@ public class DiscussionForum {
     public void printMessages() throws Exception {
         readMessagesFile();
         String output = "";
-        for (int i = 0; i < messagesArray.size() - 1; i++) {
+        for (int i = 0; i < messagesArray.size(); i++) {
             output += messagesArray.get(i).get(0) + ". ";
             output += messagesArray.get(i).get(1) + "\n";
             output += "   - " + messagesArray.get(i).get(2) + " ";
@@ -91,7 +95,7 @@ public class DiscussionForum {
 
     public String convertMessagesArrayToFileString() throws Exception {
         String output = "";
-        for (int i = 0; i < messagesArray.size() - 1; i++) {
+        for (int i = 0; i < messagesArray.size(); i++) {
             String line = "";
             for (int j = 0; j < 8; j++) {
                 line += messagesArray.get(i).get(j) + "---";
@@ -105,7 +109,11 @@ public class DiscussionForum {
     public void writeToMessagesFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(messagesFileName, false);
         PrintWriter pw = new PrintWriter(fos);
-        String toWrite = forumName + "\n" + convertMessagesArrayToFileString();
+        String toWrite = forumName;
+        if (messagesArray.size() > 0) {
+            toWrite += "\n" + convertMessagesArrayToFileString();
+        }
+        System.out.println(toWrite);
         pw.println(toWrite);
         pw.close();
     }
@@ -159,12 +167,13 @@ public class DiscussionForum {
         boolean loop = false;
         int replyNumber;
         do {
+            loop = false;
             System.out.println(replyNumberPrompt);
             replyNumber = scan.nextInt();
+            scan.nextLine();
             if (replyNumber < 0 || replyNumber > messagesArray.size()) {
                 int tryAgain;
                 do {
-                    loop = false;
                     System.out.println(tryAgainPrompt);
                     tryAgain = scan.nextInt();
                     scan.nextLine();
@@ -175,7 +184,7 @@ public class DiscussionForum {
             }
         } while (loop);
 
-        if (replyNumber > 0 && replyNumber < messagesArray.size()) {
+        if (replyNumber > 0 && replyNumber < messagesArray.size() + 1) {
             do {
                 System.out.println(replyMessagePrompt);
                 String newPost = scan.nextLine();
@@ -193,26 +202,28 @@ public class DiscussionForum {
                 } else {
                     String fullName = firstName + lastName;
                     DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-                    ArrayList<String> newPostArray = new ArrayList<String>(6);
-                    newPostArray.set(0, Integer.toString(replyNumber + 1));
-                    newPostArray.set(1, newPost);
-                    newPostArray.set(2, fullName);
-                    newPostArray.set(3, LocalDateTime.now().format(format));
-                    newPostArray.set(4, "0");
-                    newPostArray.set(5, Integer.toString(replyNumber));
-                    newPostArray.set(6, username);
+                    ArrayList<String> newPostArray = new ArrayList<>();
+                    System.out.println(newPostArray.size());
+                    newPostArray.add(Integer.toString(replyNumber + 1));
+                    newPostArray.add(newPost);
+                    newPostArray.add(fullName);
+                    newPostArray.add(LocalDateTime.now().format(format));
+                    newPostArray.add("0");
+                    newPostArray.add(Integer.toString(replyNumber));
+                    newPostArray.add(username);
+                    newPostArray.add(Integer.toString(messagesArray.size() + 1));
                     messagesArray.add(replyNumber, newPostArray);
                     for (int i = replyNumber + 1; i < messagesArray.size(); i++) {
                         messagesArray.get(i).set(0, Integer.toString(i + 1));
                     }
                     writeToMessagesFile();
-                    ArrayList<String> newPostPointsArray = new ArrayList<>(4);
+                    /*ArrayList<String> newPostPointsArray = new ArrayList<>(4);
                     newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
                     newPostPointsArray.set(1, newPost);
                     newPostPointsArray.set(2, fullName);
                     newPostPointsArray.set(3, "0");
                     sortedUpvotesArray.add(newPostPointsArray);
-                    newPostArray.set(7, Integer.toString(messagesArray.size()));
+                    newPostArray.set(7, Integer.toString(messagesArray.size()));*/
                 }
             } while (loop);
         }
