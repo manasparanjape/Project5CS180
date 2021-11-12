@@ -61,7 +61,7 @@ public class Course {
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
-        line = bfr.readLine();
+        //line = bfr.readLine();
         while (line != null) {
             forumList.add(line);
             line = bfr.readLine();
@@ -94,16 +94,18 @@ public class Course {
                     }
                 } while (tryAgain != 1 && tryAgain != 2);
             } else {
+                forumList.add(newForumName);
                 FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", false);
                 PrintWriter pw = new PrintWriter(fos);
-                pw.println(newForumName);
-                fos = new FileOutputStream(discussionBoardsListFileName, true);
-                pw = new PrintWriter(fos);
                 pw.println(newForumName);
                 fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt");
                 pw = new PrintWriter(fos);
                 pw.println("");
+                fos = new FileOutputStream(discussionBoardsListFileName, true);
+                pw = new PrintWriter(fos);
+                pw.println(newForumName);
                 System.out.println(newForumCreated);
+                pw.close();
             }
         } while (loop);
     }

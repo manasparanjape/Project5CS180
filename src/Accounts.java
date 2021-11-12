@@ -32,7 +32,6 @@ public class Accounts {
             Are you a teacher or a student?
             1. Teacher
             2. Student""";
-    String filename = "AccountDetails.txt";
     static ArrayList<ArrayList<String>> accountDetailsArray = null;
 
     public Accounts(String username, String password, String firstName, String lastName, boolean ifTeacher) {
@@ -219,6 +218,15 @@ public class Accounts {
         //scan.close();
         return output;
     }
+
+    /*public static void deleteAccount() throws IOException {
+        boolean accountVerification = (securityCheck() != 0);
+        if (accountVerification) {
+            for (int i = -0; i < accountDetailsArray.size(); i++) {
+                if ()
+            }
+        }
+    }*/
 
     public String getName() {
         return firstName + " " + lastName;

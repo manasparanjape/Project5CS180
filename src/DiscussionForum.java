@@ -68,9 +68,10 @@ public class DiscussionForum {
         messagesArray = output;
     }
 
-    public void printMessages() {
+    public void printMessages() throws Exception {
+        readMessagesFile();
         String output = "";
-        for (int i = 0; i < messagesArray.size(); i++) {
+        for (int i = 0; i < messagesArray.size() - 1; i++) {
             output += messagesArray.get(i).get(0) + ". ";
             output += messagesArray.get(i).get(1) + "\n";
             output += "   - " + messagesArray.get(i).get(2) + " ";
@@ -89,13 +90,13 @@ public class DiscussionForum {
     }
 
     public String convertMessagesArrayToFileString() throws Exception {
-        String output = forumName + "\n";
-        for (int i = 0; i < messagesArray.size(); i++) {
+        String output = "";
+        for (int i = 0; i < messagesArray.size() - 1; i++) {
             String line = "";
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 8; j++) {
                 line += messagesArray.get(i).get(j) + "---";
             }
-            line = output.substring(0, line.length() - 3);
+            line = line.substring(0, line.length() - 3);
             output += line + "\n";
         }
         return output;
@@ -129,23 +130,26 @@ public class DiscussionForum {
             } else {
                 String fullName = firstName + lastName;
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-                ArrayList<String> newPostArray = new ArrayList<>(8);
-                newPostArray.set(0, Integer.toString(messagesArray.size() + 1));
-                newPostArray.set(1, newPost);
-                newPostArray.set(2, fullName);
-                newPostArray.set(3, LocalDateTime.now().format(format));
-                newPostArray.set(4, "0");
-                newPostArray.set(5, "0");
-                newPostArray.set(6, username);
-                newPostArray.set(7, Integer.toString(messagesArray.size()));
+                ArrayList<String> newPostArray = new ArrayList<>();
+                newPostArray.add(0, Integer.toString(messagesArray.size() + 1));
+                newPostArray.add(1, newPost);
+                newPostArray.add(2, fullName);
+                newPostArray.add(3, LocalDateTime.now().format(format));
+                newPostArray.add(4, "0");
+                newPostArray.add(5, "0");
+                newPostArray.add(6, username);
+                newPostArray.add(7, Integer.toString(messagesArray.size()));
                 messagesArray.add(newPostArray);
+                //System.out.println(messagesArray.size());
+                //System.out.println(messagesArray.get(0).size());
                 writeToMessagesFile();
+                /*
                 ArrayList<String> newPostPointsArray = new ArrayList<>(4);
                 newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
                 newPostPointsArray.set(1, newPost);
                 newPostPointsArray.set(2, fullName);
                 newPostPointsArray.set(3, "0");
-                sortedUpvotesArray.add(newPostPointsArray);
+                sortedUpvotesArray.add(newPostPointsArray);*/
             }
         } while (loop);
     }
@@ -354,7 +358,7 @@ public class DiscussionForum {
                 System.out.println(gradingStudentPrompt);
                 int points = scan.nextInt();
                 scan.nextLine();
-                ArrayList<String> output = new ArrayList<String>(2);
+                ArrayList<String> output = new ArrayList<>(2);
                 output.set(0, studentUsername);
                 output.set(1, Integer.toString(points));
                 pointsArray.add(output);

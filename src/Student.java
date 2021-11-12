@@ -19,7 +19,7 @@ public class Student {
             2. No""";
     private final static String courseEnteredPrompt = """
             Please enter the option number of what you want to do.
-            1) Open course
+            1) Open discussion forum
             2) View points
             3) Exit course""";
     private ArrayList<String> courseList = new ArrayList<>();
@@ -37,7 +37,6 @@ public class Student {
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
-        System.out.println(line);
         while (line != null) {
             courseList.add(line);
             line = bfr.readLine();
@@ -83,12 +82,12 @@ public class Student {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         int option = 0;
-        while (option != 5) {
+        while (option != 3) {
             do {
                 System.out.println(courseEnteredPrompt);
                 option = scan.nextInt();
                 scan.nextLine();
-                if (option < 1 || option > 5) {
+                if (option < 1 || option > 3) {
                     int tryAgain;
                     do {
                         loop = false;

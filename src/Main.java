@@ -32,7 +32,6 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 3) {
-            //scan.nextLine();
             System.out.println(teacherAccountEnteredPrompt);
             option = scan.nextInt();
             scan.nextLine();

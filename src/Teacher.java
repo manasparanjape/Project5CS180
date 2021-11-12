@@ -69,6 +69,7 @@ public class Teacher {
                     }
                 } while (tryAgain != 1 && tryAgain != 2);
             } else {
+                courseList.add(newCourseName);
                 FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt" , false);
                 PrintWriter pw = new PrintWriter(fos);
                 pw.println(newCourseName);
@@ -76,6 +77,7 @@ public class Teacher {
                 pw = new PrintWriter(fos);
                 pw.println(newCourseName);
                 System.out.println(newCourseCreated);
+                pw.close();
             }
         } while (loop);
     }
