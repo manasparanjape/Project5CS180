@@ -169,12 +169,12 @@ public class DiscussionForum {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
+            loop = false;
             System.out.println(newPostPrompt);
             String newPost = scan.nextLine();
             if (newPost == null || newPost.isBlank()) {
                 int tryAgain;
                 do {
-                    loop = false;
                     System.out.println(tryAgainPrompt);
                     tryAgain = scan.nextInt();
                     scan.nextLine();
@@ -233,12 +233,12 @@ public class DiscussionForum {
 
         if (replyNumber > 0 && replyNumber < messagesArray.size() + 1) {
             do {
+                loop = false;
                 System.out.println(replyMessagePrompt);
                 String newPost = scan.nextLine();
                 if (newPost == null || newPost.isBlank()) {
                     int tryAgain;
                     do {
-                        loop = false;
                         System.out.println(tryAgainPrompt);
                         tryAgain = scan.nextInt();
                         scan.nextLine();
@@ -280,12 +280,12 @@ public class DiscussionForum {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
+            loop = false;
             System.out.println(upvotePrompt);
             int messageNumber = scan.nextInt();
             if (messageNumber < 0 || messageNumber > messagesArray.size() || checkAlreadyUpvoted(messageNumber)) {
                 int tryAgain;
                 do {
-                    loop = false;
                     System.out.println(tryAgainPrompt);
                     tryAgain = scan.nextInt();
                     scan.nextLine();
@@ -342,12 +342,12 @@ public class DiscussionForum {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
+            loop = false;
             System.out.println(topicChangePrompt);
             String newTopic = scan.nextLine();
             if (newTopic == null || newTopic.isBlank()) {
                 int tryAgain;
                 do {
-                    loop = false;
                     System.out.println(tryAgainPrompt);
                     tryAgain = scan.nextInt();
                     scan.nextLine();
@@ -420,6 +420,7 @@ public class DiscussionForum {
         readPointsFile();
         boolean checkIfPointsExist = false;
         do {
+            loop = false;
             System.out.println(studentSpecificMessagesPrompt);
             String studentUsername = scan.nextLine();
             int i = 0;
@@ -432,7 +433,6 @@ public class DiscussionForum {
             if (studentUsername == null || !checkUsernameExistence(studentUsername) || checkIfPointsExist) {
                 int tryAgain;
                 do {
-                    loop = false;
                     System.out.println(tryAgainPrompt);
                     tryAgain = scan.nextInt();
                     scan.nextLine();
@@ -463,6 +463,8 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
+
+
 
     /*public void sortUpvotesArray() {
         for (int i = 0; i < sortedUpvotesArray.size(); i++) {

@@ -91,9 +91,8 @@ public class Accounts {
         return output;
     }
 
-    public static void getNewAccountDetails() throws IOException {
+    public static void getNewAccountDetails(Scanner scan) throws IOException {
         boolean accountSet;
-        Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
             accountSet = true;
@@ -108,7 +107,6 @@ public class Accounts {
             lastName = scan.nextLine();
             System.out.println(accountTypePrompt);
             String accountType = scan.nextLine();
-            //scan.nextLine();
 
             if (username == null) {
                 accountSet = false;
@@ -132,6 +130,8 @@ public class Accounts {
             if (!accountType.equals("1") && !accountType.equals("2")) {
                 accountSet = false;
                 System.out.println("Please choose a valid account type.");
+            } else {
+                ifTeacher = accountType.equals("1");
             }
 
             if (!accountSet) {
@@ -139,7 +139,6 @@ public class Accounts {
                 String tryAgain;
                 do {
                     tryAgain = scan.nextLine();
-                    scan.nextLine();
                     if (tryAgain.equals("1")) {
                         loop = true;
                     } else if (tryAgain.equals("2")) {
@@ -149,7 +148,6 @@ public class Accounts {
             }
 
         } while (loop);
-        scan.close();
         if (accountSet) {
             username = username.toLowerCase();
             writeToFile();
@@ -168,10 +166,9 @@ public class Accounts {
         }
     }
 
-    public static int securityCheck() throws IOException {
+    public static int securityCheck(Scanner scan) throws IOException {
         int output = 0;
         boolean loop = false;
-        Scanner scan = new Scanner(System.in);
 
         do {
             loop = false;
@@ -216,12 +213,11 @@ public class Accounts {
                 } while (tryAgain != 1 && tryAgain != 2);
             }
         } while (loop);
-        //scan.close();
         return output;
     }
 
-    public static void deleteAccount() throws IOException {
-        boolean accountVerification = (securityCheck() != 0);
+    public static void deleteAccount(Scanner scan) throws IOException {
+        boolean accountVerification = (securityCheck(scan) != 0);
         String toWrite = "";
         if (accountVerification) {
             for (int i = 0; i < accountDetailsArray.size(); i++) {
@@ -245,18 +241,17 @@ public class Accounts {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
-        int option = 0;
+        String option = "0";
         System.out.println(welcomeMessage);
-        while (option != 4) {
+        while (!option.equals("4")) {
             System.out.println(initialPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
-            if (option < 1 || option > 4) {
+            option = scan.nextLine();
+            if (Integer.parseInt(option) < 1 || Integer.parseInt(option) > 4) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             } else {
                 switch(option) {
-                    case 1 -> {
-                        int accountCheck = securityCheck();
+                    case "1" -> {
+                        int accountCheck = securityCheck(scan);
                         if (accountCheck == 1) {
                             findAccount(username);
                             main = new Main(username, firstName, lastName, true);
@@ -267,8 +262,8 @@ public class Accounts {
                             main.accountMainMethod();
                         }
                     }
-                    case 2 -> getNewAccountDetails();
-                    case 3 -> deleteAccount();
+                    case "2" -> getNewAccountDetails(scan);
+                    case "3" -> deleteAccount(scan);
                 }
             }
         }

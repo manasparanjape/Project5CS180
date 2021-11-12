@@ -80,12 +80,12 @@ public class Course {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
+            loop = false;
             System.out.println(newForumNamePrompt);
             String newForumName = scan.nextLine();
             if (newForumName == null || newForumName.isBlank() || discussionForumExists(newForumName)) {
                 int tryAgain;
                 do {
-                    loop = false;
                     System.out.println(tryAgainPrompt);
                     tryAgain = scan.nextInt();
                     scan.nextLine();
@@ -175,131 +175,83 @@ public class Course {
 
     public void studentDiscussionForumOpened() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            readForumListFile();
-            System.out.println(forumSelectionPrompt);
-            String selectedForum = scan.nextLine();
-            if (selectedForum == null || !discussionForumExists(selectedForum)) {
-                int tryAgain;
-                do {
-                    loop = false;
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
-                String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
-                String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
-                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
-                discussionForum.readMessagesFile();
-                discussionForum.readPointsFile();
-                discussionForum.readUpvotesFile();
-                showDiscussionForumMainMethodStudent();
-            }
-        } while (loop);
+        readForumListFile();
+        System.out.println(forumSelectionPrompt);
+        String selectedForum = scan.nextLine();
+        if (selectedForum == null || !discussionForumExists(selectedForum)) {
+            System.out.println("The discussion forum you entered does not exist!");
+        } else {
+            String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
+            String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
+            String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
+            discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
+            discussionForum.readMessagesFile();
+            discussionForum.readPointsFile();
+            discussionForum.readUpvotesFile();
+            showDiscussionForumMainMethodStudent();
+        }
     }
 
     public void teacherDiscussionForumOpened() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            readForumListFile();
-            System.out.println(forumSelectionPrompt);
-            String selectedForum = scan.nextLine();
-            if (selectedForum == null || !discussionForumExists(selectedForum)) {
-                int tryAgain;
-                do {
-                    loop = false;
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
-                String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
-                String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
-                discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
-                discussionForum.readMessagesFile();
-                discussionForum.readPointsFile();
-                discussionForum.readUpvotesFile();
-                showDiscussionForumMainMethodTeacher();
-            }
-        } while (loop);
+        readForumListFile();
+        System.out.println(forumSelectionPrompt);
+        String selectedForum = scan.nextLine();
+        if (selectedForum == null || !discussionForumExists(selectedForum)) {
+            System.out.println("The discussion forum you entered does not exist!");
+        } else {
+            String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
+            String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
+            String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
+            discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
+            discussionForum.readMessagesFile();
+            discussionForum.readPointsFile();
+            discussionForum.readUpvotesFile();
+            showDiscussionForumMainMethodTeacher();
+        }
     }
 
     public void showDiscussionForumMainMethodStudent() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
         int option = 0;
         while (option != 5) {
-            do {
-                System.out.println(discussionForumEnteredStudentPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-                if (option < 1 || option > 5) {
-                    int tryAgain;
-                    do {
-                        loop = false;
-                        System.out.println(tryAgainPrompt);
-                        tryAgain = scan.nextInt();
-                        scan.nextLine();
-                        if (tryAgain == 1) {
-                            loop = true;
-                        }
-                    } while (tryAgain != 1 && tryAgain != 2);
-                } else {
-                    switch (option) {
-                        case 1 -> discussionForum.printMessages();
-                        case 2 -> discussionForum.postMessage();
-                        case 3 -> discussionForum.replyToPost();
-                        case 4 -> discussionForum.upvote();
-                    }
+            System.out.println(discussionForumEnteredStudentPrompt);
+            option = scan.nextInt();
+            scan.nextLine();
+            if (option < 1 || option > 5) {
+                System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
+            } else {
+                switch (option) {
+                    case 1 -> discussionForum.printMessages();
+                    case 2 -> discussionForum.postMessage();
+                    case 3 -> discussionForum.replyToPost();
+                    case 4 -> discussionForum.upvote();
                 }
-            } while (loop);
+            }
         }
     }
 
     public void showDiscussionForumMainMethodTeacher() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
         int option = 0;
         while (option != 6) {
-            do {
-                System.out.println(discussionForumEnteredTeacherPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-                if (option < 1 || option > 6) {
-                    int tryAgain;
-                    do {
-                        loop = false;
-                        System.out.println(tryAgainPrompt);
-                        tryAgain = scan.nextInt();
-                        scan.nextLine();
-                        if (tryAgain == 1) {
-                            loop = true;
-                        }
-                    } while (tryAgain != 1 && tryAgain != 2);
-                } else {
-                    switch (option) {
-                        case 1 -> discussionForum.printMessages();
-                        case 2 -> discussionForum.postMessage();
-                        case 3 -> discussionForum.replyToPost();
-                        case 4 -> {
-                            discussionForum.printSpecificStudentMessages();
-                            discussionForum.responseGrading();
-                        }
-                        case 5 -> discussionForum.changeTopic();
+            System.out.println(discussionForumEnteredTeacherPrompt);
+            option = scan.nextInt();
+            scan.nextLine();
+            if (option < 1 || option > 6) {
+                System.out.println("You entered an invalid number. Please enter a number between 1 and 6.");
+            } else {
+                switch (option) {
+                    case 1 -> discussionForum.printMessages();
+                    case 2 -> discussionForum.postMessage();
+                    case 3 -> discussionForum.replyToPost();
+                    case 4 -> {
+                        discussionForum.printSpecificStudentMessages();
+                        discussionForum.responseGrading();
                     }
+                    case 5 -> discussionForum.changeTopic();
                 }
-            } while (loop);
+            }
         }
     }
 }

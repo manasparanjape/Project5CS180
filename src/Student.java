@@ -13,10 +13,6 @@ public class Student {
     private final String coursesListFileName;
 
     private final static String courseSelectionPrompt = "Which course would you like to open?";
-    private final static String tryAgainPrompt = """
-            Error Occurred! Do you want to try again?
-            1. Yes
-            2. No""";
     private final static String courseEnteredPrompt = """
             Please enter the option number of what you want to do.
             1) Open discussion forum
@@ -53,58 +49,33 @@ public class Student {
 
     public void openCourse() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            readCourseListsFile();
-            System.out.println(courseSelectionPrompt);
-            String selectedCourse = scan.nextLine();
-            if (selectedCourse == null || !courseExists(selectedCourse)) {
-                int tryAgain;
-                do {
-                    loop = false;
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-                course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
-                course.readForumListFile();
-                openCourseMainMethod();
-            }
-        } while (loop);
+        readCourseListsFile();
+        System.out.println(courseSelectionPrompt);
+        String selectedCourse = scan.nextLine();
+        if (selectedCourse == null || !courseExists(selectedCourse)) {
+            System.out.println("The course you entered does not exist!");
+        } else {
+            String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
+            course.readForumListFile();
+            openCourseMainMethod();
+        }
     }
 
     public void openCourseMainMethod() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
         int option = 0;
         while (option != 3) {
-            do {
-                System.out.println(courseEnteredPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-                if (option < 1 || option > 3) {
-                    int tryAgain;
-                    do {
-                        loop = false;
-                        System.out.println(tryAgainPrompt);
-                        tryAgain = scan.nextInt();
-                        scan.nextLine();
-                        if (tryAgain == 1) {
-                            loop = true;
-                        }
-                    } while (tryAgain != 1 && tryAgain != 2);
-                } else {
-                    switch (option) {
-                        case 1 -> course.studentDiscussionForumOpened();
-                        case 2 -> course.viewPoints();
-                    }
+            System.out.println(courseEnteredPrompt);
+            option = scan.nextInt();
+            if (option < 1 || option > 3) {
+                System.out.println("You entered an invalid number. Please enter a number between 1 and 3.");
+            } else {
+                switch (option) {
+                    case 1 -> course.studentDiscussionForumOpened();
+                    case 2 -> course.viewPoints();
                 }
-            } while (loop);
+            }
         }
     }
 }

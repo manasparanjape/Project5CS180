@@ -55,12 +55,12 @@ public class Teacher {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
+            loop = false;
             System.out.println(newCourseNamePrompt);
             String newCourseName = scan.nextLine();
             if (newCourseName == null || newCourseName.isBlank() || courseExists(newCourseName)) {
                 int tryAgain;
                 do {
-                    loop = false;
                     System.out.println(tryAgainPrompt);
                     tryAgain = scan.nextInt();
                     scan.nextLine();
@@ -84,60 +84,35 @@ public class Teacher {
 
     public void openCourse() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            readCourseListsFile();
-            System.out.println(courseSelectionPrompt);
-            String selectedCourse = scan.nextLine();
-            if (selectedCourse == null || !courseExists(selectedCourse)) {
-                int tryAgain;
-                do {
-                    loop = false;
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-                course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
-                course.readForumListFile();
-                openCourseMainMethod();
-            }
-        } while (loop);
+        readCourseListsFile();
+        System.out.println(courseSelectionPrompt);
+        String selectedCourse = scan.nextLine();
+        if (selectedCourse == null || !courseExists(selectedCourse)) {
+            System.out.println("The course you entered does not exist!");
+        } else {
+            String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
+            course.readForumListFile();
+            openCourseMainMethod();
+        }
     }
 
     public void openCourseMainMethod() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
         int option = 0;
         while (option != 5) {
-            do {
-                System.out.println(courseEnteredPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-                if (option < 1 || option > 5) {
-                    int tryAgain;
-                    do {
-                        loop = false;
-                        System.out.println(tryAgainPrompt);
-                        tryAgain = scan.nextInt();
-                        scan.nextLine();
-                        if (tryAgain == 1) {
-                            loop = true;
-                        }
-                    } while (tryAgain != 1 && tryAgain != 2);
-                } else {
-                    switch (option) {
-                        case 1 -> course.teacherDiscussionForumOpened();
-                        case 2 -> course.createForum();
-                        case 3 -> course.deleteForum();
-                        case 4 -> course.showDashboard();
-                    }
+            System.out.println(courseEnteredPrompt);
+            option = scan.nextInt();
+            if (option < 1 || option > 5) {
+                System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
+            } else {
+                switch (option) {
+                    case 1 -> course.teacherDiscussionForumOpened();
+                    case 2 -> course.createForum();
+                    case 3 -> course.deleteForum();
+                    case 4 -> course.showDashboard();
                 }
-            } while (loop);
+            }
         }
     }
 }
