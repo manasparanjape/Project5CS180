@@ -18,7 +18,8 @@ public class Accounts {
             What would you like to do today?
             1) Login to my account
             2) Create new account
-            3) Exit""";
+            3) Delete my account
+            4) Exit""";
     private final static String tryAgainPrompt = "Error! Do you want to try again?\n" + "1. Yes\n" + "2. No";
     private final static String usernamePrompt = "Please enter your username.";
     private final static String passwordPrompt = "Please enter your password";
@@ -32,6 +33,7 @@ public class Accounts {
             Are you a teacher or a student?
             1. Teacher
             2. Student""";
+    private final static String accountDeletionSuccess = "Your account has been deleted";
     static ArrayList<ArrayList<String>> accountDetailsArray = null;
 
     public Accounts(String username, String password, String firstName, String lastName, boolean ifTeacher) {
@@ -82,7 +84,6 @@ public class Accounts {
         boolean output = false;
         int i = 0;
         readFile();
-        System.out.println(accountDetailsArray.size());
         while (!output && i < accountDetailsArray.size()) {
             output = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
             i++;
@@ -173,6 +174,7 @@ public class Accounts {
         Scanner scan = new Scanner(System.in);
 
         do {
+            loop = false;
             System.out.println(usernamePrompt);
             username = scan.nextLine();
             System.out.println(passwordPrompt);
@@ -204,7 +206,6 @@ public class Accounts {
                 System.out.println(tryAgainPrompt);
                 int tryAgain;
                 do {
-                    loop = false;
                     tryAgain = scan.nextInt();
                     scan.nextLine();
                     if (tryAgain == 1) {
@@ -219,17 +220,26 @@ public class Accounts {
         return output;
     }
 
-    /*public static void deleteAccount() throws IOException {
+    public static void deleteAccount() throws IOException {
         boolean accountVerification = (securityCheck() != 0);
+        String toWrite = "";
         if (accountVerification) {
-            for (int i = -0; i < accountDetailsArray.size(); i++) {
-                if ()
+            for (int i = 0; i < accountDetailsArray.size(); i++) {
+                if (!accountDetailsArray.get(i).get(0).equals(username)) {
+                    for (int j = 0; j < 5; j++) {
+                        toWrite += accountDetailsArray.get(i).get(j) + "---";
+                    }
+                    toWrite = toWrite.substring(0, toWrite.length() - 3);
+                    toWrite += "\n";
+                }
             }
+            toWrite = toWrite.substring(0, toWrite.length() - 1);
+            FileOutputStream fos = new FileOutputStream(accountsFile, false);
+            PrintWriter pw = new PrintWriter(fos);
+            pw.println(toWrite);
+            pw.close();
+            System.out.println(accountDeletionSuccess);
         }
-    }*/
-
-    public String getName() {
-        return firstName + " " + lastName;
     }
 
     public static void main(String[] args) throws Exception {
@@ -237,11 +247,11 @@ public class Accounts {
         boolean loop = false;
         int option = 0;
         System.out.println(welcomeMessage);
-        while (option != 3) {
+        while (option != 4) {
             System.out.println(initialPrompt);
             option = scan.nextInt();
             scan.nextLine();
-            if (option < 1 || option > 3) {
+            if (option < 1 || option > 4) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             } else {
                 switch(option) {
@@ -257,10 +267,8 @@ public class Accounts {
                             main.accountMainMethod();
                         }
                     }
-                    case 2 -> {
-                        System.out.println("Check1");
-                        getNewAccountDetails();
-                    }
+                    case 2 -> getNewAccountDetails();
+                    case 3 -> deleteAccount();
                 }
             }
         }
