@@ -1,5 +1,5 @@
-public class Testing {
-  
+public class AccountsTesting {
+  //Tester class used to test each method included in the Accounts class
   public static void main(String[] args) {
     
     //Creating Accounts object representing a student account
