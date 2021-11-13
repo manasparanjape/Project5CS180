@@ -482,19 +482,34 @@ public class DiscussionForum {
         pw.close();
     }
 
-    /*public void sortUpvotesArray() {
+    public void showDashboard() {
+        ArrayList<ArrayList<String>> sortedUpvotesArray = sortUpvotesArray();
+        StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
+        for (ArrayList<String> strings : messagesArray) {
+            output.append(strings.get(0)).append(". ");
+            output.append(strings.get(1)).append("\n");
+            output.append("   - ").append(strings.get(2)).append(" ");
+            output.append(strings.get(3)).append("\n");
+            int upvotes = Integer.parseInt(strings.get(4));
+            output.append("Upvotes: ").append(upvotes).append("\n");
+            int replyTo = Integer.parseInt(strings.get(5));
+            if (replyTo > 0) {
+                output.append("Reply to message no.: ").append(replyTo).append("\n");
+            }
+            output.append("\n");
+        }
+        System.out.println(output);
+    }
+
+    public ArrayList<ArrayList<String>> sortUpvotesArray() {
+        ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;
         for (int i = 0; i < sortedUpvotesArray.size(); i++) {
-            if (Integer.parseInt(sortedUpvotesArray.get(i).get(3)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(3))) {
+            if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
                 ArrayList<String> temp = sortedUpvotesArray.get(i);
                 sortedUpvotesArray.set(i, sortedUpvotesArray.get(i + 1));
                 sortedUpvotesArray.set(i + 1, temp);
             }
         }
-        for (int i = 0; i < sortedUpvotesArray.size(); i++) {
-            sortedUpvotesArray.get(i).set(0, Integer.toString(i + 1));
-        }
-        for (int i = 0; i < messagesArray.size(); i++) {
-            messagesArray.get(i).set(7, sortedUpvotesArray.);
-        }
-    }*/
+        return sortedUpvotesArray;
+    }
 }

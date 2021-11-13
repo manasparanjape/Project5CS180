@@ -43,6 +43,7 @@ public class Course {
             3) Reply to message
             4) Grade student messages
             5) Change topic
+            6) View dashboard
             6) Exit forum""";
     private static final String methodOfNewForumPrompt = """
             How do you want to create the new discussion forum?
@@ -210,10 +211,6 @@ public class Course {
         System.out.println(output);
     }
 
-    public void showDashboard() {
-
-    }
-
     public void studentDiscussionForumOpened() throws Exception {
         Scanner scan = new Scanner(System.in);
         readForumListFile();
@@ -288,6 +285,7 @@ public class Course {
                     case 3 -> discussionForum.replyToPost();
                     case 4 -> discussionForum.responseGrading();
                     case 5 -> discussionForum.changeTopic();
+                    case 6 -> discussionForum.showDashboard();
                 }
             }
         }
