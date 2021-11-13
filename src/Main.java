@@ -13,8 +13,8 @@ public class Main {
             Please enter the option number of what you want to do.
             1) Create course
             2) Open course
-            3) Log out
-            """;
+            3) Log out""";
+
     private final static String studentAccountEnteredPrompt = """
             Please enter the option number of what you want to do.
             1) Open course

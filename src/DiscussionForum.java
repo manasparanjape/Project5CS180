@@ -23,6 +23,7 @@ public class DiscussionForum {
     private String messagesFileName;
     private String pointsFileName;
     private String upvotesFile;
+    private final String accountsFile = "AccountsFile.txt";
     private String firstName;
     private String lastName;
     private String username;
@@ -31,10 +32,6 @@ public class DiscussionForum {
     private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> sortedUpvotesArray;
 
-    private final static String tryAgainPrompt = """
-            Error Occurred! Do you want to try again?
-            1. Yes
-            2. No""";
     private final static String newPostPrompt = "What do you want to post?";
     private final static String replyNumberPrompt = "Which message do you want to reply to? Please enter the message number or 0 if you do not want to upvote any message.";
     private final static String replyMessagePrompt = "What is your reply?";
@@ -118,7 +115,7 @@ public class DiscussionForum {
 
     public void printMessages() throws Exception {
         readMessagesFile();
-        String output = "";
+        String output = forumName +"\n";
         for (int i = 0; i < messagesArray.size(); i++) {
             output += messagesArray.get(i).get(0) + ". ";
             output += messagesArray.get(i).get(1) + "\n";
@@ -318,45 +315,52 @@ public class DiscussionForum {
         pointsArray = output;
     }
 
-    public void printSpecificStudentMessages() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println(studentSpecificMessagesPrompt);
-        String studentUsername = scan.nextLine();
+    public void printSpecificStudentMessages(String studentUsername) {
         String output = "Messages by " + studentUsername + "\n";
         boolean studentHasPosted = false;
-        if (checkUsernameNonexistence(studentUsername)) {
-            System.out.println("The student username you entered does not exists.");
-        } else {
-            for (int i = 0; i < messagesArray.size(); i++) {
-                if (messagesArray.get(i).get(6).equals(studentUsername)) {
-                    studentHasPosted = true;
-                    output += messagesArray.get(i).get(0) + ". ";
-                    output += messagesArray.get(i).get(1) + "\n";
-                    output += "   - " + messagesArray.get(i).get(2) + " ";
-                    output += messagesArray.get(i).get(3) + "\n";
-                    int upvotes = Integer.parseInt(messagesArray.get(i).get(4));
-                    if (upvotes > 0) {
-                        output += "Upvotes: " + upvotes + "\n";
-                    }
-                    int replyTo = Integer.parseInt(messagesArray.get(i).get(5));
-                    if (replyTo > 0) {
-                        output += "Reply to message no.: " + replyTo + "\n";
-                    }
-                    output += "\n";
+        for (int i = 0; i < messagesArray.size(); i++) {
+            if (messagesArray.get(i).get(6).equals(studentUsername)) {
+                studentHasPosted = true;
+                output += messagesArray.get(i).get(0) + ". ";
+                output += messagesArray.get(i).get(1) + "\n";
+                output += "   - " + messagesArray.get(i).get(2) + " ";
+                output += messagesArray.get(i).get(3) + "\n";
+                int upvotes = Integer.parseInt(messagesArray.get(i).get(4));
+                if (upvotes > 0) {
+                    output += "Upvotes: " + upvotes + "\n";
                 }
-                if (!studentHasPosted) {
-                    System.out.println("This student has not posted any replies to this forum yet.");
+                int replyTo = Integer.parseInt(messagesArray.get(i).get(5));
+                if (replyTo > 0) {
+                    output += "Reply to message no.: " + replyTo + "\n";
                 }
+                output += "\n";
             }
         }
-        System.out.println(output);
+        if (!studentHasPosted) {
+            System.out.println("This student has not posted any replies to this forum yet.");
+        } else {
+            output = output.substring(0, output.length() - 1);
+            System.out.println(output);
+        }
     }
 
-    public boolean checkUsernameNonexistence(String username) {
+    public boolean checkUsernameNonexistence(String username) throws IOException {
+        ArrayList<ArrayList<String>> accountsArray = new ArrayList<>();
+        File f = new File(accountsFile);
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        String line = bfr.readLine();
+        while (line != null) {
+            String[] separatedLine = line.split("---");
+            ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
+            accountsArray.add(singleLine);
+            line = bfr.readLine();
+        }
+        bfr.close();
         boolean output = false;
         int i = 0;
-        while (!output && i < messagesArray.size()) {
-            if (messagesArray.get(i).get(6).equals(username)) {
+        while (!output && i < accountsArray.size()) {
+            if (accountsArray.get(i).get(0).equals(username)) {
                 output = true;
             }
             i++;
@@ -379,13 +383,19 @@ public class DiscussionForum {
         if (studentUsername == null || checkUsernameNonexistence(studentUsername)) {
             System.out.println("The student username you entered does not exist!");
         } else {
+            printSpecificStudentMessages(studentUsername);
             System.out.println(gradingStudentPrompt);
             int points = scan.nextInt();
             scan.nextLine();
-            ArrayList<String> output = new ArrayList<>(2);
-            output.set(0, studentUsername);
-            output.set(1, Integer.toString(points));
-            pointsArray.add(output);
+            ArrayList<String> output = new ArrayList<>();
+            output.add(studentUsername);
+            output.add(Integer.toString(points));
+            if (checkIfPointsExist) {
+                pointsArray.set(i - 1, output);
+            } else {
+                pointsArray.add(output);
+            }
+            System.out.println(pointsArray);
             writeToPointsFile();
         }
     }
@@ -397,6 +407,7 @@ public class DiscussionForum {
         for (int i = 0; i < pointsArray.size(); i++) {
             toWrite += pointsArray.get(i).get(0) + "---" + pointsArray.get(i).get(1) + "\n";
         }
+        toWrite = toWrite.substring(0, toWrite.length() - 1);
         pw.println(toWrite);
         pw.close();
     }

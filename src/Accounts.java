@@ -168,51 +168,32 @@ public class Accounts {
 
     public static int securityCheck(Scanner scan) throws IOException {
         int output = 0;
-        boolean loop = false;
-
-        do {
-            loop = false;
-            System.out.println(usernamePrompt);
-            username = scan.nextLine();
-            System.out.println(passwordPrompt);
-            String password = scan.nextLine();
-            if (username == null || password == null) {
-                System.out.println("The details entered were invalid");
-            } else {
-                readFile();
-                int i = 0;
-                boolean usernameFound = false;
-                boolean passwordMatch = false;
-                while (i < accountDetailsArray.size() && !usernameFound) {
-                    usernameFound = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
-                    i++;
-                }
-                if (usernameFound) {
-                    passwordMatch = accountDetailsArray.get(i - 1).get(1).equals(password);
-                }
-                if (usernameFound && passwordMatch) {
-                    if (accountDetailsArray.get(i - 1).get(4).equals("teacher")) {
-                        output = 1;
-                    } else if (accountDetailsArray.get(i - 1).get(4).equals("student")) {
-                        output = 2;
-                    }
+        System.out.println(usernamePrompt);
+        username = scan.nextLine();
+        System.out.println(passwordPrompt);
+        String password = scan.nextLine();
+        if (username == null || password == null) {
+            System.out.println("The details entered were invalid");
+        } else {
+            readFile();
+            int i = 0;
+            boolean usernameFound = false;
+            boolean passwordMatch = false;
+            while (i < accountDetailsArray.size() && !usernameFound) {
+                usernameFound = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
+                i++;
+            }
+            if (usernameFound) {
+                passwordMatch = accountDetailsArray.get(i - 1).get(1).equals(password);
+            }
+            if (usernameFound && passwordMatch) {
+                if (accountDetailsArray.get(i - 1).get(4).equals("teacher")) {
+                    output = 1;
+                } else if (accountDetailsArray.get(i - 1).get(4).equals("student")) {
+                    output = 2;
                 }
             }
-
-            if (output == 0) {
-                System.out.println(tryAgainPrompt);
-                int tryAgain;
-                do {
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    } else if (tryAgain == 2) {
-                        loop = false;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            }
-        } while (loop);
+        }
         return output;
     }
 

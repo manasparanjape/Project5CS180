@@ -237,10 +237,7 @@ public class Course {
                     case 1 -> discussionForum.printMessages();
                     case 2 -> discussionForum.postMessage();
                     case 3 -> discussionForum.replyToPost();
-                    case 4 -> {
-                        discussionForum.printSpecificStudentMessages();
-                        discussionForum.responseGrading();
-                    }
+                    case 4 -> discussionForum.responseGrading();
                     case 5 -> discussionForum.changeTopic();
                 }
             }
