@@ -221,17 +221,17 @@ public class Accounts {
 
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        String option = "0";
+        int option = 0;
         System.out.println(welcomeMessage);
-        while (!option.equals("4")) {
+        while (option != 4) {
             System.out.println(initialPrompt);
-            option = scan.nextLine();
-            if (Integer.parseInt(option) < 1 || Integer.parseInt(option) > 4) {
+            option = scan.nextInt();
+            scan.nextLine();
+            if (option < 1 || option > 4) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             } else {
                 switch(option) {
-                    case "1" -> {
+                    case 1 -> {
                         int accountCheck = securityCheck(scan);
                         if (accountCheck == 1) {
                             findAccount(username);
@@ -243,8 +243,8 @@ public class Accounts {
                             main.accountMainMethod();
                         }
                     }
-                    case "2" -> getNewAccountDetails(scan);
-                    case "3" -> deleteAccount(scan);
+                    case 2 -> getNewAccountDetails(scan);
+                    case 3 -> deleteAccount(scan);
                 }
             }
         }

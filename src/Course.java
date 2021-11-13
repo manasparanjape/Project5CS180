@@ -132,7 +132,7 @@ public class Course {
                     forumList.add(newForumName);
                     FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", false);
                     PrintWriter pw = new PrintWriter(fos);
-                    pw.println(newForumName);
+                    pw.println();
                     fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
                     pw = new PrintWriter(fos);
                     pw.println("");

@@ -58,16 +58,13 @@ public class Teacher {
             loop = false;
             System.out.println(newCourseNamePrompt);
             String newCourseName = scan.nextLine();
-            if (newCourseName == null || newCourseName.isBlank() || courseExists(newCourseName)) {
-                int tryAgain;
-                do {
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
+            if (newCourseName == null || newCourseName.isBlank()) {
+                if (courseExists(newCourseName)) {
+                    System.out.println("A course with that name already exists.");
+                } else {
+                    System.out.println("Please enter a valid course name(ie. Not all spaces or blank).");
+
+                }
             } else {
                 courseList.add(newCourseName);
                 FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt" , false);

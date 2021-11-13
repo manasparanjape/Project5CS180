@@ -123,14 +123,12 @@ public class DiscussionForum {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
-        //line = bfr.readLine();
         while (line != null) {
             String[] separatedLine = line.split("---");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
         }
-        output.remove(0);
         if (output.size() > 0) {
             output.remove(output.size() - 1);
         }
