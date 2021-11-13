@@ -11,10 +11,7 @@ Methods required:
 9) Dashboard
 */
 
-import javax.annotation.processing.Filer;
 import java.io.*;
-import java.lang.reflect.Array;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -167,160 +164,116 @@ public class DiscussionForum {
 
     public void postMessage() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            loop = false;
-            System.out.println(newPostPrompt);
-            String newPost = scan.nextLine();
-            if (newPost == null || newPost.isBlank()) {
-                int tryAgain;
-                do {
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                String fullName = firstName + lastName;
-                DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-                ArrayList<String> newPostArray = new ArrayList<>();
-                newPostArray.add(0, Integer.toString(messagesArray.size() + 1));
-                newPostArray.add(1, newPost);
-                newPostArray.add(2, fullName);
-                newPostArray.add(3, LocalDateTime.now().format(format));
-                newPostArray.add(4, "0");
-                newPostArray.add(5, "0");
-                newPostArray.add(6, username);
-                newPostArray.add(7, Integer.toString(messagesArray.size()));
-                messagesArray.add(newPostArray);
-                //System.out.println(messagesArray.size());
-                //System.out.println(messagesArray.get(0).size());
-                writeToMessagesFile();
-                /*
-                ArrayList<String> newPostPointsArray = new ArrayList<>(4);
-                newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
-                newPostPointsArray.set(1, newPost);
-                newPostPointsArray.set(2, fullName);
-                newPostPointsArray.set(3, "0");
-                sortedUpvotesArray.add(newPostPointsArray);*/
-            }
-        } while (loop);
+        System.out.println(newPostPrompt);
+        String newPost = scan.nextLine();
+        if (newPost == null || newPost.isBlank()) {
+            System.out.println("Please enter a valid post(ie. Not all spaces or blank).");
+        } else {
+            String fullName = firstName + lastName;
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+            ArrayList<String> newPostArray = new ArrayList<>();
+            newPostArray.add(0, Integer.toString(messagesArray.size() + 1));
+            newPostArray.add(1, newPost);
+            newPostArray.add(2, fullName);
+            newPostArray.add(3, LocalDateTime.now().format(format));
+            newPostArray.add(4, "0");
+            newPostArray.add(5, "0");
+            newPostArray.add(6, username);
+            newPostArray.add(7, Integer.toString(messagesArray.size()));
+            messagesArray.add(newPostArray);
+            //System.out.println(messagesArray.size());
+            //System.out.println(messagesArray.get(0).size());
+            writeToMessagesFile();
+            /*
+            ArrayList<String> newPostPointsArray = new ArrayList<>(4);
+            newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
+            newPostPointsArray.set(1, newPost);
+            newPostPointsArray.set(2, fullName);
+            newPostPointsArray.set(3, "0");
+            sortedUpvotesArray.add(newPostPointsArray);*/
+        }
     }
 
     public void replyToPost() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
         int replyNumber;
-        do {
-            loop = false;
-            System.out.println(replyNumberPrompt);
-            replyNumber = scan.nextInt();
-            scan.nextLine();
-            if (replyNumber < 0 || replyNumber > messagesArray.size()) {
-                int tryAgain;
-                do {
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            }
-        } while (loop);
+        System.out.println(replyNumberPrompt);
+        replyNumber = scan.nextInt();
+        scan.nextLine();
+        if (replyNumber < 0 || replyNumber > messagesArray.size()) {
+            System.out.println("You entered an invalid number. Please enter a valid message number between 1 and " + messagesArray.size() + ".");
+        }
 
         if (replyNumber > 0 && replyNumber < messagesArray.size() + 1) {
-            do {
-                loop = false;
-                System.out.println(replyMessagePrompt);
-                String newPost = scan.nextLine();
-                if (newPost == null || newPost.isBlank()) {
-                    int tryAgain;
-                    do {
-                        System.out.println(tryAgainPrompt);
-                        tryAgain = scan.nextInt();
-                        scan.nextLine();
-                        if (tryAgain == 1) {
-                            loop = true;
-                        }
-                    } while (tryAgain != 1 && tryAgain != 2);
-                } else {
-                    String fullName = firstName + lastName;
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-                    ArrayList<String> newPostArray = new ArrayList<>();
-                    System.out.println(newPostArray.size());
-                    newPostArray.add(Integer.toString(replyNumber + 1));
-                    newPostArray.add(newPost);
-                    newPostArray.add(fullName);
-                    newPostArray.add(LocalDateTime.now().format(format));
-                    newPostArray.add("0");
-                    newPostArray.add(Integer.toString(replyNumber));
-                    newPostArray.add(username);
-                    newPostArray.add(Integer.toString(messagesArray.size() + 1));
-                    messagesArray.add(replyNumber, newPostArray);
-                    for (int i = replyNumber + 1; i < messagesArray.size(); i++) {
-                        messagesArray.get(i).set(0, Integer.toString(i + 1));
-                    }
-                    writeToMessagesFile();
-                    /*ArrayList<String> newPostPointsArray = new ArrayList<>(4);
-                    newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
-                    newPostPointsArray.set(1, newPost);
-                    newPostPointsArray.set(2, fullName);
-                    newPostPointsArray.set(3, "0");
-                    sortedUpvotesArray.add(newPostPointsArray);
-                    newPostArray.set(7, Integer.toString(messagesArray.size()));*/
+            System.out.println(replyMessagePrompt);
+            String newPost = scan.nextLine();
+            if (newPost == null || newPost.isBlank()) {
+                System.out.println("Please enter a valid reply(ie. Not all spaces or blank).");
+            } else {
+                String fullName = firstName + lastName;
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+                ArrayList<String> newPostArray = new ArrayList<>();
+                newPostArray.add(Integer.toString(replyNumber + 1));
+                newPostArray.add(newPost);
+                newPostArray.add(fullName);
+                newPostArray.add(LocalDateTime.now().format(format));
+                newPostArray.add("0");
+                newPostArray.add(Integer.toString(replyNumber));
+                newPostArray.add(username);
+                newPostArray.add(Integer.toString(messagesArray.size() + 1));
+                messagesArray.add(replyNumber, newPostArray);
+                for (int i = replyNumber + 1; i < messagesArray.size(); i++) {
+                    messagesArray.get(i).set(0, Integer.toString(i + 1));
                 }
-            } while (loop);
+                writeToMessagesFile();
+                /*ArrayList<String> newPostPointsArray = new ArrayList<>(4);
+                newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
+                newPostPointsArray.set(1, newPost);
+                newPostPointsArray.set(2, fullName);
+                newPostPointsArray.set(3, "0");
+                sortedUpvotesArray.add(newPostPointsArray);
+                newPostArray.set(7, Integer.toString(messagesArray.size()));*/
+            }
         }
     }
 
     public void upvote() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            loop = false;
-            System.out.println(upvotePrompt);
-            int messageNumber = scan.nextInt();
-            if (messageNumber < 0 || messageNumber > messagesArray.size() || checkAlreadyUpvoted(messageNumber)) {
-                int tryAgain;
-                do {
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
+        System.out.println(upvotePrompt);
+        int messageNumber = scan.nextInt();
+        if (messageNumber < 0 || messageNumber > messagesArray.size()) {
+            if (checkAlreadyUpvoted(messageNumber)) {
+                System.out.println("You already upvoted this message. You can only upvote a message once");
             } else {
-                if (messageNumber > 0) {
-                    int upvotes = Integer.parseInt(messagesArray.get(messageNumber - 1).get(4));
-                    upvotes++;
-                    messagesArray.get(messageNumber - 1).set(4, Integer.toString(upvotes));
-                    if (checkUsernameInUpvotesArray()) {
-                        for (int i = 0; i < upvotesArray.size(); i++) {
-                            if (upvotesArray.get(i).get(0).equals(username)) {
-                                upvotesArray.get(i).add(Integer.toString(messageNumber));
-                            }
-                        }
-                    } else {
-                        ArrayList<String> newUpvoteArray = new ArrayList<>();
-                        newUpvoteArray.add(username);
-                        newUpvoteArray.add(Integer.toString(messageNumber));
-                        upvotesArray.add(newUpvoteArray);
-                    }
-                    writeToMessagesFile();
-                    writeToUpvotesFile();
-                }
-                /*ArrayList<String> temp = messagesArray.get(messageNumber);
-                int index = sortedUpvotesArray.indexOf(temp);
-                temp = sortedUpvotesArray.get(index);
-                sortUpvotesArray();
-                int newIndex = sortedUpvotesArray.indexOf(temp);
-                messagesArray.set()*/
+                System.out.println("You entered an invalid option. Please enter a number between 1 and " + messagesArray.size() + ".");
             }
-        } while (loop);
+        } else {
+            if (messageNumber > 0) {
+                int upvotes = Integer.parseInt(messagesArray.get(messageNumber - 1).get(4));
+                upvotes++;
+                messagesArray.get(messageNumber - 1).set(4, Integer.toString(upvotes));
+                if (checkUsernameInUpvotesArray()) {
+                    for (int i = 0; i < upvotesArray.size(); i++) {
+                        if (upvotesArray.get(i).get(0).equals(username)) {
+                            upvotesArray.get(i).add(Integer.toString(messageNumber));
+                        }
+                    }
+                } else {
+                    ArrayList<String> newUpvoteArray = new ArrayList<>();
+                    newUpvoteArray.add(username);
+                    newUpvoteArray.add(Integer.toString(messageNumber));
+                    upvotesArray.add(newUpvoteArray);
+                }
+                writeToMessagesFile();
+                writeToUpvotesFile();
+            }
+            /*ArrayList<String> temp = messagesArray.get(messageNumber);
+            int index = sortedUpvotesArray.indexOf(temp);
+            temp = sortedUpvotesArray.get(index);
+            sortUpvotesArray();
+            int newIndex = sortedUpvotesArray.indexOf(temp);
+            messagesArray.set()*/
+        }
     }
 
     public void writeToUpvotesFile() throws FileNotFoundException {
@@ -340,26 +293,14 @@ public class DiscussionForum {
 
     public void changeTopic() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            loop = false;
-            System.out.println(topicChangePrompt);
-            String newTopic = scan.nextLine();
-            if (newTopic == null || newTopic.isBlank()) {
-                int tryAgain;
-                do {
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                forumName = newTopic;
-                writeToMessagesFile();
-            }
-        } while (loop) ;
+        System.out.println(topicChangePrompt);
+        String newTopic = scan.nextLine();
+        if (newTopic == null || newTopic.isBlank()) {
+            System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
+        } else {
+            forumName = newTopic;
+            writeToMessagesFile();
+        }
     }
 
     public void readPointsFile() throws Exception {
@@ -382,27 +323,36 @@ public class DiscussionForum {
         System.out.println(studentSpecificMessagesPrompt);
         String studentUsername = scan.nextLine();
         String output = "Messages by " + studentUsername + "\n";
-        for (int i = 0; i < messagesArray.size(); i++) {
-            if (messagesArray.get(i).get(6).equals(studentUsername)) {
-                output += messagesArray.get(i).get(0) + ". ";
-                output += messagesArray.get(i).get(1) + "\n";
-                output += "   - " + messagesArray.get(i).get(2) + " ";
-                output += messagesArray.get(i).get(3) + "\n";
-                int upvotes = Integer.parseInt(messagesArray.get(i).get(4));
-                if (upvotes > 0) {
-                    output += "Upvotes: " + upvotes + "\n";
+        boolean studentHasPosted = false;
+        if (checkUsernameNonexistence(studentUsername)) {
+            System.out.println("The student username you entered does not exists.");
+        } else {
+            for (int i = 0; i < messagesArray.size(); i++) {
+                if (messagesArray.get(i).get(6).equals(studentUsername)) {
+                    studentHasPosted = true;
+                    output += messagesArray.get(i).get(0) + ". ";
+                    output += messagesArray.get(i).get(1) + "\n";
+                    output += "   - " + messagesArray.get(i).get(2) + " ";
+                    output += messagesArray.get(i).get(3) + "\n";
+                    int upvotes = Integer.parseInt(messagesArray.get(i).get(4));
+                    if (upvotes > 0) {
+                        output += "Upvotes: " + upvotes + "\n";
+                    }
+                    int replyTo = Integer.parseInt(messagesArray.get(i).get(5));
+                    if (replyTo > 0) {
+                        output += "Reply to message no.: " + replyTo + "\n";
+                    }
+                    output += "\n";
                 }
-                int replyTo = Integer.parseInt(messagesArray.get(i).get(5));
-                if (replyTo > 0) {
-                    output += "Reply to message no.: " + replyTo + "\n";
+                if (!studentHasPosted) {
+                    System.out.println("This student has not posted any replies to this forum yet.");
                 }
-                output += "\n";
             }
         }
         System.out.println(output);
     }
 
-    public boolean checkUsernameExistence(String username) {
+    public boolean checkUsernameNonexistence(String username) {
         boolean output = false;
         int i = 0;
         while (!output && i < messagesArray.size()) {
@@ -411,46 +361,33 @@ public class DiscussionForum {
             }
             i++;
         }
-        return output;
+        return !output;
     }
 
     public void responseGrading() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        readPointsFile();
         boolean checkIfPointsExist = false;
-        do {
-            loop = false;
-            System.out.println(studentSpecificMessagesPrompt);
-            String studentUsername = scan.nextLine();
-            int i = 0;
-            while (!checkIfPointsExist && i < pointsArray.size()) {
-                if (pointsArray.get(i).get(0).equals(studentUsername)) {
-                    checkIfPointsExist = true;
-                }
-                i++;
+        System.out.println(studentSpecificMessagesPrompt);
+        String studentUsername = scan.nextLine();
+        int i = 0;
+        while (!checkIfPointsExist && i < pointsArray.size()) {
+            if (pointsArray.get(i).get(0).equals(studentUsername)) {
+                checkIfPointsExist = true;
             }
-            if (studentUsername == null || !checkUsernameExistence(studentUsername) || checkIfPointsExist) {
-                int tryAgain;
-                do {
-                    System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);
-            } else {
-                System.out.println(gradingStudentPrompt);
-                int points = scan.nextInt();
-                scan.nextLine();
-                ArrayList<String> output = new ArrayList<>(2);
-                output.set(0, studentUsername);
-                output.set(1, Integer.toString(points));
-                pointsArray.add(output);
-                writeToPointsFile();
-            }
-        } while (loop) ;
+            i++;
+        }
+        if (studentUsername == null || checkUsernameNonexistence(studentUsername)) {
+            System.out.println("The student username you entered does not exist!");
+        } else {
+            System.out.println(gradingStudentPrompt);
+            int points = scan.nextInt();
+            scan.nextLine();
+            ArrayList<String> output = new ArrayList<>(2);
+            output.set(0, studentUsername);
+            output.set(1, Integer.toString(points));
+            pointsArray.add(output);
+            writeToPointsFile();
+        }
     }
 
     public void writeToPointsFile() throws Exception {
