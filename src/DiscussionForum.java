@@ -363,6 +363,8 @@ public class DiscussionForum {
             System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
         } else {
             forumName = newTopic;
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+            forumCreationTime = LocalDateTime.now().format(format);
             writeToMessagesFile();
         }
     }
@@ -479,8 +481,6 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
-
-
 
     /*public void sortUpvotesArray() {
         for (int i = 0; i < sortedUpvotesArray.size(); i++) {

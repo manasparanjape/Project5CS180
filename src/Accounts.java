@@ -1,18 +1,15 @@
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Accounts {
-    private static String accountsFile = "AccountsFile.txt";
+    private static final String accountsFile = "AccountsFile.txt";
     private static String username;
     private static String password;
     private static String firstName;
     private static String lastName;
     private static boolean ifTeacher;
-    private static Main main;
     private final static String welcomeMessage = "Welcome! ";
     private final static String initialPrompt = """
             What would you like to do today?
@@ -20,7 +17,10 @@ public class Accounts {
             2) Create new account
             3) Delete my account
             4) Exit""";
-    private final static String tryAgainPrompt = "Error! Do you want to try again?\n" + "1. Yes\n" + "2. No";
+    private final static String tryAgainPrompt = """
+            Error! Do you want to try again?
+            1. Yes
+            2. No""";
     private final static String usernamePrompt = "Please enter your username.";
     private final static String passwordPrompt = "Please enter your password";
     private final static String setUsernamePrompt = "Set a new username:";
@@ -157,11 +157,11 @@ public class Accounts {
 
     public static void findAccount(String username) throws IOException {
         readFile();
-        for (int i = 0; i < accountDetailsArray.size(); i++) {
-            if (accountDetailsArray.get(i).get(0).equals(username)) {
-                firstName = accountDetailsArray.get(i).get(2);
-                lastName = accountDetailsArray.get(i).get(3);
-                ifTeacher = accountDetailsArray.get(i).get(4).equals("teacher");
+        for (ArrayList<String> strings : accountDetailsArray) {
+            if (strings.get(0).equals(username)) {
+                firstName = strings.get(2);
+                lastName = strings.get(3);
+                ifTeacher = strings.get(4).equals("teacher");
             }
         }
     }
@@ -199,18 +199,18 @@ public class Accounts {
 
     public static void deleteAccount(Scanner scan) throws IOException {
         boolean accountVerification = (securityCheck(scan) != 0);
-        String toWrite = "";
+        StringBuilder toWrite = new StringBuilder();
         if (accountVerification) {
-            for (int i = 0; i < accountDetailsArray.size(); i++) {
-                if (!accountDetailsArray.get(i).get(0).equals(username)) {
+            for (ArrayList<String> strings : accountDetailsArray) {
+                if (!strings.get(0).equals(username)) {
                     for (int j = 0; j < 5; j++) {
-                        toWrite += accountDetailsArray.get(i).get(j) + "---";
+                        toWrite.append(strings.get(j)).append("---");
                     }
-                    toWrite = toWrite.substring(0, toWrite.length() - 3);
-                    toWrite += "\n";
+                    toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 3));
+                    toWrite.append("\n");
                 }
             }
-            toWrite = toWrite.substring(0, toWrite.length() - 1);
+            toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
             FileOutputStream fos = new FileOutputStream(accountsFile, false);
             PrintWriter pw = new PrintWriter(fos);
             pw.println(toWrite);
@@ -233,6 +233,7 @@ public class Accounts {
                 switch(option) {
                     case 1 -> {
                         int accountCheck = securityCheck(scan);
+                        Main main;
                         if (accountCheck == 1) {
                             findAccount(username);
                             main = new Main(username, firstName, lastName, true);
