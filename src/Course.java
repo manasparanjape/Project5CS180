@@ -44,7 +44,7 @@ public class Course {
             4) Grade student messages
             5) Change topic
             6) View dashboard
-            6) Exit forum""";
+            7) Exit forum""";
     private static final String methodOfNewForumPrompt = """
             How do you want to create the new discussion forum?
             1) Enter the new forum name via terminal.

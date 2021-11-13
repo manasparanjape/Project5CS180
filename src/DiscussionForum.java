@@ -93,7 +93,6 @@ public class DiscussionForum {
         String line = bfr.readLine();
         while (line != null) {
             String[] separatedLine = line.split("---");
-            //System.out.println(separatedLine);
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -191,7 +190,6 @@ public class DiscussionForum {
         if (messagesArray.size() > 0) {
             toWrite += "\n" + convertMessagesArrayToFileString();
         }
-        System.out.println(toWrite);
         pw.println(toWrite);
         pw.close();
     }
@@ -465,7 +463,6 @@ public class DiscussionForum {
             } else {
                 pointsArray.add(output);
             }
-            System.out.println(pointsArray);
             writeToPointsFile();
         }
     }
@@ -498,12 +495,14 @@ public class DiscussionForum {
             }
             output.append("\n");
         }
+        output = new StringBuilder(output.substring(output.length() - 1));
         System.out.println(output);
     }
 
     public ArrayList<ArrayList<String>> sortUpvotesArray() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;
-        for (int i = 0; i < sortedUpvotesArray.size(); i++) {
+        System.out.println(sortedUpvotesArray);
+        for (int i = 0; i < sortedUpvotesArray.size() - 1; i++) {
             if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
                 ArrayList<String> temp = sortedUpvotesArray.get(i);
                 sortedUpvotesArray.set(i, sortedUpvotesArray.get(i + 1));

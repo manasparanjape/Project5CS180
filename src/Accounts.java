@@ -17,10 +17,6 @@ public class Accounts {
             2) Create new account
             3) Delete my account
             4) Exit""";
-    private final static String tryAgainPrompt = """
-            Error! Do you want to try again?
-            1. Yes
-            2. No""";
     private final static String usernamePrompt = "Please enter your username.";
     private final static String passwordPrompt = "Please enter your password";
     private final static String setUsernamePrompt = "Set a new username:";
@@ -93,61 +89,44 @@ public class Accounts {
 
     public static void getNewAccountDetails(Scanner scan) throws IOException {
         boolean accountSet;
-        boolean loop = false;
-        do {
-            accountSet = true;
-            System.out.println(setUsernamePrompt);
-            System.out.println("All usernames are case insensitive.");
-            username = scan.nextLine();
-            System.out.println(setPasswordPrompt);
-            password = scan.nextLine();
-            System.out.println(setFirstNamePrompt);
-            firstName = scan.nextLine();
-            System.out.println(setLastNamePrompt);
-            lastName = scan.nextLine();
-            System.out.println(accountTypePrompt);
-            String accountType = scan.nextLine();
+        accountSet = true;
+        System.out.println(setUsernamePrompt);
+        System.out.println("All usernames are case insensitive.");
+        username = scan.nextLine();
+        System.out.println(setPasswordPrompt);
+        password = scan.nextLine();
+        System.out.println(setFirstNamePrompt);
+        firstName = scan.nextLine();
+        System.out.println(setLastNamePrompt);
+        lastName = scan.nextLine();
+        System.out.println(accountTypePrompt);
+        String accountType = scan.nextLine();
 
-            if (username == null) {
-                accountSet = false;
-                System.out.println("The username you entered is invalid.");
-            } else if (checkUsernameAvailability(username)){
-                accountSet = false;
-                System.out.println(usernameUnavailablePrompt);
-            }
-            if (password == null) {
-                accountSet = false;
-                System.out.println("The password you entered is invalid.");
-            }
-            if (firstName == null) {
-                accountSet = false;
-                System.out.println("The first name you entered is invalid.");
-            }
-            if (lastName == null) {
-                accountSet = false;
-                System.out.println("The last name you entered is invalid.");
-            }
-            if (!accountType.equals("1") && !accountType.equals("2")) {
-                accountSet = false;
-                System.out.println("Please choose a valid account type.");
-            } else {
-                ifTeacher = accountType.equals("1");
-            }
-
-            if (!accountSet) {
-                System.out.println(tryAgainPrompt);
-                String tryAgain;
-                do {
-                    tryAgain = scan.nextLine();
-                    if (tryAgain.equals("1")) {
-                        loop = true;
-                    } else if (tryAgain.equals("2")) {
-                        loop = false;
-                    }
-                } while (!tryAgain.equals("1") && !tryAgain.equals("2"));
-            }
-
-        } while (loop);
+        if (username == null) {
+            accountSet = false;
+            System.out.println("The username you entered is invalid.");
+        } else if (checkUsernameAvailability(username)){
+            accountSet = false;
+            System.out.println(usernameUnavailablePrompt);
+        }
+        if (password == null) {
+            accountSet = false;
+            System.out.println("The password you entered is invalid.");
+        }
+        if (firstName == null) {
+            accountSet = false;
+            System.out.println("The first name you entered is invalid.");
+        }
+        if (lastName == null) {
+            accountSet = false;
+            System.out.println("The last name you entered is invalid.");
+        }
+        if (!accountType.equals("1") && !accountType.equals("2")) {
+            accountSet = false;
+            System.out.println("Please choose a valid account type.");
+        } else {
+            ifTeacher = accountType.equals("1");
+        }
         if (accountSet) {
             username = username.toLowerCase();
             writeToFile();
@@ -192,6 +171,8 @@ public class Accounts {
                 } else if (accountDetailsArray.get(i - 1).get(4).equals("student")) {
                     output = 2;
                 }
+            } else {
+                System.out.println("The account details you entered are invalid.");
             }
         }
         return output;
