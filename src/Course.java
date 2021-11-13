@@ -6,6 +6,8 @@ Methods Required:
 */
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -123,22 +125,24 @@ public class Course {
             }
             if (option == 1 || option == 2) {
                 if (newForumName == null || newForumName.isBlank()) {
-                    if (discussionForumExists(newForumName)) {
-                        System.out.println("A discussion forum with that name already exists in this course.");
-                    } else {
-                        System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
-                    }
+                    System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
+                } else if (discussionForumExists(newForumName)) {
+                    System.out.println("A discussion forum with that name already exists in this course.");
                 } else {
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
                     forumList.add(newForumName);
-                    FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", false);
+                    FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", true);
                     PrintWriter pw = new PrintWriter(fos);
-                    pw.println();
+                    pw.println(newForumName + "---" + LocalDateTime.now().format(format));
+                    pw.close();
                     fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
                     pw = new PrintWriter(fos);
                     pw.println("");
+                    pw.close();
                     fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
                     pw = new PrintWriter(fos);
                     pw.println("");
+                    pw.close();
                     fos = new FileOutputStream(discussionBoardsListFileName, true);
                     pw = new PrintWriter(fos);
                     pw.println(newForumName);

@@ -29,6 +29,7 @@ public class DiscussionForum {
     private ArrayList<ArrayList<String>> messagesArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> pointsArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
+    private String forumCreationTime;
     //private ArrayList<ArrayList<String>> sortedUpvotesArray;
 
     private final static String newPostPrompt = "What do you want to post?";
@@ -123,6 +124,8 @@ public class DiscussionForum {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
+        forumCreationTime = line.split("---")[1];
+        line = bfr.readLine();
         while (line != null) {
             String[] separatedLine = line.split("---");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
@@ -149,7 +152,7 @@ public class DiscussionForum {
 
     public void printMessages() throws Exception {
         readMessagesFile();
-        StringBuilder output = new StringBuilder(forumName + "\n");
+        StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
         for (ArrayList<String> strings : messagesArray) {
             output.append(strings.get(0)).append(". ");
             output.append(strings.get(1)).append("\n");
@@ -184,7 +187,7 @@ public class DiscussionForum {
     public void writeToMessagesFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(messagesFileName, false);
         PrintWriter pw = new PrintWriter(fos);
-        String toWrite = forumName;
+        String toWrite = forumName + "---" + forumCreationTime;
         if (messagesArray.size() > 0) {
             toWrite += "\n" + convertMessagesArrayToFileString();
         }

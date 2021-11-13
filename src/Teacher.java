@@ -43,7 +43,8 @@ public class Teacher {
         }
     }
 
-    public boolean courseExists(String courseName) {
+    public boolean courseExists(String courseName) throws IOException {
+        readCourseListsFile();
         if (courseList == null) {
             return false;
         } else {
@@ -51,7 +52,7 @@ public class Teacher {
         }
     }
 
-    public void createCourse() throws FileNotFoundException {
+    public void createCourse() throws IOException {
         Scanner scan = new Scanner(System.in);
         boolean loop = false;
         do {
@@ -59,12 +60,9 @@ public class Teacher {
             System.out.println(newCourseNamePrompt);
             String newCourseName = scan.nextLine();
             if (newCourseName == null || newCourseName.isBlank()) {
-                if (courseExists(newCourseName)) {
-                    System.out.println("A course with that name already exists.");
-                } else {
-                    System.out.println("Please enter a valid course name(ie. Not all spaces or blank).");
-
-                }
+                System.out.println("Please enter a valid course name(ie. Not all spaces or blank).");
+            } else if (courseExists(newCourseName)) {
+                System.out.println("A course with that name already exists.");
             } else {
                 courseList.add(newCourseName);
                 FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt" , false);
