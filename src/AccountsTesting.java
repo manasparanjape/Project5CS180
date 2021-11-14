@@ -22,7 +22,13 @@ public class AccountsTesting {
     //returns true if method matches expected output
    
     //Creating Accounts object representing a teacher account
+    Accounts teacherOne = null;
     Accounts teacherOne = new Accounts("Ms.Paul", "skooliskool", "Mary", "Paul", true);
+    if(teacherOne != null) {
+      System.out.println(true);
+    } else {
+      System.out.println(false);
+    }
     //Testing covertToString method in Accounts.java
     String teacherString = teacherOne.convertToString();
     System.out.println(studentString.equals("Ms.Paul---skooliskool---Mary---Paul---teacher"));
