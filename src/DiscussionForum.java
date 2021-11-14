@@ -200,8 +200,14 @@ public class DiscussionForum {
         int option = 0;
         while (option != 3 && !cancelled) {
             System.out.println(methodOfNewPostPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
+            try {
+            	option = scan.nextInt();
+            } catch (Exception e) {
+            	System.out.println("Please enter a valid number!");
+            	option = 0;
+            	scan.nextLine();
+            	continue;
+            }
             String newPost = "";
             if (option == 1) {
                 System.out.println(newPostPrompt);
@@ -242,20 +248,33 @@ public class DiscussionForum {
 
     public void replyToPost() throws Exception {
         Scanner scan = new Scanner(System.in);
-        int replyNumber;
+        int replyNumber = -1;
         boolean cancelled = false;
-        System.out.println(replyNumberPrompt);
-        replyNumber = scan.nextInt();
-        scan.nextLine();
+        while (replyNumber == -1) {
+        	try {
+        		System.out.println(replyNumberPrompt);
+        		replyNumber = scan.nextInt();
+        	} catch (Exception e) {
+        		System.out.println("Please enter a vlid number");
+                scan.nextLine();
+                replyNumber = -1;
+        	}
+        }
         if (replyNumber < 0 || replyNumber > messagesArray.size()) {
             System.out.println("You entered an invalid number. Please enter a valid message number between 1 and " + messagesArray.size() + ".");
         }
         if (replyNumber > 0 && replyNumber < messagesArray.size() + 1) {
             int option = 0;
             while (option != 3 && !cancelled) {
-                System.out.println(methodOfNewReplyPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
+            	try {
+            		System.out.println(methodOfNewReplyPrompt);
+            		option = scan.nextInt();
+            	} catch (Exception e) {
+            		System.out.println("Please enter a valid number!");
+                    scan.nextLine();
+                    option = 0;
+                    continue;
+            	}
                 String newPost = "";
                 if (option == 1) {
                     System.out.println(replyMessagePrompt);
@@ -301,8 +320,17 @@ public class DiscussionForum {
 
     public void upvote() throws Exception {
         Scanner scan = new Scanner(System.in);
-        System.out.println(upvotePrompt);
-        int messageNumber = scan.nextInt();
+        int messageNumber = -631469;
+        while (messageNumber == -631469) {
+        	try {
+        		System.out.println(upvotePrompt);
+        		messageNumber = scan.nextInt();
+        	} catch (Exception e) {
+        		System.out.println("Please enter a vlid number!");
+        		messageNumber = -631469;
+        		scan.nextLine();		
+        	}
+        }
         if (messageNumber < 0 || messageNumber > messagesArray.size()) {
             if (checkAlreadyUpvoted(messageNumber)) {
                 System.out.println("You already upvoted this message. You can only upvote a message once");
@@ -452,9 +480,17 @@ public class DiscussionForum {
             System.out.println("The student username you entered does not exist!");
         } else {
             printSpecificStudentMessages(studentUsername);
-            System.out.println(gradingStudentPrompt);
-            int points = scan.nextInt();
-            scan.nextLine();
+            int points = -1;
+            while (points < 0) {
+            	try {
+            		System.out.println(gradingStudentPrompt);
+            		points = scan.nextInt();
+            	} catch (Exception e) {
+            		System.out.println("Please enter a valid number!");
+            		points = -1;
+            		scan.nextLine();
+            	}
+            }
             ArrayList<String> output = new ArrayList<>();
             output.add(studentUsername);
             output.add(Integer.toString(points));
