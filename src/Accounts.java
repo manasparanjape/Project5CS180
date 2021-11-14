@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Accounts {
@@ -203,33 +204,37 @@ public class Accounts {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
         int option = 0;
-        System.out.println(welcomeMessage);
-        while (option != 4) {
-            System.out.println(initialPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
-            if (option < 1 || option > 4) {
-                System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
-            } else {
-                switch(option) {
-                    case 1 -> {
-                        int accountCheck = securityCheck(scan);
-                        Main main;
-                        if (accountCheck == 1) {
-                            findAccount(username);
-                            main = new Main(username, firstName, lastName, true);
-                            main.accountMainMethod();
-                        } else if (accountCheck == 2) {
-                            findAccount(username);
-                            main = new Main(username, firstName, lastName, false);
-                            main.accountMainMethod();
+        try {
+            System.out.println(welcomeMessage);
+            while (option != 4) {
+                System.out.println(initialPrompt);
+                option = scan.nextInt();
+                scan.nextLine();
+                if (option < 1 || option > 4) {
+                    System.out.println("You entered an invalid option. Please enter a number between 1 and 4.");
+                } else {
+                    switch(option) {
+                        case 1 -> {
+                            int accountCheck = securityCheck(scan);
+                            Main main;
+                            if (accountCheck == 1) {
+                                findAccount(username);
+                                main = new Main(username, firstName, lastName, true);
+                                main.accountMainMethod();
+                            } else if (accountCheck == 2) {
+                                findAccount(username);
+                                main = new Main(username, firstName, lastName, false);
+                                main.accountMainMethod();
+                            }
                         }
+                        case 2 -> getNewAccountDetails(scan);
+                        case 3 -> deleteAccount(scan);
                     }
-                    case 2 -> getNewAccountDetails(scan);
-                    case 3 -> deleteAccount(scan);
                 }
             }
+            scan.close();
+        } catch (InputMismatchException e) {
+            System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
         }
-        scan.close();
     }
 }
