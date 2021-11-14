@@ -1,6 +1,10 @@
+import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class TeacherTester {
   
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     //Creating Accounts object representing a teacher account
     Accounts teacherOne = null;
     Accounts teacherOne = new Accounts("Ms.Paul", "skooliskool", "Mary", "Paul", true);
