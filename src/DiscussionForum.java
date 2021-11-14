@@ -30,7 +30,6 @@ public class DiscussionForum {
     private ArrayList<ArrayList<String>> pointsArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
     private String forumCreationTime;
-    //private ArrayList<ArrayList<String>> sortedUpvotesArray;
 
     private final static String newPostPrompt = "What do you want to post?";
     private final static String replyNumberPrompt = "Which message do you want to reply to? Please enter the message number or 0 if you do not want to upvote any message.";
@@ -510,7 +509,7 @@ public class DiscussionForum {
     public void showDashboard() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = sortUpvotesArray();
         StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
-        for (ArrayList<String> strings : messagesArray) {
+        for (ArrayList<String> strings : sortedUpvotesArray) {
             output.append(strings.get(0)).append(". ");
             output.append(strings.get(1)).append("\n");
             output.append("   - ").append(strings.get(2)).append(" ");
@@ -523,18 +522,23 @@ public class DiscussionForum {
             }
             output.append("\n");
         }
-        output = new StringBuilder(output.substring(output.length() - 1));
+        //output = new StringBuilder(output.substring(output.length() - 1));
         System.out.println(output);
+        System.out.println("Check");
     }
 
     public ArrayList<ArrayList<String>> sortUpvotesArray() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;
-        System.out.println(sortedUpvotesArray);
-        for (int i = 0; i < sortedUpvotesArray.size() - 1; i++) {
-            if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
-                ArrayList<String> temp = sortedUpvotesArray.get(i);
-                sortedUpvotesArray.set(i, sortedUpvotesArray.get(i + 1));
-                sortedUpvotesArray.set(i + 1, temp);
+        boolean swapped = true;
+        while(swapped) {
+            swapped = false;
+            for (int i = 0; i < sortedUpvotesArray.size() - 1; i++) {
+                if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
+                    ArrayList<String> temp = sortedUpvotesArray.get(i);
+                    sortedUpvotesArray.set(i, sortedUpvotesArray.get(i + 1));
+                    sortedUpvotesArray.set(i + 1, temp);
+                    swapped = true;
+                }
             }
         }
         return sortedUpvotesArray;
