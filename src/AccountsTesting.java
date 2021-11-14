@@ -22,7 +22,9 @@ public class AccountsTesting {
     } catch(FileNotFoundException e) {
     	System.out.println("File Not Found");
     }
-
+    
+    //readFile() method
+    studentOne.readFile();
 
     //main method in Accounts that tests full functionality of the project
     //Tests capabilities of the program to create, login, and logout of an account
