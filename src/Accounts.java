@@ -209,32 +209,30 @@ public class Accounts {
             try {
                 System.out.println(initialPrompt);
                 option = scan.nextInt();
-            } catch (Exception e) {
-                System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
-                option = 0;
                 scan.nextLine();
-                continue;
-            }
-            if (option < 1 || option > 4) {
-                System.out.println("You entered an invalid option. Please enter a number between 1 and 4.");
-            } else {
-                switch(option) {
-                	case 1 -> {
-                		int accountCheck = securityCheck(scan);
-                		Main main;
-                        if (accountCheck == 1) {
-                        	findAccount(username);
-                            main = new Main(username, firstName, lastName, true);
-                            main.accountMainMethod();
-                        } else if (accountCheck == 2) {
-                        	findAccount(username);
-                        	main = new Main(username, firstName, lastName, false);
-                        	main.accountMainMethod();
+                if (option < 1 || option > 4) {
+                    System.out.println("You entered an invalid option. Please enter a number between 1 and 4.");
+                } else {
+                    switch(option) {
+                        case 1 -> {
+                            int accountCheck = securityCheck(scan);
+                            Main main;
+                            if (accountCheck == 1) {
+                                findAccount(username);
+                                main = new Main(username, firstName, lastName, true);
+                                main.accountMainMethod();
+                            } else if (accountCheck == 2) {
+                                findAccount(username);
+                                main = new Main(username, firstName, lastName, false);
+                                main.accountMainMethod();
+                            }
                         }
+                        case 2 -> getNewAccountDetails(scan);
+                        case 3 -> deleteAccount(scan);
                     }
-                    case 2 -> getNewAccountDetails(scan);
-                    case 3 -> deleteAccount(scan);
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
             }
         }
         scan.close();
