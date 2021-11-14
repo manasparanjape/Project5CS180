@@ -209,7 +209,6 @@ public class Accounts {
             try {
                 System.out.println(initialPrompt);
                 option = scan.nextInt();
-                scan.nextLine();
                 if (option < 1 || option > 4) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 4.");
                 } else {
@@ -233,6 +232,8 @@ public class Accounts {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
+                option = 0;
+                scan.nextLine();
             }
         }
         scan.close();
