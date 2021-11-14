@@ -36,7 +36,7 @@ public class Main {
         		System.out.println(teacherAccountEnteredPrompt);
         		option = scan.nextInt();
         	} catch (Exception e) {
-        		System.out.println("Please enter a valid number!");
+        		System.out.println("You did not input an integer. Please input a number between 1 and 3.");
         		option = 0;
         		scan.nextLine();
         		continue;

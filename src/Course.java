@@ -18,10 +18,6 @@ public class Course {
     private final String lastName;
     private final String discussionBoardsListFileName;
     private DiscussionForum discussionForum;
-    private final static String tryAgainPrompt = """
-            Error Occurred! Do you want to try again?
-            1. Yes
-            2. No""";
     private final static String newForumNamePrompt = "What would you like to name the new discussion forum?";
     private final static String newForumCreated = "New forum has been created!";
     private final static String deleteForumPrompt = "Which forum would you like to delete?";
@@ -59,6 +55,9 @@ public class Course {
         }
         output = new StringBuilder(output.substring(0, output.length() - 1));
         System.out.println(output);
+        if (output.isEmpty()) {
+            System.out.println("No courses created yet.");
+        }
     }
 
     public Course(String courseName, String username, String firstName, String lastName, DiscussionForum discussionForum, String discussionBoardsListFileName /*String discussionsPointsFileName*/) {
@@ -99,12 +98,13 @@ public class Course {
         File f = new File(discussionBoardsListFileName);
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> output = new ArrayList<>();
         String line = bfr.readLine();
-        //line = bfr.readLine();
         while (line != null) {
-            forumList.add(line);
+            output.add(line);
             line = bfr.readLine();
         }
+        forumList = output;
     }
 
     public boolean discussionForumExists(String forumName) {
@@ -123,6 +123,7 @@ public class Course {
         	try {
         		System.out.println(methodOfNewForumPrompt);
         		option = scan.nextInt();
+                scan.nextLine();
         		String newForumName = "";
         		if (option == 1) {
         			System.out.println(newForumNamePrompt);
@@ -170,40 +171,38 @@ public class Course {
 
     public void deleteForum() throws Exception {
         Scanner scan = new Scanner(System.in);
-        boolean loop = false;
-        do {
-            System.out.println(deleteForumPrompt);
-            String toDeleteForum = scan.nextLine();
-            if (toDeleteForum == null || !discussionForumExists(toDeleteForum)) {
-                int tryAgain = -1;
-                do {
-                    loop = false;
-                    System.out.println(tryAgainPrompt);
-                    try {
-                    	tryAgain = scan.nextInt();
-                    } catch (Exception e) {
-                    	System.out.println("Please enter a valid number!");
-                    	scan.nextLine();
-                    	tryAgain = -1;
-                    	continue;
-                    }
-                    if (tryAgain == 1) {
-                        loop = true;
-                    }
-                } while (tryAgain != 1 && tryAgain != 2);   //there might be an error with this line, need to double check
+        System.out.println(deleteForumPrompt);
+        String toDeleteForum = scan.nextLine();
+        if (toDeleteForum == null || !discussionForumExists(toDeleteForum)) {
+            if (!discussionForumExists(toDeleteForum)) {
+                System.out.println("The discussion forum you entered does not exist.");
             } else {
-                FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName);
-                PrintWriter pw = new PrintWriter(fos);
-                forumList.remove(toDeleteForum);
-                File f = new File(courseName + "-" + toDeleteForum + "-messages" + ".txt");
+                System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
+            }
+        } else {
+            forumList.remove(toDeleteForum);
+            File f = new File(courseName + "-" + toDeleteForum + "-messages" + ".txt");
+            if (f.delete()) {
+                f = new File(courseName + "-" + toDeleteForum + "-points" + ".txt");
                 if (f.delete()) {
-                    f = new File(courseName + "-" + toDeleteForum + "-points" + ".txt");
+                    f = new File(courseName + "-" + toDeleteForum + "-upvotes" + ".txt");
                     if (f.delete()) {
-                        System.out.println(forumDeleted);
+                        FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName, false);
+                        PrintWriter pw = new PrintWriter(fos);
+                        StringBuilder output = new StringBuilder();
+                        for (String s : forumList) {
+                            output.append(s).append("\n");
+                        }
+                        if (output.length() > 0) {
+                            output = new StringBuilder(output.substring(0, output.length() - 1));
+                        }
+                        pw.println(output);
+                        pw.close();
                     }
+                    System.out.println(forumDeleted);
                 }
             }
-        } while (loop);
+        }
     }
 
     public void viewPoints() throws IOException {
@@ -277,6 +276,7 @@ public class Course {
         	try {
         		System.out.println(discussionForumEnteredStudentPrompt);
         		option = scan.nextInt();
+                scan.nextLine();
         	} catch (Exception e) {
         		System.out.println("Please enter a valid number!");
         		option = 0;
@@ -302,6 +302,7 @@ public class Course {
         	try {
         		System.out.println(discussionForumEnteredTeacherPrompt);
         		option = scan.nextInt();
+                scan.nextLine();
         		if (option < 1 || option > 7) {
         			System.out.println("You entered an invalid number. Please enter a number between 1 and 6.");
         		} else {

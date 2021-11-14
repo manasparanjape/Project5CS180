@@ -38,17 +38,22 @@ public class Teacher {
         }
         output = new StringBuilder(output.substring(0, output.length() - 1));
         System.out.println(output);
+        if (output.isEmpty()) {
+            System.out.println("No courses created yet.");
+        }
     }
 
     public void readCourseListsFile() throws IOException {
         File f = new File(coursesListFileName);
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> output = new ArrayList<>();
         String line = bfr.readLine();
         while (line != null) {
-            courseList.add(line);
+            output.add(line);
             line = bfr.readLine();
         }
+        courseList = output;
     }
 
     public boolean courseExists(String courseName) throws IOException {
@@ -106,7 +111,7 @@ public class Teacher {
         		System.out.println(courseEnteredPrompt);
         		option = scan.nextInt();
         	} catch (Exception e) {
-        		System.out.println("Please enter a valid number!");
+        		System.out.println("You did not input an integer. Please input an integer between 1 and 5.");
         		option = 0;
         		scan.nextLine();
         		continue;

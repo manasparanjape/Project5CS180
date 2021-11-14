@@ -35,6 +35,9 @@ public class Student {
         }
         output = new StringBuilder(output.substring(0, output.length() - 1));
         System.out.println(output);
+        if (output.isEmpty()) {
+            System.out.println("No courses created yet.");
+        }
     }
 
     public void readCourseListsFile() throws IOException {
@@ -79,8 +82,9 @@ public class Student {
         	try {
         		System.out.println(courseEnteredPrompt);
         		option = scan.nextInt();
+                scan.nextLine();
         	} catch (Exception e) {
-        		System.out.println("Please enter a valid number!");
+        		System.out.println("You did not input an integer. Please input an integer between 1 and 3.");
         		option = 0;
         		scan.nextLine();
         		continue;

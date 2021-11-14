@@ -202,6 +202,7 @@ public class DiscussionForum {
             System.out.println(methodOfNewPostPrompt);
             try {
             	option = scan.nextInt();
+                scan.nextLine();
             } catch (Exception e) {
             	System.out.println("Please enter a valid number!");
             	option = 0;
@@ -250,15 +251,14 @@ public class DiscussionForum {
         Scanner scan = new Scanner(System.in);
         int replyNumber = -1;
         boolean cancelled = false;
-        while (replyNumber == -1) {
-        	try {
-        		System.out.println(replyNumberPrompt);
-        		replyNumber = scan.nextInt();
-        	} catch (Exception e) {
-        		System.out.println("Please enter a vlid number");
-                scan.nextLine();
-                replyNumber = -1;
-        	}
+        try {
+            System.out.println(replyNumberPrompt);
+            replyNumber = scan.nextInt();
+            scan.nextLine();
+        } catch (Exception e) {
+            System.out.println("You did not enter an integer. Please enter a valid integer between 1 and " + messagesArray.size() + ".");
+            scan.nextLine();
+            replyNumber = -1;
         }
         if (replyNumber < 0 || replyNumber > messagesArray.size()) {
             System.out.println("You entered an invalid number. Please enter a valid message number between 1 and " + messagesArray.size() + ".");
@@ -269,6 +269,7 @@ public class DiscussionForum {
             	try {
             		System.out.println(methodOfNewReplyPrompt);
             		option = scan.nextInt();
+                    scan.nextLine();
             	} catch (Exception e) {
             		System.out.println("Please enter a valid number!");
                     scan.nextLine();
@@ -307,29 +308,20 @@ public class DiscussionForum {
                         cancelled = true;
                     }
                 }
-                /*ArrayList<String> newPostPointsArray = new ArrayList<>(4);
-                newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
-                newPostPointsArray.set(1, newPost);
-                newPostPointsArray.set(2, fullName);
-                newPostPointsArray.set(3, "0");
-                sortedUpvotesArray.add(newPostPointsArray);
-                newPostArray.set(7, Integer.toString(messagesArray.size()));*/
             }
         }
     }
 
     public void upvote() throws Exception {
         Scanner scan = new Scanner(System.in);
-        int messageNumber = -631469;
-        while (messageNumber == -631469) {
-        	try {
-        		System.out.println(upvotePrompt);
-        		messageNumber = scan.nextInt();
-        	} catch (Exception e) {
-        		System.out.println("Please enter a vlid number!");
-        		messageNumber = -631469;
-        		scan.nextLine();		
-        	}
+        int messageNumber = 0;
+        try {
+            System.out.println(upvotePrompt);
+            messageNumber = scan.nextInt();
+            scan.nextLine();
+        } catch (Exception e) {
+            System.out.println("You did not input an integer. Please input an integer between 1 and " + messagesArray.size() + ".");
+            scan.nextLine();
         }
         if (messageNumber < 0 || messageNumber > messagesArray.size()) {
             if (checkAlreadyUpvoted(messageNumber)) {
@@ -480,16 +472,15 @@ public class DiscussionForum {
             System.out.println("The student username you entered does not exist!");
         } else {
             printSpecificStudentMessages(studentUsername);
-            int points = -1;
-            while (points < 0) {
-            	try {
-            		System.out.println(gradingStudentPrompt);
-            		points = scan.nextInt();
-            	} catch (Exception e) {
-            		System.out.println("Please enter a valid number!");
-            		points = -1;
-            		scan.nextLine();
-            	}
+            int points = 0;
+            try {
+                System.out.println(gradingStudentPrompt);
+                points = scan.nextInt();
+                scan.nextLine();
+            } catch (Exception e) {
+                System.out.println("Please enter a valid number!");
+                points = 0;
+                scan.nextLine();
             }
             ArrayList<String> output = new ArrayList<>();
             output.add(studentUsername);
