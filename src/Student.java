@@ -18,7 +18,7 @@ public class Student {
             1) Open discussion forum
             2) View points
             3) Exit course""";
-    private ArrayList<String> courseList = new ArrayList<>();
+    private final ArrayList<String> courseList = new ArrayList<>();
 
     public Student(String username, String firstName, String lastName, Course course, String coursesListFileName) {
         this.username = username;
@@ -52,7 +52,7 @@ public class Student {
     }
 
     public boolean courseExists(String courseName) {
-        if (courseList == null) {
+        if (courseList.isEmpty()) {
             return false;
         } else {
             return courseList.contains(courseName);

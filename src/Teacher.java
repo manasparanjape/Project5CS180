@@ -12,10 +12,6 @@ public class Teacher {
     private final static String newCourseNamePrompt = "What would you like to name the new course?";
     private final static String newCourseCreated = "New course has been created!";
     private final static String courseSelectionPrompt = "Which course would you like to open?";
-    private final static String tryAgainPrompt = """
-            Error Occurred! Do you want to try again?
-            1. Yes
-            2. No""";
     private final static String courseEnteredPrompt = """
             Please enter the option number of what you want to do.
             1) Open discussion forum

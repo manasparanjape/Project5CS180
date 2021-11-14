@@ -115,7 +115,7 @@ public class Course {
         }
     }
 
-    public void createForum() throws Exception {
+    public void createForum() {
         Scanner scan = new Scanner(System.in);
         boolean cancelled = false;
         int option = 0;
@@ -295,7 +295,7 @@ public class Course {
         }
     }
 
-    public void showDiscussionForumMainMethodTeacher() throws Exception {
+    public void showDiscussionForumMainMethodTeacher() {
         Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 7) {

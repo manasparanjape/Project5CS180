@@ -237,18 +237,12 @@ public class DiscussionForum {
                     cancelled = true;
                 }
             }
-            /* ArrayList<String> newPostPointsArray = new ArrayList<>(4);
-            newPostPointsArray.set(0, Integer.toString(sortedUpvotesArray.size() + 1));
-            newPostPointsArray.set(1, newPost);
-            newPostPointsArray.set(2, fullName);
-            newPostPointsArray.set(3, "0");
-            sortedUpvotesArray.add(newPostPointsArray);*/
         }
     }
 
     public void replyToPost() throws Exception {
         Scanner scan = new Scanner(System.in);
-        int replyNumber = -1;
+        int replyNumber = 0;
         boolean cancelled = false;
         try {
             System.out.println(replyNumberPrompt);
@@ -257,7 +251,6 @@ public class DiscussionForum {
         } catch (Exception e) {
             System.out.println("You did not enter an integer. Please enter a valid integer between 1 and " + messagesArray.size() + ".");
             scan.nextLine();
-            replyNumber = -1;
         }
         if (replyNumber < 0 || replyNumber > messagesArray.size()) {
             System.out.println("You entered an invalid number. Please enter a valid message number between 1 and " + messagesArray.size() + ".");
@@ -471,7 +464,7 @@ public class DiscussionForum {
             System.out.println("The student username you entered does not exist!");
         } else {
             printSpecificStudentMessages(studentUsername);
-            int points = 0;
+            int points;
             try {
                 System.out.println(gradingStudentPrompt);
                 points = scan.nextInt();

@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
@@ -50,7 +49,6 @@ public class Main {
                 }
             }
         }
-        //scan.close();
     }
 
     public void studentMainMethod() throws Exception {
@@ -75,7 +73,6 @@ public class Main {
                 }
             }
         }
-        //scan.close();
     }
 
     public void accountMainMethod() throws Exception {

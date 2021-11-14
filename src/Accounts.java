@@ -34,11 +34,11 @@ public class Accounts {
     static ArrayList<ArrayList<String>> accountDetailsArray = null;
 
     public Accounts(String username, String password, String firstName, String lastName, boolean ifTeacher) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.ifTeacher = ifTeacher;
+        Accounts.username = username;
+        Accounts.password = password;
+        Accounts.firstName = firstName;
+        Accounts.lastName = lastName;
+        Accounts.ifTeacher = ifTeacher;
     }
 
     public static String convertToString() {
