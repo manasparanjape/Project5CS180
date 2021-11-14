@@ -102,8 +102,15 @@ public class Teacher {
         Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 4) {
-            System.out.println(courseEnteredPrompt);
-            option = scan.nextInt();
+            try {
+        		System.out.println(courseEnteredPrompt);
+        		option = scan.nextInt();
+        	} catch (Exception e) {
+        		System.out.println("Please enter a valid number!");
+        		option = 0;
+        		scan.nextLine();
+        		continue;
+        	}
             if (option < 1 || option > 4) {
                 System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
             } else {
