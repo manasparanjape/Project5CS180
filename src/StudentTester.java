@@ -2,7 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class studentTester {
+public class StudentTester {
   
   public static void main(String[] args) throws Exception {
     
