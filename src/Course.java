@@ -120,45 +120,50 @@ public class Course {
         boolean cancelled = false;
         int option = 0;
         while (option != 3 && !cancelled) {
-            System.out.println(methodOfNewForumPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
-            String newForumName = "";
-            if (option == 1) {
-                System.out.println(newForumNamePrompt);
-                newForumName = scan.nextLine();
-            } else if (option == 2) {
-                newForumName = readNewForumFile();
-            } else if (option != 3) {
-                System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
-            }
-            if (option == 1 || option == 2) {
-                if (newForumName == null || newForumName.isBlank()) {
-                    System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
-                } else if (discussionForumExists(newForumName)) {
-                    System.out.println("A discussion forum with that name already exists in this course.");
-                } else {
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-                    forumList.add(newForumName);
-                    FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", true);
-                    PrintWriter pw = new PrintWriter(fos);
-                    pw.println(newForumName + "---" + LocalDateTime.now().format(format));
-                    pw.close();
-                    fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
-                    pw = new PrintWriter(fos);
-                    pw.println("");
-                    pw.close();
-                    fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
-                    pw = new PrintWriter(fos);
-                    pw.println("");
-                    pw.close();
-                    fos = new FileOutputStream(discussionBoardsListFileName, true);
-                    pw = new PrintWriter(fos);
-                    pw.println(newForumName);
-                    System.out.println(newForumCreated);
-                    pw.close();
-                    cancelled = true;
-                }
+        	try {
+        		System.out.println(methodOfNewForumPrompt);
+        		option = scan.nextInt();
+        		String newForumName = "";
+        		if (option == 1) {
+        			System.out.println(newForumNamePrompt);
+            	   newForumName = scan.nextLine();
+        		} else if (option == 2) {
+        			newForumName = readNewForumFile();
+        		} else if (option != 3) {
+        			System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
+        		}
+        		if (option == 1 || option == 2) {
+        			if (newForumName == null || newForumName.isBlank()) {
+        				System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
+        			} else if (discussionForumExists(newForumName)) {
+        				System.out.println("A discussion forum with that name already exists in this course.");
+        			} else {
+        				DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+        				forumList.add(newForumName);
+        				FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + "-messages" + ".txt", true);
+        				PrintWriter pw = new PrintWriter(fos);
+        				pw.println(newForumName + "---" + LocalDateTime.now().format(format));
+        				pw.close();
+        				fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
+        				pw = new PrintWriter(fos);
+                    	pw.println("");
+                    	pw.close();
+                    	fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
+                    	pw = new PrintWriter(fos);
+                    	pw.println("");
+                    	pw.close();
+                    	fos = new FileOutputStream(discussionBoardsListFileName, true);
+                    	pw = new PrintWriter(fos);
+                    	pw.println(newForumName);
+                    	System.out.println(newForumCreated);
+                    	pw.close();
+                    	cancelled = true;
+        			}
+        		} 
+        	} catch (Exception e) {
+        		System.out.println("Please enter a valid number!");
+        		option = 0;
+        		scan.nextLine();
             }
         }
     }
@@ -170,16 +175,22 @@ public class Course {
             System.out.println(deleteForumPrompt);
             String toDeleteForum = scan.nextLine();
             if (toDeleteForum == null || !discussionForumExists(toDeleteForum)) {
-                int tryAgain;
+                int tryAgain = -1;
                 do {
                     loop = false;
                     System.out.println(tryAgainPrompt);
-                    tryAgain = scan.nextInt();
-                    scan.nextLine();
+                    try {
+                    	tryAgain = scan.nextInt();
+                    } catch (Exception e) {
+                    	System.out.println("Please enter a valid number!");
+                    	scan.nextLine();
+                    	tryAgain = -1;
+                    	continue;
+                    }
                     if (tryAgain == 1) {
                         loop = true;
                     }
-                } while (tryAgain != 1 && tryAgain != 2);
+                } while (tryAgain != 1 && tryAgain != 2);   //there might be an error with this line, need to double check
             } else {
                 FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName);
                 PrintWriter pw = new PrintWriter(fos);
@@ -263,9 +274,14 @@ public class Course {
         Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 5) {
-            System.out.println(discussionForumEnteredStudentPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
+        	try {
+        		System.out.println(discussionForumEnteredStudentPrompt);
+        		option = scan.nextInt();
+        	} catch (Exception e) {
+        		System.out.println("Please enter a valid number!");
+        		option = 0;
+        		scan.nextLine();
+        	}
             if (option < 1 || option > 5) {
                 System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
             } else {
@@ -283,21 +299,27 @@ public class Course {
         Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 7) {
-            System.out.println(discussionForumEnteredTeacherPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
-            if (option < 1 || option > 7) {
-                System.out.println("You entered an invalid number. Please enter a number between 1 and 6.");
-            } else {
-                switch (option) {
-                    case 1 -> discussionForum.printMessages();
-                    case 2 -> discussionForum.postMessage();
-                    case 3 -> discussionForum.replyToPost();
-                    case 4 -> discussionForum.responseGrading();
-                    case 5 -> discussionForum.changeTopic();
-                    case 6 -> discussionForum.showDashboard();
-                }
-            }
+        	try {
+        		System.out.println(discussionForumEnteredTeacherPrompt);
+        		option = scan.nextInt();
+        		if (option < 1 || option > 7) {
+        			System.out.println("You entered an invalid number. Please enter a number between 1 and 6.");
+        		} else {
+        			switch (option) {
+                    	case 1 -> discussionForum.printMessages();
+                    	case 2 -> discussionForum.postMessage();
+                    	case 3 -> discussionForum.replyToPost();
+                    	case 4 -> discussionForum.responseGrading();
+                    	case 5 -> discussionForum.changeTopic();
+                    	case 6 -> discussionForum.showDashboard();
+        			}
+        		}
+        	} catch (Exception e) {
+        		System.out.println("Please enter a valid number");
+        		scan.nextLine();
+        		option = 0;
+        		
+        	}
         }
     }
 }
