@@ -25,10 +25,15 @@ public class AccountsTesting {
     
     //readFile() method
     studentOne.readFile();
+    
+    //checks if username is available
+    System.out.println(studentOne.checkUsernameAvailability("Billy23"));
 
+    
     //main method in Accounts that tests full functionality of the project
     //Tests capabilities of the program to create, login, and logout of an account
     //Tests whether students can open courses and view forums and points. 
+    //Tests methods that require all five classes to work together
     Accounts.main(args);
     
     
