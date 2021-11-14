@@ -32,9 +32,15 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 3) {
-            System.out.println(teacherAccountEnteredPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
+        	try {
+        		System.out.println(teacherAccountEnteredPrompt);
+        		option = scan.nextInt();
+        	} catch (Exception e) {
+        		System.out.println("Please enter a valid number!");
+        		option = 0;
+        		scan.nextLine();
+        		continue;
+        	}
             if (option < 1 || option > 3) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             } else {
@@ -52,9 +58,15 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 2) {
-            System.out.println(studentAccountEnteredPrompt);
-            option = scan.nextInt();
-            scan.nextLine();
+        	try {
+                System.out.println(studentAccountEnteredPrompt);
+        		option = scan.nextInt();
+        	} catch (Exception e) {
+        		System.out.println("Please enter a valid number!");
+        		option = 0;
+        		scan.nextLine();
+        		continue;
+        	}
             if (option < 1 || option > 2) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 2.");
             } else {
