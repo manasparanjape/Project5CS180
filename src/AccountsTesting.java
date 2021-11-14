@@ -29,6 +29,8 @@ public class AccountsTesting {
     } else {
       System.out.println(false);
     }
+    //successfully created if true
+    
     //Testing covertToString method in Accounts.java
     String teacherString = teacherOne.convertToString();
     System.out.println(studentString.equals("Ms.Paul---skooliskool---Mary---Paul---teacher"));
