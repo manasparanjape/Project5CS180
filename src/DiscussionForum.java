@@ -471,6 +471,7 @@ public class DiscussionForum {
         FileOutputStream fos = new FileOutputStream(pointsFileName, false);
         PrintWriter pw = new PrintWriter(fos);
         StringBuilder toWrite = new StringBuilder();
+        System.out.println(pointsArray);
         for (ArrayList<String> strings : pointsArray) {
             toWrite.append(strings.get(0)).append("---").append(strings.get(1)).append("\n");
         }

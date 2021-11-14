@@ -28,6 +28,15 @@ public class Student {
         this.coursesListFileName = coursesListFileName;
     }
 
+    public void printCourseList() {
+        StringBuilder output = new StringBuilder();
+        for (String s : courseList) {
+            output.append(s).append("\n");
+        }
+        output = new StringBuilder(output.substring(0, output.length() - 1));
+        System.out.println(output);
+    }
+
     public void readCourseListsFile() throws IOException {
         File f = new File(coursesListFileName);
         FileReader fr = new FileReader(f);
@@ -50,6 +59,7 @@ public class Student {
     public void openCourse() throws Exception {
         Scanner scan = new Scanner(System.in);
         readCourseListsFile();
+        printCourseList();
         System.out.println(courseSelectionPrompt);
         String selectedCourse = scan.nextLine();
         if (selectedCourse == null || !courseExists(selectedCourse)) {

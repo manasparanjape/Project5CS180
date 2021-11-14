@@ -17,7 +17,6 @@ public class Course {
     private final String firstName;
     private final String lastName;
     private final String discussionBoardsListFileName;
-    //private final String discussionsPointsFileName;
     private DiscussionForum discussionForum;
     private final static String tryAgainPrompt = """
             Error Occurred! Do you want to try again?
@@ -52,6 +51,15 @@ public class Course {
             3) Cancel.""";
 
     private ArrayList<String> forumList = new ArrayList<>();
+
+    public void printForumList() {
+        StringBuilder output = new StringBuilder();
+        for (String s : forumList) {
+            output.append(s).append("\n");
+        }
+        output = new StringBuilder(output.substring(0, output.length() - 1));
+        System.out.println(output);
+    }
 
     public Course(String courseName, String username, String firstName, String lastName, DiscussionForum discussionForum, String discussionBoardsListFileName /*String discussionsPointsFileName*/) {
         this.courseName = courseName;
@@ -214,6 +222,7 @@ public class Course {
     public void studentDiscussionForumOpened() throws Exception {
         Scanner scan = new Scanner(System.in);
         readForumListFile();
+        printForumList();
         System.out.println(forumSelectionPrompt);
         String selectedForum = scan.nextLine();
         if (selectedForum == null || !discussionForumExists(selectedForum)) {
@@ -233,6 +242,7 @@ public class Course {
     public void teacherDiscussionForumOpened() throws Exception {
         Scanner scan = new Scanner(System.in);
         readForumListFile();
+        printForumList();
         System.out.println(forumSelectionPrompt);
         String selectedForum = scan.nextLine();
         if (selectedForum == null || !discussionForumExists(selectedForum)) {
@@ -272,11 +282,11 @@ public class Course {
     public void showDiscussionForumMainMethodTeacher() throws Exception {
         Scanner scan = new Scanner(System.in);
         int option = 0;
-        while (option != 6) {
+        while (option != 7) {
             System.out.println(discussionForumEnteredTeacherPrompt);
             option = scan.nextInt();
             scan.nextLine();
-            if (option < 1 || option > 6) {
+            if (option < 1 || option > 7) {
                 System.out.println("You entered an invalid number. Please enter a number between 1 and 6.");
             } else {
                 switch (option) {

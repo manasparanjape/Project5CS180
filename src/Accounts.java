@@ -204,9 +204,9 @@ public class Accounts {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
         int option = 0;
-        try {
-            System.out.println(welcomeMessage);
-            while (option != 4) {
+        System.out.println(welcomeMessage);
+        while (option != 4) {
+            try {
                 System.out.println(initialPrompt);
                 option = scan.nextInt();
                 scan.nextLine();
@@ -231,10 +231,10 @@ public class Accounts {
                         case 3 -> deleteAccount(scan);
                     }
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
             }
-            scan.close();
-        } catch (InputMismatchException e) {
-            System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
         }
+        scan.close();
     }
 }
