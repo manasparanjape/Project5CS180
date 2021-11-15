@@ -34,7 +34,7 @@ public class Account {
         this.ifTeacher = ifTeacher;
         this.scan = scan;
     }
-
+    //gives the teacher three options: create course, open course, or exit
     public void teacherMainMethod() throws Exception {
         teacher = new Teacher(username, firstName, lastName, null, scan);
         int option = 0;
@@ -59,7 +59,7 @@ public class Account {
             }
         }
     }
-
+    //gives the student two options: open a course or exit
     public void studentMainMethod() throws Exception {
         student = new Student(username, firstName, lastName, null, "CoursesList.txt", scan);
         int option = 0;
@@ -83,7 +83,7 @@ public class Account {
             }
         }
     }
-
+    //decides which method to run in the main method depending on whether the user is a student or a teacher
     public void accountMainMethod() throws Exception {
         if (ifTeacher) {
             teacherMainMethod();
