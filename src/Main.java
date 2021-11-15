@@ -44,7 +44,7 @@ public class Main {
         Main.lastName = lastName;
         Main.ifTeacher = ifTeacher;
     }
-
+    //creates user info string, with their info separated by "§§§"
     public static String convertToString() {
         String output = username + "§§§";
         output += password + "§§§";
@@ -57,14 +57,14 @@ public class Main {
         }
         return output;
     }
-
+    //writes to file
     public static void writeToFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(accountsFile, true);
         PrintWriter pw = new PrintWriter(fos);
         pw.println(convertToString());
         pw.close();
     }
-
+    //reads file
     public static void readFile() throws IOException {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         File f = new File(accountsFile);
@@ -80,7 +80,7 @@ public class Main {
         bfr.close();
         accountDetailsArray = output;
     }
-
+    //checks if a given username exists
     public static boolean checkUsernameAvailability(String username) throws IOException {
         boolean output = false;
         int i = 0;
@@ -91,7 +91,7 @@ public class Main {
         }
         return output;
     }
-
+    //prompts user to create a new account
     public static void getNewAccountDetails(Scanner scan) throws IOException {
         boolean accountSet;
         accountSet = true;
@@ -138,7 +138,7 @@ public class Main {
             System.out.println(accountCreationSuccess);
         }
     }
-
+    //finds a given account
     public static void findAccount(String username) throws IOException {
         readFile();
         for (ArrayList<String> strings : accountDetailsArray) {
@@ -149,7 +149,7 @@ public class Main {
             }
         }
     }
-
+    //checks whether or not username and password match with what is stored in Accounts.txt file
     public static int securityCheck(Scanner scan) throws IOException {
         int output = 0;
         System.out.println(usernamePrompt);
@@ -182,7 +182,7 @@ public class Main {
         }
         return output;
     }
-
+    //deletes the users account
     public static void deleteAccount(Scanner scan) throws IOException {
         boolean accountVerification = (securityCheck(scan) != 0);
         StringBuilder toWrite = new StringBuilder();
@@ -213,7 +213,7 @@ public class Main {
             System.out.println(accountDeletionSuccess);
         }
     }
-
+    //allows users to access, create, or delete their account
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
         int option = 0;
