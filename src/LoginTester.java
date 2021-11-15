@@ -220,6 +220,36 @@ public class LoginTester {
     4) Exit
     [4]    
     */
+    //Test: trying to create account with already active username
+    /*
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [2]
+    Set a new username:
+    All usernames are case insensitive.
+    [SachinP]
+    Set a new password:
+    [ps091]
+    Enter your first name:
+    [Sachin]
+    Enter your last name:
+    [Poop]
+    Are you a teacher or a student?
+    1. Teacher
+    2. Student
+    [2]
+    The username you entered is unavailable.
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [4]
+    */
+
 
     
   }
