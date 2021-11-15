@@ -23,7 +23,8 @@ public class Main {
     private static String lastName;
     private static boolean ifTeacher;
     private final static String welcomeMessage = "Welcome! ";
-    private final static String initialPrompt = "What would you like to do today?\n1) Login to my account\n2) Create new account\n3) Delete my account\n4) Exit";
+    private final static String initialPrompt = "What would you like to do today?\n1) Login to my account\n2)"
+            + " Create new account\n3) Delete my account\n4) Exit";
     private final static String usernamePrompt = "Please enter your username.";
     private final static String passwordPrompt = "Please enter your password";
     private final static String setUsernamePrompt = "Set a new username:";
@@ -45,10 +46,10 @@ public class Main {
     }
 
     public static String convertToString() {
-        String output = username + "---";
-        output += password + "---";
-        output += firstName + "---";
-        output += lastName + "---";
+        String output = username + "§§§";
+        output += password + "§§§";
+        output += firstName + "§§§";
+        output += lastName + "§§§";
         if (ifTeacher) {
             output += "teacher";
         } else {
@@ -71,7 +72,7 @@ public class Main {
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -189,7 +190,7 @@ public class Main {
             for (ArrayList<String> strings : accountDetailsArray) {
                 if (!strings.get(0).equals(username)) {
                     for (int j = 0; j < 5; j++) {
-                        toWrite.append(strings.get(j)).append("---");
+                        toWrite.append(strings.get(j)).append("§§§");
                     }
                     toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 3));
                     toWrite.append("\n");
@@ -239,8 +240,8 @@ public class Main {
                                 account.accountMainMethod();
                             }
                         }
-                        case 2 -> getNewAccountDetails(scan);
-                        case 3 -> deleteAccount(scan);
+                        case 2 -> getNewAccountDetails(scan); 
+                        case 3 -> deleteAccount(scan); 
                     }
                 }
             } catch (InputMismatchException e) {
