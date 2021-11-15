@@ -29,7 +29,7 @@ public class StudentTester {
     
     //Testing covertToString method in Main.java
     String studentString = studentOne.convertToString();
-    System.out.println(studentString.equals("Billy23---B1L@#---Billy---Smith---student"));
+    System.out.println(studentString.equals("Billy23§§§B1L@#§§§Billy§§§Smith§§§student"));
     //returns true if method matches expected output
     
     //check if writeToFile method returns a FileNotFoundException
