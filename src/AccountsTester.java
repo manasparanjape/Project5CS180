@@ -81,9 +81,7 @@ public class AccountsTester {
     4) Exit
     [4]
     */
-    
-    
-    
+
     //Tests if Teachers can create, edit, and delete forums
     //tests if Teachers can reply to student responses.
     Accounts.main(args);
