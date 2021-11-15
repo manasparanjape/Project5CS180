@@ -165,6 +165,28 @@ public class LoginTester {
     4) Exit
     [4]
     */
+    //Test: Delete an account
+    /*
+    Welcome!
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [3]
+    Please enter your username.
+    [SachinP]
+    Please enter your password
+    [sp!2]
+    Your account has been deleted
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [4]
+    */
+    
     
     //Error Tests
     //Test: Input string instead of integer and input integer out of bounds
