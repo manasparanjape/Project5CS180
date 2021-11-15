@@ -26,7 +26,7 @@ public class TeacherTester {
     
     //Testing covertToString method in Main.java
     String teacherString = teacherOne.convertToString();
-    System.out.println(teacherString.equals("Ms.Paul---skooliskool---Mary---Paul---teacher"));
+    System.out.println(teacherString.equals("Ms.Paul§§§skooliskool§§§Mary§§§Paul§§§teacher"));
     //returns true if method matches expected output
     
     //check if writeToFile method returns a FileNotFoundException
