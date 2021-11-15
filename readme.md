@@ -140,66 +140,64 @@
         - checks if the given username exists already or not
         - if the given username is found, this method returns false, else true
       - responseGrading
-receives student username from user, and iterates through points array to find the given username
-once found, method prints the students messages and student receives a grade for that message
-adds the new information to the points array and updates the points file
-writeToPointsFile
-prints the information in the points array to the points file by using a delimiter of  “§§§”
-showDashboard
-displays the messages when they are sorted in order by highest upvote to lowest upvote
-sortUpvotesArray
-Sorts the arraylists by comparing the number of upvotes each message has received
-uses .get() method to access the number of upvotes
-uses a simple sorting algorithm
-assigning values to a temporary variable and switching the order of the messages if the previous message has more upvotes than the subsequent message
-Course
-Includes various methods which allow a student and teacher to interact with discussion forums
-Methods:
-readNewForumFile
-takes input from the user for the file destination
-reads the file and appends it to a StringBuilder object called output
-
-
-readForumListFile
-reads all the lines in the discussionBoardsListFileName and appends it to an array list called output
-Assigns the output value to an array list called forumList
-discussionForumExists
-checks if the name is non-null and then checks if the forumList array list contains the forumName
-createForum
-Prompts the user regarding how they want to create the discussion board: enter the name of the forum via terminal or import text file with the forum name
-checks whether the course is non null and if it already exists in the forumList array list
-Adds the forum name to the array and also creates text files with the forum and course name for the messages, points, and upvotes .txt files
-deleteForum
-checks if the file is non-null and if it exists
-if it exists, it deletes all the files associated with that forum: messages, points, and upvotes
-rewrites all the discussion boards file names to the String Builder object called output
-viewPoints
-returns the points for a student for each forum
-opens the points txt file for the corresponding course and searches all the lines for if they contain the username of the given user
-the points for the user are tallied and printed out 
-studentDiscussionForumOpened
-displays a list of discussion forums and asks the user which discussion forum they want to open
-creates a discussion forum object
-calls the showDiscussionForumMainMethodStudent() method
-teacherDiscussionForumOpened
-displays a list of discussion forums and asks the user which discussion forum they want to open
-creates a discussion forum object
-calls the showDiscussionForumMainMethodTeacher() method
-showDiscussionForumMainMethodStudent
-Gives the student 5 choices for action: print messages, post messages, reply to a post, upvote a message, or exit
-showDiscussionForumMainMethodTeacher
-Gives the teacher 7 choices for action: print messages, post messages, reply to a post, grade a response, change the forum topic, show dashboard, or exit
-Account
-The account class gives a list of options for the user, depending on whether the user is a teacher or a student. Teacher can create, open a course or exit the program, and students can either open a course or exit the program
-Methods:
-teacherMainMethod
-gives the teacher three options: create course, open course, or exit
-calls on the createCourse() or openCourse() method accordingly
-studentMainMethod
-gives the student two options: open a course or exit
-calls on the openCourse() method accordingly
-accountMainMethod
-decides which method to run in the main method depending on whether the user is a student or a teacher
+        - receives student username from user, and iterates through points array to find the given username
+        - once found, method prints the students messages and student receives a grade for that message
+        - adds the new information to the points array and updates the points file
+        - writeToPointsFile
+        - prints the information in the points array to the points file by using a delimiter of  “§§§”
+      - showDashboard
+        - displays the messages when they are sorted in order by highest upvote to lowest upvote
+      - sortUpvotesArray
+        - Sorts the arraylists by comparing the number of upvotes each message has received
+        - uses .get() method to access the number of upvotes
+        - uses a simple sorting algorithm
+        - assigning values to a temporary variable and switching the order of the messages if the previous message has more upvotes than the subsequent message
+- Course
+    - Includes various methods which allow a student and teacher to interact with discussion forums
+    - Methods:
+      - readNewForumFile
+        - takes input from the user for the file destination
+        - reads the file and appends it to a StringBuilder object called output
+      - readForumListFile
+        - reads all the lines in the discussionBoardsListFileName and appends it to an array list called output
+        - assigns the output value to an array list called forumList
+      - discussionForumExists
+        - checks if the name is non-null and then checks if the forumList array list contains the forumName
+      - createForum
+        - Prompts the user regarding how they want to create the discussion board: enter the name of the forum via terminal or import text file with the forum name
+        - checks whether the course is non null and if it already exists in the forumList array list
+        - Adds the forum name to the array and also creates text files with the forum and course name for the messages, points, and upvotes .txt files
+      - deleteForum
+        - checks if the file is non-null and if it exists
+        - if it exists, it deletes all the files associated with that forum: messages, points, and upvotes
+        - rewrites all the discussion boards file names to the String Builder object called output
+      - viewPoints
+        - returns the points for a student for each forum
+        - opens the points txt file for the corresponding course and searches all the lines for if they contain the username of the given user
+        - the points for the user are tallied and printed out 
+      - studentDiscussionForumOpened
+        - displays a list of discussion forums and asks the user which discussion forum they want to open
+        - creates a discussion forum object
+        - calls the showDiscussionForumMainMethodStudent() method
+      - teacherDiscussionForumOpened
+        - displays a list of discussion forums and asks the user which discussion forum they want to open
+        - creates a discussion forum object
+        - calls the showDiscussionForumMainMethodTeacher() method
+      - showDiscussionForumMainMethodStudent
+        - Gives the student 5 choices for action: print messages, post messages, reply to a post, upvote a message, or exit
+      - showDiscussionForumMainMethodTeacher
+        - Gives the teacher 7 choices for action: print messages, post messages, reply to a post, grade a response, change the forum topic, show dashboard, or exit
+- Account
+  - The account class gives a list of options for the user, depending on whether the user is a teacher or a student. Teacher can create, open a course or exit the program, and students can either open a course or exit the program
+  - Methods:
+    - teacherMainMethod
+      - gives the teacher three options: create course, open course, or exit
+      - calls on the createCourse() or openCourse() method accordingly
+    - studentMainMethod
+      - gives the student two options: open a course or exit
+      - calls on the openCourse() method accordingly
+    - accountMainMethod
+      - decides which method to run in the main method depending on whether the user is a student or a teacher
 
 
 
