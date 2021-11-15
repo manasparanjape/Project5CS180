@@ -30,18 +30,26 @@ public class DiscussionForum {
     private String forumCreationTime;
     private Scanner scan;
 
-    private final static String newPostPrompt = "What do you want to post?";
-    private final static String replyNumberPrompt = "Which message do you want to reply to? Please enter the message number or 0 if you do not want to upvote any message.";
-    private final static String replyMessagePrompt = "What is your reply?";
-    private final static String upvotePrompt = "Which message do you want to upvote? Please enter the message number or 0 if you do not want to upvote any message.";
-    private final static String topicChangePrompt = "What do you want to change the topic to?";
-    private final static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want to view.";
-    private final static String gradingStudentPrompt = "Please enter the number of point you wish to assign this student.";
-    private final static String methodOfNewPostPrompt = "How do you want to write the new post?\n1) Write the post via terminal line.\n2) Import text file with post in file.\n3) Cancel.";
-    private final static String methodOfNewReplyPrompt = "How do you want to write the new reply?\n1) 1) Write the reply via terminal line.\n2) Import text file with reply in file.\n3) Cancel.";
-    private static final String fileNamePrompt = "Please enter the file name and path of the file which contains the post";
+    private static String newPostPrompt = "What do you want to post?";
+    private static String replyNumberPrompt = "Which message do you want to reply to? " + 
+        "Please enter the message number or 0 if you do not want to upvote any message.";
+    private static String replyMessagePrompt = "What is your reply?";
+    private static String upvotePrompt = "Which message do you want to upvote? " + 
+        "Please enter the message number or 0 if you do not want to upvote any message.";
+    private static String topicChangePrompt = "What do you want to change the topic to?";
+    private static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want"
+            + "to view.";
+    private static String gradingStudentPrompt = "Please enter the number of point you wish to assign this"
+            + " student.";
+    private static String methodOfNewPostPrompt = "How do you want to write the new post?\n" + 
+        "1) Write the post via terminal line.\n2) Import text file with post in file.\n3) Cancel.";
+    private static String methodOfNewReplyPrompt = "How do you want to write the new reply?\n1)" +
+            "1) Write the reply via terminal line.\n2) Import text file with reply in file.\n3) Cancel.";
+    private static String fileNamePrompt = "Please enter the file name and path of the file which contains the "
+            + "post";
 
-    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName, String lastName, String username, String upvotesFile, Scanner scan) {
+    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName,
+                           String lastName, String username, String upvotesFile, Scanner scan) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
@@ -67,9 +75,9 @@ public class DiscussionForum {
             }
             output = new StringBuilder(output.toString().replace("\r\n", " ").replace("\n", " "));
             output = new StringBuilder(output.toString().replace(".", ". "));
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("The file you entered was not found.");
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.out.println("Error parsing contents of the file.");
         }
         return output.toString();
@@ -82,7 +90,7 @@ public class DiscussionForum {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -113,10 +121,10 @@ public class DiscussionForum {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
-        forumCreationTime = line.split("---")[1];
+        forumCreationTime = line.split("§§§")[1];
         line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -165,7 +173,7 @@ public class DiscussionForum {
         for (ArrayList<String> strings : messagesArray) {
             StringBuilder line = new StringBuilder();
             for (int j = 0; j < 8; j++) {
-                line.append(strings.get(j)).append("---");
+                line.append(strings.get(j)).append("§§§");
             }
             line = new StringBuilder(line.substring(0, line.length() - 3));
             output.append(line).append("\n");
@@ -176,7 +184,7 @@ public class DiscussionForum {
     public void writeToMessagesFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(messagesFileName, false);
         PrintWriter pw = new PrintWriter(fos);
-        String toWrite = forumName + "---" + forumCreationTime;
+        String toWrite = forumName + "§§§" + forumCreationTime;
         if (messagesArray.size() > 0) {
             toWrite += "\n" + convertMessagesArrayToFileString();
         }
@@ -190,13 +198,13 @@ public class DiscussionForum {
         while (option != 3 && !cancelled) {
             System.out.println(methodOfNewPostPrompt);
             try {
-            	option = scan.nextInt();
+                option = scan.nextInt();
                 scan.nextLine();
             } catch (Exception e) {
-            	System.out.println("Please enter a valid number!");
-            	option = 0;
-            	scan.nextLine();
-            	continue;
+                System.out.println("Please enter a valid number!");
+                option = 0;
+                scan.nextLine();
+                continue;
             }
             String newPost = "";
             if (option == 1) {
@@ -204,7 +212,7 @@ public class DiscussionForum {
                 newPost = scan.nextLine();
             } else if (option == 2) {
                 newPost = readNewPostFile();
-            } else if (option != 3){
+            } else if (option != 3) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             }
             if (option == 1 || option == 2) {
@@ -238,32 +246,34 @@ public class DiscussionForum {
             replyNumber = scan.nextInt();
             scan.nextLine();
         } catch (Exception e) {
-            System.out.println("You did not enter an integer. Please enter a valid integer between 1 and " + messagesArray.size() + ".");
+            System.out.println("You did not enter an integer. Please enter a valid integer between 1 and "
+                    + messagesArray.size() + ".");
             scan.nextLine();
         }
         if (replyNumber < 0 || replyNumber > messagesArray.size()) {
-            System.out.println("You entered an invalid number. Please enter a valid message number between 1 and " + messagesArray.size() + ".");
+            System.out.println("You entered an invalid number. Please enter a valid message number between 1 and "
+                    + messagesArray.size() + ".");
         }
         if (replyNumber > 0 && replyNumber < messagesArray.size() + 1) {
             int option = 0;
             while (option != 3 && !cancelled) {
-            	try {
-            		System.out.println(methodOfNewReplyPrompt);
-            		option = scan.nextInt();
+                try {
+                    System.out.println(methodOfNewReplyPrompt);
+                    option = scan.nextInt();
                     scan.nextLine();
-            	} catch (Exception e) {
-            		System.out.println("Please enter a valid number!");
+                } catch (Exception e) {
+                    System.out.println("Please enter a valid number!");
                     scan.nextLine();
                     option = 0;
                     continue;
-            	}
+                }
                 String newPost = "";
                 if (option == 1) {
                     System.out.println(replyMessagePrompt);
                     newPost = scan.nextLine();
                 } else if (option == 2) {
                     newPost = readNewPostFile();
-                } else if (option != 3){
+                } else if (option != 3) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
                 }
                 if (option == 1 || option == 2) {
@@ -300,14 +310,16 @@ public class DiscussionForum {
             messageNumber = scan.nextInt();
             scan.nextLine();
         } catch (Exception e) {
-            System.out.println("You did not input an integer. Please input an integer between 1 and " + messagesArray.size() + ".");
+            System.out.println("You did not input an integer. Please input an integer between 1 and "
+                    + messagesArray.size() + ".");
             scan.nextLine();
         }
         if (messageNumber < 0 || messageNumber > messagesArray.size()) {
             if (checkAlreadyUpvoted(messageNumber)) {
                 System.out.println("You already upvoted this message. You can only upvote a message once");
             } else {
-                System.out.println("You entered an invalid option. Please enter a number between 1 and " + messagesArray.size() + ".");
+                System.out.println("You entered an invalid option. Please enter a number between 1 and "
+                        + messagesArray.size() + ".");
             }
         } else {
             if (messageNumber > 0) {
@@ -329,12 +341,6 @@ public class DiscussionForum {
                 writeToMessagesFile();
                 writeToUpvotesFile();
             }
-            /*ArrayList<String> temp = messagesArray.get(messageNumber);
-            int index = sortedUpvotesArray.indexOf(temp);
-            temp = sortedUpvotesArray.get(index);
-            sortUpvotesArray();
-            int newIndex = sortedUpvotesArray.indexOf(temp);
-            messagesArray.set()*/
         }
     }
 
@@ -344,7 +350,7 @@ public class DiscussionForum {
         StringBuilder toWrite = new StringBuilder();
         for (ArrayList<String> strings : upvotesArray) {
             for (String string : strings) {
-                toWrite.append(string).append("---");
+                toWrite.append(string).append("§§§");
             }
             toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 3) + "\n");
         }
@@ -373,7 +379,7 @@ public class DiscussionForum {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -410,7 +416,7 @@ public class DiscussionForum {
         }
     }
 
-    public boolean checkUsernameNonexistence(String username) throws IOException {
+    public boolean checkUsernameNonexistence(String usernameInput) throws IOException {
         ArrayList<ArrayList<String>> accountsArray = new ArrayList<>();
         String accountsFile = "AccountsFile.txt";
         File f = new File(accountsFile);
@@ -418,7 +424,7 @@ public class DiscussionForum {
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             accountsArray.add(singleLine);
             line = bfr.readLine();
@@ -427,7 +433,7 @@ public class DiscussionForum {
         boolean output = false;
         int i = 0;
         while (!output && i < accountsArray.size()) {
-            if (accountsArray.get(i).get(0).equals(username)) {
+            if (accountsArray.get(i).get(0).equals(usernameInput)) {
                 output = true;
             }
             i++;
@@ -478,7 +484,7 @@ public class DiscussionForum {
         StringBuilder toWrite = new StringBuilder();
         System.out.println(pointsArray);
         for (ArrayList<String> strings : pointsArray) {
-            toWrite.append(strings.get(0)).append("---").append(strings.get(1)).append("\n");
+            toWrite.append(strings.get(0)).append("§§§").append(strings.get(1)).append("\n");
         }
         toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
         pw.println(toWrite);
@@ -501,7 +507,6 @@ public class DiscussionForum {
             }
             output.append("\n");
         }
-        //output = new StringBuilder(output.substring(output.length() - 1));
         System.out.println(output);
         System.out.println("Check");
     }
@@ -509,10 +514,11 @@ public class DiscussionForum {
     public ArrayList<ArrayList<String>> sortUpvotesArray() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;
         boolean swapped = true;
-        while(swapped) {
+        while (swapped) {
             swapped = false;
             for (int i = 0; i < sortedUpvotesArray.size() - 1; i++) {
-                if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
+                if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) >
+                        Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
                     ArrayList<String> temp = sortedUpvotesArray.get(i);
                     sortedUpvotesArray.set(i, sortedUpvotesArray.get(i + 1));
                     sortedUpvotesArray.set(i + 1, temp);
