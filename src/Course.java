@@ -56,7 +56,7 @@ public class Course {
             System.out.println(output);
         }
     }
-
+    
     public Course(String courseName, String username, String firstName, String lastName, 
                   DiscussionForum discussionForum, String discussionBoardsListFileName, Scanner scan) {
         this.courseName = courseName;
@@ -67,7 +67,7 @@ public class Course {
         this.discussionBoardsListFileName = discussionBoardsListFileName;
         this.scan = scan;
     }
-
+    //takes input for file location and puts contents onto string
     public String readNewForumFile() {
         StringBuilder output = new StringBuilder();
         try {
@@ -90,7 +90,7 @@ public class Course {
         }
         return output.toString();
     }
-
+    //reads discussionBoardsListFileName and puts onto string
     public void readForumListFile() throws Exception {
         File f = new File(discussionBoardsListFileName);
         FileReader fr = new FileReader(f);
@@ -103,7 +103,7 @@ public class Course {
         }
         forumList = output;
     }
-
+    //checks if the discussion forum exists
     public boolean discussionForumExists(String forumName) {
         if (forumList == null) {
             return false;
@@ -111,7 +111,7 @@ public class Course {
             return forumList.contains(forumName);
         }
     }
-
+    //creates a forum
     public void createForum() {
         boolean cancelled = false;
         int option = 0;
@@ -166,7 +166,7 @@ public class Course {
             }
         }
     }
-
+    //deletes a forum
     public void deleteForum() throws Exception {
         System.out.println(deleteForumPrompt);
         String toDeleteForum = scan.nextLine();
@@ -201,7 +201,7 @@ public class Course {
             System.out.println(forumDeleted);
         }
     }
-
+    //returns points for a student for each forum
     public void viewPoints() throws IOException {
         StringBuilder output = new StringBuilder();
         for (String s : forumList) {
@@ -225,7 +225,7 @@ public class Course {
         }
         System.out.println(output);
     }
-
+    //displays list of discussion forums and asks user to open one
     public void studentDiscussionForumOpened() throws Exception {
         readForumListFile();
         printForumList();
@@ -245,7 +245,7 @@ public class Course {
             showDiscussionForumMainMethodStudent();
         }
     }
-
+       //displays list of discussion forums and asks user to open one
     public void teacherDiscussionForumOpened() throws Exception {
         readForumListFile();
         printForumList();
@@ -265,7 +265,8 @@ public class Course {
             showDiscussionForumMainMethodTeacher();
         }
     }
-
+    //gives students the choice to: print messages, post messages, 
+    //reply to a post, upvote a message, or exit
     public void showDiscussionForumMainMethodStudent() throws Exception {
         int option = 0;
         while (option != 5) {
@@ -290,7 +291,8 @@ public class Course {
             }
         }
     }
-
+    //gives teachers the option to: print messages, post messages, reply to a post
+    //grade a response, change the forum topic, show dashboard, or exit
     public void showDiscussionForumMainMethodTeacher() {
         int option = 0;
         while (option != 7) {
