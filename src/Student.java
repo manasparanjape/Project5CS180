@@ -22,20 +22,18 @@ public class Student {
     private final String lastName;
     private Course course;
     private final String coursesListFileName;
-    private Scanner scan;
 
     private final static String courseSelectionPrompt = "Which course would you like to open?";
     private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1)" 
          + " Open discussion forum\n2) View points\n3) Exit course";
     private final ArrayList<String> courseList = new ArrayList<>();
 
-    public Student(String username, String firstName, String lastName, Course course, String coursesListFileName, Scanner scan) {
+    public Student(String username, String firstName, String lastName, Course course, String coursesListFileName) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
         this.coursesListFileName = coursesListFileName;
-        this.scan = scan;
     }
     //uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
     //prints out course list
@@ -70,7 +68,7 @@ public class Student {
         }
     }
     //checks if user inputted course is present in the courseList array list
-    public void openCourse() throws Exception {
+    public void openCourse(Scanner scan) throws Exception {
         readCourseListsFile();
         printCourseList();
         System.out.println(courseSelectionPrompt);
@@ -79,13 +77,13 @@ public class Student {
             System.out.println("The course you entered does not exist!");
         } else {
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan);
-            course.readForumListFile();
-            openCourseMainMethod();
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
+            course.readForumListFile(scan);
+            openCourseMainMethod(scan);
         }
     }
     //gives the user 2 options: open discussion forum and view points
-    public void openCourseMainMethod() throws Exception {
+    public void openCourseMainMethod(Scanner scan) throws Exception {
         int option = 0;
         while (option != 3) {
         	try {
@@ -102,7 +100,7 @@ public class Student {
                 System.out.println("You entered an invalid number. Please enter a number between 1 and 3.");
             } else {
                 switch (option) {
-                    case 1 -> course.studentDiscussionForumOpened();
+                    case 1 -> course.studentDiscussionForumOpened(scan);
                     case 2 -> course.viewPoints();
                 }
             }

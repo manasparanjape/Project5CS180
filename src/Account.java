@@ -59,7 +59,7 @@ public class Account {
     }
     //gives the student two options: open a course or exit
     public void studentMainMethod(Scanner scan) throws Exception {
-        student = new Student(username, firstName, lastName, null, "CoursesList.txt", scan);
+        student = new Student(username, firstName, lastName, null, "CoursesList.txt");
         int option = 0;
         while (option != 2) {
             try {

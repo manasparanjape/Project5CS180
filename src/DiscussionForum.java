@@ -28,7 +28,6 @@ public class DiscussionForum {
     private ArrayList<ArrayList<String>> pointsArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
     private String forumCreationTime;
-    private Scanner scan;
 
     private static String newPostPrompt = "What do you want to post?";
     private static String replyNumberPrompt = "Which message do you want to reply to? " + 
@@ -49,7 +48,7 @@ public class DiscussionForum {
             + "post";
 
     public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName,
-                           String lastName, String username, String upvotesFile, Scanner scan) {
+                           String lastName, String username, String upvotesFile) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
@@ -57,10 +56,9 @@ public class DiscussionForum {
         this.lastName = lastName;
         this.username = username;
         this.upvotesFile = upvotesFile;
-        this.scan = scan;
     }
     //reads user entered file and returns a string of the contents called output
-    public String readNewPostFile() {
+    public String readNewPostFile(Scanner scan) {
         StringBuilder output = new StringBuilder();
         try {
             System.out.println(fileNamePrompt);
@@ -196,7 +194,7 @@ public class DiscussionForum {
     }
     //posts a message
     //adds that new array to the messages Array
-    public void postMessage() throws Exception {
+    public void postMessage(Scanner scan) throws Exception {
         boolean cancelled = false;
         int option = 0;
         while (option != 3 && !cancelled) {
@@ -215,7 +213,7 @@ public class DiscussionForum {
                 System.out.println(newPostPrompt);
                 newPost = scan.nextLine();
             } else if (option == 2) {
-                newPost = readNewPostFile();
+                newPost = readNewPostFile(scan);
             } else if (option != 3) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             }
@@ -243,7 +241,7 @@ public class DiscussionForum {
     }
     //replies to post
     //updates all the information in the messages file
-    public void replyToPost() throws Exception {
+    public void replyToPost(Scanner scan) throws Exception {
         int replyNumber = 0;
         boolean cancelled = false;
         try {
@@ -277,7 +275,7 @@ public class DiscussionForum {
                     System.out.println(replyMessagePrompt);
                     newPost = scan.nextLine();
                 } else if (option == 2) {
-                    newPost = readNewPostFile();
+                    newPost = readNewPostFile(scan);
                 } else if (option != 3) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
                 }
@@ -309,7 +307,7 @@ public class DiscussionForum {
     }
     //upvotes a post/message
     //checks if user upvoted a message or not
-    public void upvote() throws Exception {
+    public void upvote(Scanner scan) throws Exception {
         int messageNumber = 0;
         try {
             System.out.println(upvotePrompt);
@@ -366,7 +364,7 @@ public class DiscussionForum {
         pw.close();
     }
     //changes topic/updates time changed
-    public void changeTopic() throws Exception {
+    public void changeTopic(Scanner scan) throws Exception {
         System.out.println(topicChangePrompt);
         String newTopic = scan.nextLine();
         if (newTopic == null || newTopic.isBlank()) {
@@ -450,7 +448,7 @@ public class DiscussionForum {
     }
     //prints student messages and grade
     //adds the new information to the points array and updates the points file
-    public void responseGrading() throws Exception {
+    public void responseGrading(Scanner scan) throws Exception {
         boolean checkIfPointsExist = false;
         System.out.println(studentSpecificMessagesPrompt);
         String studentUsername = scan.nextLine();

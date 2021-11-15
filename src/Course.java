@@ -66,7 +66,7 @@ public class Course {
         this.discussionBoardsListFileName = discussionBoardsListFileName;
     }
     //takes input for file location and puts contents onto string
-    public String readNewForumFile() {
+    public String readNewForumFile(Scanner scan) {
         StringBuilder output = new StringBuilder();
         try {
             System.out.println(forumNamePrompt);
@@ -89,7 +89,7 @@ public class Course {
         return output.toString();
     }
     //reads discussionBoardsListFileName and puts onto string
-    public void readForumListFile() throws Exception {
+    public void readForumListFile(Scanner scan) throws Exception {
         File f = new File(discussionBoardsListFileName);
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
@@ -124,7 +124,7 @@ public class Course {
                     System.out.println(newForumNamePrompt);
                     newForumName = scan.nextLine();
                 } else if (option == 2) {
-                    newForumName = readNewForumFile();
+                    newForumName = readNewForumFile(scan);
                 } else if (option != 3) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
                 }
@@ -228,7 +228,7 @@ public class Course {
     }
     //displays list of discussion forums and asks user to open one
     public void studentDiscussionForumOpened(Scanner scan) throws Exception {
-        readForumListFile();
+        readForumListFile(scan);
         printForumList();
         System.out.println(forumSelectionPrompt);
         String selectedForum = scan.nextLine();
@@ -239,16 +239,16 @@ public class Course {
             String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
             String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
             discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName,
-                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, scan);
+                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
             discussionForum.readMessagesFile();
             discussionForum.readPointsFile();
             discussionForum.readUpvotesFile();
-            showDiscussionForumMainMethodStudent();
+            showDiscussionForumMainMethodStudent(scan);
         }
     }
        //displays list of discussion forums and asks user to open one
     public void teacherDiscussionForumOpened(Scanner scan) throws Exception {
-        readForumListFile();
+        readForumListFile(scan);
         printForumList();
         System.out.println(forumSelectionPrompt);
         String selectedForum = scan.nextLine();
@@ -259,11 +259,11 @@ public class Course {
             String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
             String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
             discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName,
-                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, scan);
+                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
             discussionForum.readMessagesFile();
             discussionForum.readPointsFile();
             discussionForum.readUpvotesFile();
-            showDiscussionForumMainMethodTeacher();
+            showDiscussionForumMainMethodTeacher(scan);
         }
     }
     //gives students the choice to: print messages, post messages, 
@@ -285,9 +285,9 @@ public class Course {
             } else {
                 switch (option) {
                     case 1 -> discussionForum.printMessages();
-                    case 2 -> discussionForum.postMessage();
-                    case 3 -> discussionForum.replyToPost();
-                    case 4 -> discussionForum.upvote();
+                    case 2 -> discussionForum.postMessage(scan);
+                    case 3 -> discussionForum.replyToPost(scan);
+                    case 4 -> discussionForum.upvote(scan);
                 }
             }
         }
@@ -306,10 +306,10 @@ public class Course {
                 } else {
                     switch (option) {
                         case 1 -> discussionForum.printMessages();
-                        case 2 -> discussionForum.postMessage();
-                        case 3 -> discussionForum.replyToPost();
-                        case 4 -> discussionForum.responseGrading();
-                        case 5 -> discussionForum.changeTopic();
+                        case 2 -> discussionForum.postMessage(scan);
+                        case 3 -> discussionForum.replyToPost(scan);
+                        case 4 -> discussionForum.responseGrading(scan);
+                        case 5 -> discussionForum.changeTopic(scan);
                         case 6 -> discussionForum.showDashboard();
                     }
                 }

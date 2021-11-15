@@ -104,9 +104,9 @@ public class Teacher {
             System.out.println("The course you entered does not exist!");
         } else {
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan);
-            course.readForumListFile();
-            openCourseMainMethod();
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
+            course.readForumListFile(scan);
+            openCourseMainMethod(scan);
         }
     }
     //gives user four options: open discussion forum, create forum, delete forum, and show dashboard
@@ -127,9 +127,9 @@ public class Teacher {
                 System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
             } else {
                 switch (option) {
-                    case 1 -> course.teacherDiscussionForumOpened();
-                    case 2 -> course.createForum();
-                    case 3 -> course.deleteForum();
+                    case 1 -> course.teacherDiscussionForumOpened(scan);
+                    case 2 -> course.createForum(scan);
+                    case 3 -> course.deleteForum(scan);
                 }
             }
         }
