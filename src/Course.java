@@ -43,7 +43,7 @@ public class Course {
             "1) Enter the new forum name via terminal.\n2) Import text file with the forum name.\n3) Cancel.";
 
     private ArrayList<String> forumList = new ArrayList<>();
-
+    //prints a list of forums
     public void printForumList() {
         StringBuilder output = new StringBuilder();
         for (String s : forumList) {
@@ -111,7 +111,8 @@ public class Course {
             return forumList.contains(forumName);
         }
     }
-    //creates a forum
+    //asks user how they want to create a forum
+    //creates forum accordingly, adds to forumList array list
     public void createForum() {
         boolean cancelled = false;
         int option = 0;
@@ -167,6 +168,7 @@ public class Course {
         }
     }
     //deletes a forum
+    //rewrites all the discussion boards file names to the String Builder object called output
     public void deleteForum() throws Exception {
         System.out.println(deleteForumPrompt);
         String toDeleteForum = scan.nextLine();
@@ -202,6 +204,7 @@ public class Course {
         }
     }
     //returns points for a student for each forum
+    //by searching through points txt file
     public void viewPoints() throws IOException {
         StringBuilder output = new StringBuilder();
         for (String s : forumList) {
