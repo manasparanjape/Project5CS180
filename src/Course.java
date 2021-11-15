@@ -173,6 +173,7 @@ public class Course {
         Scanner scan = new Scanner(System.in);
         System.out.println(deleteForumPrompt);
         String toDeleteForum = scan.nextLine();
+        boolean deleted = false;
         if (toDeleteForum == null || !discussionForumExists(toDeleteForum)) {
             if (!discussionForumExists(toDeleteForum)) {
                 System.out.println("The discussion forum you entered does not exist.");
@@ -182,26 +183,25 @@ public class Course {
         } else {
             forumList.remove(toDeleteForum);
             File f = new File(courseName + "-" + toDeleteForum + "-messages" + ".txt");
-            if (f.delete()) {
-                f = new File(courseName + "-" + toDeleteForum + "-points" + ".txt");
-                if (f.delete()) {
-                    f = new File(courseName + "-" + toDeleteForum + "-upvotes" + ".txt");
-                    if (f.delete()) {
-                        FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName, false);
-                        PrintWriter pw = new PrintWriter(fos);
-                        StringBuilder output = new StringBuilder();
-                        for (String s : forumList) {
-                            output.append(s).append("\n");
-                        }
-                        if (output.length() > 0) {
-                            output = new StringBuilder(output.substring(0, output.length() - 1));
-                        }
-                        pw.println(output);
-                        pw.close();
-                    }
-                    System.out.println(forumDeleted);
-                }
+            deleted = f.delete();
+            f = new File(courseName + "-" + toDeleteForum + "-points" + ".txt");
+            deleted &= f.delete();
+            f = new File(courseName + "-" + toDeleteForum + "-upvotes" + ".txt");
+            deleted &= f.delete();
+            FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName, false);
+            PrintWriter pw = new PrintWriter(fos);
+            StringBuilder output = new StringBuilder();
+            for (String s : forumList) {
+                output.append(s).append("\n");
             }
+            if (output.length() > 0) {
+                output = new StringBuilder(output.substring(0, output.length() - 1));
+            }
+            pw.println(output);
+            pw.close();
+        }
+        if (deleted) {
+            System.out.println(forumDeleted);
         }
     }
 
