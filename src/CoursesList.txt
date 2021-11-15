@@ -1,2 +1,4 @@
 CS 180
 Math 261
+PHYS 172
+PHYS 272
