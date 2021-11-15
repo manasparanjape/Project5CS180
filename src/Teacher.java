@@ -47,8 +47,8 @@ public class Teacher {
             System.out.println("No courses created yet.");
         }
     }
-
-    public void readCourseListsFile() throws IOException {
+    //reads courses the “CoursesList.txt” file and stores in arraylist
+    public void readCourseListsFile() throws IOException {  
         File f = new File(coursesListFileName);
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
@@ -60,7 +60,7 @@ public class Teacher {
         }
         courseList = output;
     }
-
+    //checks if the given course exists
     public boolean courseExists(String courseName) throws IOException {
         readCourseListsFile();
         if (courseList == null) {
@@ -69,7 +69,7 @@ public class Teacher {
             return courseList.contains(courseName);
         }
     }
-
+    //creates a course
     public void createCourse() throws IOException {
         System.out.println(newCourseNamePrompt);
         String newCourseName = scan.nextLine();
@@ -90,7 +90,7 @@ public class Teacher {
             pw.close();
         }
     }
-
+    //reads all the discussion forum title names for that specific course
     public void openCourse() throws Exception {
         readCourseListsFile();
         printCourseList();
@@ -105,7 +105,7 @@ public class Teacher {
             openCourseMainMethod();
         }
     }
-
+    //gives user four options: open discussion forum, create forum, delete forum, and show dashboard
     public void openCourseMainMethod() throws Exception {
         int option = 0;
         while (option != 4) {
