@@ -1,13 +1,22 @@
 import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+/**
+ * TeacherTester.java
+ *
+ * Contains instructions for testing teacher class
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 11/15/2021
+ *
+ */
 public class TeacherTester {
   
   public static void main(String[] args) throws Exception {
     //Creating Accounts object representing a teacher account
-    Accounts teacherOne = null;
-    teacherOne = new Accounts("Ms.Paul", "skooliskool", "Mary", "Paul", true);
+    Main teacherOne = null;
+    teacherOne = new Main("Ms.Paul", "skooliskool", "Mary", "Paul", true);
     if(teacherOne != null) {
       System.out.println(true);
     } else {
@@ -15,7 +24,7 @@ public class TeacherTester {
     }
     //successfully created if true
     
-    //Testing covertToString method in Accounts.java
+    //Testing covertToString method in Main.java
     String teacherString = teacherOne.convertToString();
     System.out.println(teacherString.equals("Ms.Paul---skooliskool---Mary---Paul---teacher"));
     //returns true if method matches expected output

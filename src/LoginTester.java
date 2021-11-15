@@ -1,7 +1,17 @@
-
 import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+/**
+ * StudentTester.java
+ *
+ * Contains instructions for testing Main class
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 11/15/2021
+ *
+ */
 
 public class LoginTester {
   
@@ -12,7 +22,7 @@ public class LoginTester {
     //Tests capabilities of the program to create, delete, login, and logout of an account
     //[] indicate input
     
-    Accounts.main(args);
+    Main.main(args);
     
     //Test: Creating teacher account and loggging in and logging out
     /*

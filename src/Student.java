@@ -5,6 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Student.java
+ *
+ * Contains course selection level options for students
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 11/15/2021
+ *
+ */
+
 public class Student {
     private final String username;
     private final String firstName;
@@ -14,11 +25,7 @@ public class Student {
     private Scanner scan;
 
     private final static String courseSelectionPrompt = "Which course would you like to open?";
-    private final static String courseEnteredPrompt = """
-            Please enter the option number of what you want to do.
-            1) Open discussion forum
-            2) View points
-            3) Exit course""";
+    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1) Open discussion forum\n2) View points\n3) Exit course";
     private final ArrayList<String> courseList = new ArrayList<>();
 
     public Student(String username, String firstName, String lastName, Course course, String coursesListFileName, Scanner scan) {

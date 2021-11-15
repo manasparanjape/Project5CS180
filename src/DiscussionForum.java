@@ -1,22 +1,20 @@
-/*
-Methods required:
-1) View the messages in the discussion forum  $$$
-2) Post messages in the discussion forum  $$$
-3) Reply to message in the discussion forum  $$$
-4) Upvote messages $$$
-5) Write the changes to file  $$$
-6) Read the file and save messages in array  $$$
-7) Change the topic name  $$$
-8) Grade the responses  $$$
-9) Dashboard
-*/
-
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+
+/**
+ * DiscussionForum.java
+ *
+ * Contains all possible methods to be executed after opening a discussion forum
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 11/15/2021
+ *
+ */
 
 public class DiscussionForum {
     private String forumName;
@@ -39,16 +37,8 @@ public class DiscussionForum {
     private final static String topicChangePrompt = "What do you want to change the topic to?";
     private final static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want to view.";
     private final static String gradingStudentPrompt = "Please enter the number of point you wish to assign this student.";
-    private final static String methodOfNewPostPrompt = """
-            How do you want to write the new post?
-            1) Write the post via terminal line.
-            2) Import text file with post in file.
-            3) Cancel.""";
-    private final static String methodOfNewReplyPrompt = """
-            How do you want to write the new post?
-            1) Write the post via terminal line.
-            2) Import text file with reply in file.
-            3) Cancel.""";
+    private final static String methodOfNewPostPrompt = "How do you want to write the new post?\n1) Write the post via terminal line.\n2) Import text file with post in file.\n3) Cancel.";
+    private final static String methodOfNewReplyPrompt = "How do you want to write the new reply?\n1) 1) Write the reply via terminal line.\n2) Import text file with reply in file.\n3) Cancel.";
     private static final String fileNamePrompt = "Please enter the file name and path of the file which contains the post";
 
     public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName, String lastName, String username, String upvotesFile, Scanner scan) {

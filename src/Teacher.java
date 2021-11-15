@@ -2,6 +2,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Teacher.java
+ *
+ * Contains course selection level options for teachers
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 11/15/2021
+ *
+ */
+
 public class Teacher {
     String username;
     String firstName;
@@ -13,12 +24,7 @@ public class Teacher {
     private final static String newCourseNamePrompt = "What would you like to name the new course?";
     private final static String newCourseCreated = "New course has been created!";
     private final static String courseSelectionPrompt = "Which course would you like to open?";
-    private final static String courseEnteredPrompt = """
-            Please enter the option number of what you want to do.
-            1) Open discussion forum
-            2) Create discussion forum
-            3) Delete discussion forum
-            4) Exit course""";
+    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1) Open discussion forum\n2) Create discussion forum\n3) Delete discussion forum\n4) Exit course";
     private ArrayList<String> courseList = new ArrayList<>();
 
     public Teacher (String username, String firstName, String lastName, Course course, Scanner scan) {

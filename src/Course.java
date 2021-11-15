@@ -1,15 +1,19 @@
-/*
-Methods Required:
-1) Enter a specific discussion forum
-2) Create a new discussion forum
-3) Delete a discussion forum
-*/
-
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+/**
+ * Course.java
+ *
+ * Contains forum selection level options for students and teacher as well as methods for forum creation, deletion and point viewing
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 11/15/2021
+ *
+ */
 
 public class Course {
     private final String courseName;
@@ -25,27 +29,9 @@ public class Course {
     private final static String forumDeleted = "The forum you selected has been deleted";
     private final static String forumSelectionPrompt = "Which discussion forum would you like to open?";
     private static final String forumNamePrompt = "Please enter the file name and path of the file which contains the new forum name.";
-    private final static String discussionForumEnteredStudentPrompt = """
-            Please enter the option number of what you want to do.
-            1) View discussion forum
-            2) Post message
-            3) Reply to message
-            4) Upvote message
-            5) Exit forum""";
-    private final static String discussionForumEnteredTeacherPrompt = """
-            Please enter the option number of what you want to do.
-            1) View messages
-            2) Post message
-            3) Reply to message
-            4) Grade student messages
-            5) Change topic
-            6) View dashboard
-            7) Exit forum""";
-    private static final String methodOfNewForumPrompt = """
-            How do you want to create the new discussion forum?
-            1) Enter the new forum name via terminal.
-            2) Import text file with the forum name.
-            3) Cancel.""";
+    private final static String discussionForumEnteredStudentPrompt = "Please enter the option number of what you want to do.\n1) View discussion forum\n2) Post message\n3) Reply to message\n4) Upvote message\n5) Exit forum";
+    private final static String discussionForumEnteredTeacherPrompt = "Please enter the option number of what you want to do.\n1) View messages\n2) Post message3) Reply to message\n4) Grade student messages\n5) Change topic6) View dashboard\n7) Exit forum";
+    private static final String methodOfNewForumPrompt = "How do you want to create the new discussion forum?\n1) Enter the new forum name via terminal.\n2) Import text file with the forum name.\n3) Cancel.";
 
     private ArrayList<String> forumList = new ArrayList<>();
 
