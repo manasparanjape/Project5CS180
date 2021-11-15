@@ -64,7 +64,7 @@ public class Main {
         pw.println(convertToString());
         pw.close();
     }
-    //reads text file to an ArrayList inside an ArrayList called “output”
+    //reads text file to an ArrayList inside an ArrayList called "output"
     public static void readFile() throws IOException {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         File f = new File(accountsFile);

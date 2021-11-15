@@ -47,7 +47,7 @@ public class Teacher {
             System.out.println("No courses created yet.");
         }
     }
-    //reads courses the “CoursesList.txt” file and stores in arraylist
+    //reads courses the “CoursesList.txt" file and stores in arraylist
     //stores all the course names in the courseList array list
     public void readCourseListsFile() throws IOException {  
         File f = new File(coursesListFileName);
@@ -121,8 +121,8 @@ public class Teacher {
         		System.out.println("You did not input an integer. Please input an integer between 1 and 5.");
         		option = 0;
         		scan.nextLine();
-        		continue;
-        	}
+			continue;
+		}
             if (option < 1 || option > 4) {
                 System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
             } else {
