@@ -12,12 +12,7 @@ public class Accounts {
     private static String lastName;
     private static boolean ifTeacher;
     private final static String welcomeMessage = "Welcome! ";
-    private final static String initialPrompt = """
-            What would you like to do today?
-            1) Login to my account
-            2) Create new account
-            3) Delete my account
-            4) Exit""";
+    private final static String initialPrompt = "What would you like to do today?\n1) Login to my account\n2) Create new account\n3) Delete my account\n4) Exit";
     private final static String usernamePrompt = "Please enter your username.";
     private final static String passwordPrompt = "Please enter your password";
     private final static String setUsernamePrompt = "Set a new username:";
@@ -193,6 +188,15 @@ public class Accounts {
                 }
             }
             toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
+            boolean accountRemoved = false;
+            int i = 0;
+            while (!accountRemoved && i < accountDetailsArray.size()) {
+                if (accountDetailsArray.get(i).get(0).equals(username)) {
+                    accountDetailsArray.remove(i);
+                    accountRemoved = true;
+                }
+                i++;
+            }
             FileOutputStream fos = new FileOutputStream(accountsFile, false);
             PrintWriter pw = new PrintWriter(fos);
             pw.println(toWrite);
