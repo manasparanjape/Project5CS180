@@ -57,14 +57,14 @@ public class Main {
         }
         return output;
     }
-    //writes to file
+    //writes a given string to an account file
     public static void writeToFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(accountsFile, true);
         PrintWriter pw = new PrintWriter(fos);
         pw.println(convertToString());
         pw.close();
     }
-    //reads file
+    //reads text file to an ArrayList inside an ArrayList called “output”
     public static void readFile() throws IOException {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         File f = new File(accountsFile);
@@ -80,7 +80,7 @@ public class Main {
         bfr.close();
         accountDetailsArray = output;
     }
-    //checks if a given username exists
+    //checks if a given username exists using while loop
     public static boolean checkUsernameAvailability(String username) throws IOException {
         boolean output = false;
         int i = 0;
@@ -92,6 +92,7 @@ public class Main {
         return output;
     }
     //prompts user to create a new account
+    //also checks if the details they enter are still available
     public static void getNewAccountDetails(Scanner scan) throws IOException {
         boolean accountSet;
         accountSet = true;
@@ -138,7 +139,7 @@ public class Main {
             System.out.println(accountCreationSuccess);
         }
     }
-    //finds a given account
+    //finds a given account from Accounts.txt file
     public static void findAccount(String username) throws IOException {
         readFile();
         for (ArrayList<String> strings : accountDetailsArray) {
@@ -182,6 +183,7 @@ public class Main {
         }
         return output;
     }
+    //checks if the user is logged in
     //deletes the users account
     public static void deleteAccount(Scanner scan) throws IOException {
         boolean accountVerification = (securityCheck(scan) != 0);
