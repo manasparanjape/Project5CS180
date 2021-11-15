@@ -35,7 +35,7 @@ public class Teacher {
         this.course = course;
         this.scan = scan;
     }
-
+    //prints out course list as string
     public void printCourseList() {
         StringBuilder output = new StringBuilder();
         for (String s : courseList) {
