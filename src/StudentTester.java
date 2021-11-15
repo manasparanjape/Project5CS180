@@ -8,7 +8,7 @@ public class StudentTester {
     
     Accounts studentOne = null;
     //Creating Accounts object representing a student account
-    Accounts studentOne = new Accounts("Billy23", "B1L@#", "Billy", "Smith", false);
+    studentOne = new Accounts("Billy23", "B1L@#", "Billy", "Smith", false);
     if(studentOne != null) {
       System.out.println(true);
     } else {
@@ -27,7 +27,6 @@ public class StudentTester {
     } catch(FileNotFoundException e) {
     	System.out.println("File Not Found");
     }
-    //passed; does not return file not found
     
     //checks if username is already in use; true if username is used and false otherwise
     System.out.println(studentOne.checkUsernameAvailability("Billy23"));
