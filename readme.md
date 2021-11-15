@@ -82,7 +82,7 @@
         - cleans up the file by replacing unnecessary hidden characters (\r\n and \n with spaces and “.” with “. ”)
       - readUpvotesFile
         - reads the file with all the upvotes stored 
-        - splits each line by separating by user and points? and stores that information in an ArrayList
+        - splits each line by separating by user and points and stores that information in an ArrayList
         - stores that points array list in an another ArrayList, which holds all the arraylists of points for that discussion forum
         - returns the array list that holds all the points for that discussion forum
       - checkAlreadyUpvoted
