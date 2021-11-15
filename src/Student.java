@@ -25,7 +25,8 @@ public class Student {
     private Scanner scan;
 
     private final static String courseSelectionPrompt = "Which course would you like to open?";
-    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1) Open discussion forum\n2) View points\n3) Exit course";
+    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1)" 
+         + " Open discussion forum\n2) View points\n3) Exit course";
     private final ArrayList<String> courseList = new ArrayList<>();
 
     public Student(String username, String firstName, String lastName, Course course, String coursesListFileName, Scanner scan) {
@@ -44,7 +45,7 @@ public class Student {
         }
         output = new StringBuilder(output.substring(0, output.length() - 1));
         System.out.println(output);
-        if (output.isEmpty()) {
+        if (output.toString().isEmpty()) {
             System.out.println("No courses created yet.");
         }
     }
