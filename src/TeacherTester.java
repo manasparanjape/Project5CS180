@@ -26,7 +26,6 @@ public class TeacherTester {
     } catch(FileNotFoundException e) {
     	System.out.println("File Not Found");
     }
-    //passed; does not return file not found
     
     //checks if username is already in use; true if username is used and false otherwise
     System.out.println(teacherOne.checkUsernameAvailability("Ms.Paul"));
