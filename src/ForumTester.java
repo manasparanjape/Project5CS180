@@ -224,6 +224,172 @@ public class ForumTester {
     [4]
     */
     
+    //Error testing:
+    /*
+    Welcome!
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [1]
+    Please enter your username.
+    [joegg]
+    Please enter your password
+    [curiousgeorge]
+    Please enter the option number of what you want to do.
+    1) Open course
+    2) Log out
+    [open course]
+    Please enter a valid number!
+    Please enter the option number of what you want to do.
+    1) Open course
+    2) Log out
+    [1]
+    CS 180
+    Math 261
+    Which course would you like to open?
+    [econ]
+    The course you entered does not exist!
+    Please enter the option number of what you want to do.
+    1) Open course
+    2) Log out
+    [1]
+    CS 180
+    Math 261
+    Which course would you like to open?
+    [CS 180]
+    Please enter the option number of what you want to do.
+    1) Open discussion forum
+    2) View points
+    3) Exit course
+    [open]
+    You did not input an integer. Please input an integer between 1 and 3.
+    Please enter the option number of what you want to do.
+    1) Open discussion forum
+    2) View points
+    3) Exit course
+    [view]
+    You did not input an integer. Please input an integer between 1 and 3.
+    Please enter the option number of what you want to do.
+    1) Open discussion forum
+    2) View points
+    3) Exit course
+    [1]
+    Threads
+    Terminal
+    Which discussion forum would you like to open?
+    [none]
+    The discussion forum you entered does not exist!
+    Please enter the option number of what you want to do.
+    1) Open discussion forum
+    2) View points
+    3) Exit course
+    [1]
+    Threads
+    Terminal
+    Which discussion forum would you like to open?
+    [Threads]
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [view]
+    Please enter a valid number!
+    You entered an invalid number. Please enter a number between 1 and 5.
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [post]
+    Please enter a valid number!
+    You entered an invalid number. Please enter a number between 1 and 5.
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [reply]
+    Please enter a valid number!
+    You entered an invalid number. Please enter a number between 1 and 5.
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [upvote]
+    Please enter a valid number!
+    You entered an invalid number. Please enter a number between 1 and 5.
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [2]
+    How do you want to write the new post?
+    1) Write the post via terminal line.
+    2) Import text file with post in file.
+    3) Cancel.
+    [5]
+    You entered an invalid option. Please enter a number between 1 and 3.
+    How do you want to write the new post?
+    1) Write the post via terminal line.
+    2) Import text file with post in file.
+    3) Cancel.
+    [1]
+    What do you want to post?
+    [wassup]
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [4]
+    Which message do you want to upvote? Please enter the message number or 0 if you do not want to upvote any message.
+    [222]
+    You entered an invalid option. Please enter a number between 1 and 7.
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [3]
+    Which message do you want to reply to? Please enter the message number or 0 if you do not want to upvote any message.
+    [5343]
+    You entered an invalid number. Please enter a valid message number between 1 and 7.
+    Please enter the option number of what you want to do.
+    1) View discussion forum
+    2) Post message
+    3) Reply to message
+    4) Upvote message
+    5) Exit forum
+    [5]
+    Please enter the option number of what you want to do.
+    1) Open discussion forum
+    2) View points
+    3) Exit course
+    [3]
+    Please enter the option number of what you want to do.
+    1) Open course
+    2) Log out
+    [2]
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [4]
+    */
+    
     Main.main(args);
     
   }
