@@ -144,7 +144,7 @@ public class ForumTester {
         [2]
         Please enter the file name and path of the file 
         which contains the post                                                                  
-        [work/StudentMessage]
+        [work/Project4CS180/src/StudentMessage]
         Please enter the option number of what you want to do.
         1) View discussion forum
         2) Post message
