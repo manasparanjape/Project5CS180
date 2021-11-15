@@ -37,7 +37,7 @@ public class Student {
         this.coursesListFileName = coursesListFileName;
         this.scan = scan;
     }
-
+    //prints out course list
     public void printCourseList() {
         StringBuilder output = new StringBuilder();
         for (String s : courseList) {
@@ -49,7 +49,7 @@ public class Student {
             System.out.println("No courses created yet.");
         }
     }
-
+    //adds all the courses to an array list courseList
     public void readCourseListsFile() throws IOException {
         File f = new File(coursesListFileName);
         FileReader fr = new FileReader(f);
@@ -60,7 +60,7 @@ public class Student {
             line = bfr.readLine();
         }
     }
-
+    //checks if the course exists
     public boolean courseExists(String courseName) {
         if (courseList.isEmpty()) {
             return false;
@@ -68,7 +68,7 @@ public class Student {
             return courseList.contains(courseName);
         }
     }
-
+    //checks if user inputted course is present in the courseList array list
     public void openCourse() throws Exception {
         readCourseListsFile();
         printCourseList();
@@ -83,7 +83,7 @@ public class Student {
             openCourseMainMethod();
         }
     }
-
+    //gives the user 2 options: open discussion forum and view points
     public void openCourseMainMethod() throws Exception {
         int option = 0;
         while (option != 3) {
