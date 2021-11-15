@@ -20,8 +20,12 @@ public class Account {
     Student student;
     Scanner scan;
 
-    private final static String teacherAccountEnteredPrompt = "Please enter the option number of what you want to do.\n1) Create course\n2) Open course\n3) Log out";
-    private final static String studentAccountEnteredPrompt = "Please enter the option number of what you want to do.\n1) Open course\n2) Log out";
+    private static String teacherAccountEnteredPrompt = "Please enter the option number of " + 
+        "what you want to do.\n" +
+        "1) Create course\n2) Open course\n3) Log out";
+    private static String studentAccountEnteredPrompt = "Please enter the option number of " + 
+        "what you want to do.\n" +
+        "1) Open course\n2) Log out";
 
     public Account(String username, String firstName, String lastName, boolean ifTeacher, Scanner scan) {
         this.username = username;
