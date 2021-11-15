@@ -24,7 +24,8 @@ public class Teacher {
     private final static String newCourseNamePrompt = "What would you like to name the new course?";
     private final static String newCourseCreated = "New course has been created!";
     private final static String courseSelectionPrompt = "Which course would you like to open?";
-    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1) Open discussion forum\n2) Create discussion forum\n3) Delete discussion forum\n4) Exit course";
+    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1)" 
+         + " Open discussion forum\n2) Create discussion forum\n3) Delete discussion forum\n4) Exit course";
     private ArrayList<String> courseList = new ArrayList<>();
 
     public Teacher (String username, String firstName, String lastName, Course course, Scanner scan) {
@@ -42,7 +43,7 @@ public class Teacher {
         }
         output = new StringBuilder(output.substring(0, output.length() - 1));
         System.out.println(output);
-        if (output.isEmpty()) {
+        if (output.toString().isEmpty()) {
             System.out.println("No courses created yet.");
         }
     }
@@ -80,7 +81,7 @@ public class Teacher {
             courseList.add(newCourseName);
             FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt" , false);
             PrintWriter pw = new PrintWriter(fos);
-            pw.println(newCourseName);
+            pw.println();
             pw.close();
             fos = new FileOutputStream(coursesListFileName, true);
             pw = new PrintWriter(fos);
