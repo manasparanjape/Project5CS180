@@ -1,6 +1,11 @@
+
+import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class AccountsTester {
   
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     
     //main method in Accounts that tests full functionality of the project
     //Accounts test:
