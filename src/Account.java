@@ -34,7 +34,7 @@ public class Account {
     }
     //gives the teacher three options: create course, open course, or exit
     public void teacherMainMethod(Scanner scan) throws Exception {
-        teacher = new Teacher(username, firstName, lastName, null, scan);
+        teacher = new Teacher(username, firstName, lastName, null);
         int option = 0;
         while (option != 3) {
             try {
@@ -51,8 +51,8 @@ public class Account {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             } else {
                 switch (option) {
-                    case 1 -> teacher.createCourse();
-                    case 2 -> teacher.openCourse();
+                    case 1 -> teacher.createCourse(scan);
+                    case 2 -> teacher.openCourse(scan);
                 }
             }
         }
@@ -76,7 +76,7 @@ public class Account {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 2.");
             } else {
                 if (option == 1) {
-                    student.openCourse();
+                    student.openCourse(scan);
                 }
             }
         }
