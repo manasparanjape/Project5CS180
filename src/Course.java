@@ -6,14 +6,12 @@ import java.util.Scanner;
 
 /**
  * Course.java
- *
- * Contains forum selection level options for students and teacher as well as methods 
+ * <p>
+ * Contains forum selection level options for students and teacher as well as methods
  * for forum creation, deletion and point viewing
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
- *
  * @version 11/15/2021
- *
  */
 
 public class Course {
@@ -29,19 +27,20 @@ public class Course {
     private static String forumDeleted = "The forum you selected has been deleted";
     private static String forumSelectionPrompt = "Which discussion forum would you like to open?";
     private static String forumNamePrompt = "Please enter the file name and path of the file which "
-        + "contains the new forum name.";
+            + "contains the new forum name.";
     private static String discussionForumEnteredStudentPrompt = "Please enter the option number of what "
-        + "you want to do.\n"
+            + "you want to do.\n"
             + "1) View discussion forum\n2) Post message\n3) Reply to message\n4) Upvote message\n5) Exit forum";
     private static String discussionForumEnteredTeacherPrompt = "Please enter the option number "
-        + "of what you want to do.\n" +
+            + "of what you want to do.\n" +
             "1) View messages\n2) Post message\n3) Reply to message\n" +
-        "4) Grade student messages\n5) Change topic\n6) View dashboard\n" +
+            "4) Grade student messages\n5) Change topic\n6) View dashboard\n" +
             "7) Exit forum";
     private static String methodOfNewForumPrompt = "How do you want to create the new discussion forum?\n" +
             "1) Enter the new forum name via terminal.\n2) Import text file with the forum name.\n3) Cancel.";
 
     private ArrayList<String> forumList = new ArrayList<>();
+
     //prints a list of forums
     public void printForumList() {
         StringBuilder output = new StringBuilder();
@@ -55,8 +54,8 @@ public class Course {
             System.out.println(output);
         }
     }
-    
-    public Course(String courseName, String username, String firstName, String lastName, 
+
+    public Course(String courseName, String username, String firstName, String lastName,
                   DiscussionForum discussionForum, String discussionBoardsListFileName) {
         this.courseName = courseName;
         this.username = username;
@@ -65,6 +64,7 @@ public class Course {
         this.discussionForum = discussionForum;
         this.discussionBoardsListFileName = discussionBoardsListFileName;
     }
+
     //takes input for file location and puts contents onto string
     public String readNewForumFile(Scanner scan) {
         StringBuilder output = new StringBuilder();
@@ -88,6 +88,7 @@ public class Course {
         }
         return output.toString();
     }
+
     //reads discussionBoardsListFileName and puts onto string
     public void readForumListFile(Scanner scan) throws Exception {
         File f = new File(discussionBoardsListFileName);
@@ -101,6 +102,7 @@ public class Course {
         }
         forumList = output;
     }
+
     //checks if the discussion forum exists
     public boolean discussionForumExists(String forumName) {
         if (forumList == null) {
@@ -109,6 +111,7 @@ public class Course {
             return forumList.contains(forumName);
         }
     }
+
     //asks user how they want to create a forum
     //creates forum accordingly, adds to forumList array list
     public void createForum(Scanner scan) {
@@ -137,8 +140,8 @@ public class Course {
                     } else {
                         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
                         forumList.add(newForumName);
-                        FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName + 
-                                                                    "-messages" + ".txt", true);
+                        FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName +
+                                "-messages" + ".txt", true);
                         PrintWriter pw = new PrintWriter(fos);
                         pw.println(newForumName + "§§§" + LocalDateTime.now().format(format));
                         pw.close();
@@ -165,6 +168,7 @@ public class Course {
             }
         }
     }
+
     //deletes a forum
     //rewrites all the discussion boards file names to the String Builder object called output
     public void deleteForum(Scanner scan) throws Exception {
@@ -201,6 +205,7 @@ public class Course {
             System.out.println(forumDeleted);
         }
     }
+
     //returns points for a student for each forum
     //by searching through points txt file
     public void viewPoints() throws IOException {
@@ -226,6 +231,7 @@ public class Course {
         }
         System.out.println(output);
     }
+
     //displays list of discussion forums and asks user to open one
     public void studentDiscussionForumOpened(Scanner scan) throws Exception {
         readForumListFile(scan);
@@ -246,7 +252,8 @@ public class Course {
             showDiscussionForumMainMethodStudent(scan);
         }
     }
-       //displays list of discussion forums and asks user to open one
+
+    //displays list of discussion forums and asks user to open one
     public void teacherDiscussionForumOpened(Scanner scan) throws Exception {
         readForumListFile(scan);
         printForumList();
@@ -266,7 +273,8 @@ public class Course {
             showDiscussionForumMainMethodTeacher(scan);
         }
     }
-    //gives students the choice to: print messages, post messages, 
+
+    //gives students the choice to: print messages, post messages,
     //reply to a post, upvote a message, or exit
     public void showDiscussionForumMainMethodStudent(Scanner scan) throws Exception {
         int option = 0;
@@ -292,6 +300,7 @@ public class Course {
             }
         }
     }
+
     //gives teachers the option to: print messages, post messages, reply to a post
     //grade a response, change the forum topic, show dashboard, or exit
     public void showDiscussionForumMainMethodTeacher(Scanner scan) {

@@ -7,13 +7,11 @@ import java.util.Scanner;
 
 /**
  * DiscussionForum.java
- *
+ * <p>
  * Contains all possible methods to be executed after opening a discussion forum
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
- *
  * @version 11/15/2021
- *
  */
 
 public class DiscussionForum {
@@ -30,18 +28,18 @@ public class DiscussionForum {
     private String forumCreationTime;
 
     private static String newPostPrompt = "What do you want to post?";
-    private static String replyNumberPrompt = "Which message do you want to reply to? " + 
-        "Please enter the message number or 0 if you do not want to reply any message.";
+    private static String replyNumberPrompt = "Which message do you want to reply to? " +
+            "Please enter the message number or 0 if you do not want to reply any message.";
     private static String replyMessagePrompt = "What is your reply?";
-    private static String upvotePrompt = "Which message do you want to upvote? " + 
-        "Please enter the message number or 0 if you do not want to upvote any message.";
+    private static String upvotePrompt = "Which message do you want to upvote? " +
+            "Please enter the message number or 0 if you do not want to upvote any message.";
     private static String topicChangePrompt = "What do you want to change the topic to?";
     private static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want"
             + "to view.";
     private static String gradingStudentPrompt = "Please enter the number of point you wish to assign this"
             + " student.";
-    private static String methodOfNewPostPrompt = "How do you want to write the new post?\n" + 
-        "1) Write the post via terminal line.\n2) Import text file with post in file.\n3) Cancel.";
+    private static String methodOfNewPostPrompt = "How do you want to write the new post?\n" +
+            "1) Write the post via terminal line.\n2) Import text file with post in file.\n3) Cancel.";
     private static String methodOfNewReplyPrompt = "How do you want to write the new reply?\n1)" +
             "1) Write the reply via terminal line.\n2) Import text file with reply in file.\n3) Cancel.";
     private static String fileNamePrompt = "Please enter the file name and path of the file which contains the "
@@ -57,6 +55,7 @@ public class DiscussionForum {
         this.username = username;
         this.upvotesFile = upvotesFile;
     }
+
     //reads user entered file and returns a string of the contents called output
     public String readNewPostFile(Scanner scan) {
         StringBuilder output = new StringBuilder();
@@ -80,6 +79,7 @@ public class DiscussionForum {
         }
         return output.toString();
     }
+
     //reads file where all upvotes are stored
     //stores that information into an arraylist
     public void readUpvotesFile() throws IOException {
@@ -97,6 +97,7 @@ public class DiscussionForum {
         bfr.close();
         upvotesArray = output;
     }
+
     //checks if a user already upvoted a post/message by going through a arraylist called upvotesArray
     public boolean checkAlreadyUpvoted(int messageNumber) {
         boolean output = false;
@@ -113,6 +114,7 @@ public class DiscussionForum {
         }
         return output;
     }
+
     //reads file that stores all messages in discussion forum
     //splits this info and store into arraylist
     public void readMessagesFile() throws Exception {
@@ -135,7 +137,8 @@ public class DiscussionForum {
         bfr.close();
         messagesArray = output;
     }
-    //checks whether username is found in upvotes array 
+
+    //checks whether username is found in upvotes array
     public boolean checkUsernameInUpvotesArray() {
         boolean output = false;
         for (ArrayList<String> strings : upvotesArray) {
@@ -146,6 +149,7 @@ public class DiscussionForum {
         }
         return output;
     }
+
     //reads Messages file, then adds all information stored in discussion forum to a string
     public void printMessages() throws Exception {
         readMessagesFile();
@@ -167,6 +171,7 @@ public class DiscussionForum {
         }
         System.out.println(output);
     }
+
     //adds all the messages stored in the discussion to a file
     //infromation is split by "§§§"
     public String convertMessagesArrayToFileString() {
@@ -181,6 +186,7 @@ public class DiscussionForum {
         }
         return output.toString();
     }
+
     //writes message to specificed file
     public void writeToMessagesFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(messagesFileName, false);
@@ -192,6 +198,7 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
+
     //posts a message
     //adds that new array to the messages Array
     public void postMessage(Scanner scan) throws Exception {
@@ -239,6 +246,7 @@ public class DiscussionForum {
             }
         }
     }
+
     //replies to post
     //updates all the information in the messages file
     public void replyToPost(Scanner scan) throws Exception {
@@ -305,6 +313,7 @@ public class DiscussionForum {
             }
         }
     }
+
     //upvotes a post/message
     //checks if user upvoted a message or not
     public void upvote(Scanner scan) throws Exception {
@@ -347,6 +356,7 @@ public class DiscussionForum {
             }
         }
     }
+
     //writes information to upvote file
     //uses "§§§" as delimiter
     public void writeToUpvotesFile() throws FileNotFoundException {
@@ -363,6 +373,7 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
+
     //changes topic/updates time changed
     public void changeTopic(Scanner scan) throws Exception {
         System.out.println(topicChangePrompt);
@@ -376,6 +387,7 @@ public class DiscussionForum {
             writeToMessagesFile();
         }
     }
+
     //read points file and store into an array
     //assigns the array to the points array
     public void readPointsFile() throws Exception {
@@ -392,7 +404,8 @@ public class DiscussionForum {
         }
         pointsArray = output;
     }
-    //prints student messages/replies (if they have any) 
+
+    //prints student messages/replies (if they have any)
     public void printSpecificStudentMessages(String studentUsername) {
         StringBuilder output = new StringBuilder("Messages by " + studentUsername + "\n");
         boolean studentHasPosted = false;
@@ -421,6 +434,7 @@ public class DiscussionForum {
             System.out.println(output);
         }
     }
+
     //checks if a username exists
     public boolean checkUsernameNonexistence(String usernameInput) throws IOException {
         ArrayList<ArrayList<String>> accountsArray = new ArrayList<>();
@@ -446,6 +460,7 @@ public class DiscussionForum {
         }
         return !output;
     }
+
     //prints student messages and grade
     //adds the new information to the points array and updates the points file
     public void responseGrading(Scanner scan) throws Exception {
@@ -484,6 +499,7 @@ public class DiscussionForum {
             writeToPointsFile();
         }
     }
+
     //writes to points file
     public void writeToPointsFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(pointsFileName, false);
@@ -497,6 +513,7 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
+
     //displays messages in order of lowest to highest upvotes
     public void showDashboard() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = sortUpvotesArray();
@@ -517,6 +534,7 @@ public class DiscussionForum {
         System.out.println(output);
         System.out.println("Check");
     }
+
     //sorts upvotes array using a simple sorting algorithm
     public ArrayList<ArrayList<String>> sortUpvotesArray() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;

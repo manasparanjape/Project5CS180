@@ -7,13 +7,11 @@ import java.util.Scanner;
 
 /**
  * Student.java
- *
+ * <p>
  * Contains course selection level options for students
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
- *
  * @version 11/15/2021
- *
  */
 
 public class Student {
@@ -24,8 +22,8 @@ public class Student {
     private final String coursesListFileName;
 
     private final static String courseSelectionPrompt = "Which course would you like to open?";
-    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1)" 
-         + " Open discussion forum\n2) View points\n3) Exit course";
+    private final static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1)"
+            + " Open discussion forum\n2) View points\n3) Exit course";
     private final ArrayList<String> courseList = new ArrayList<>();
 
     public Student(String username, String firstName, String lastName, Course course, String coursesListFileName) {
@@ -35,6 +33,7 @@ public class Student {
         this.course = course;
         this.coursesListFileName = coursesListFileName;
     }
+
     //uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
     //prints out course list
     public void printCourseList() {
@@ -48,6 +47,7 @@ public class Student {
             System.out.println("No courses created yet.");
         }
     }
+
     //adds all the courses to an array list courseList
     public void readCourseListsFile() throws IOException {
         File f = new File(coursesListFileName);
@@ -59,6 +59,7 @@ public class Student {
             line = bfr.readLine();
         }
     }
+
     //checks if the course exists
     public boolean courseExists(String courseName) {
         if (courseList.isEmpty()) {
@@ -67,6 +68,7 @@ public class Student {
             return courseList.contains(courseName);
         }
     }
+
     //checks if user inputted course is present in the courseList array list
     public void openCourse(Scanner scan) throws Exception {
         readCourseListsFile();
@@ -82,20 +84,21 @@ public class Student {
             openCourseMainMethod(scan);
         }
     }
+
     //gives the user 2 options: open discussion forum and view points
     public void openCourseMainMethod(Scanner scan) throws Exception {
         int option = 0;
         while (option != 3) {
-        	try {
-        		System.out.println(courseEnteredPrompt);
-        		option = scan.nextInt();
+            try {
+                System.out.println(courseEnteredPrompt);
+                option = scan.nextInt();
                 scan.nextLine();
-        	} catch (Exception e) {
-        		System.out.println("You did not input an integer. Please input an integer between 1 and 3.");
-        		option = 0;
-        		scan.nextLine();
-        		continue;
-        	}
+            } catch (Exception e) {
+                System.out.println("You did not input an integer. Please input an integer between 1 and 3.");
+                option = 0;
+                scan.nextLine();
+                continue;
+            }
             if (option < 1 || option > 3) {
                 System.out.println("You entered an invalid number. Please enter a number between 1 and 3.");
             } else {

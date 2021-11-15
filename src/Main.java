@@ -6,13 +6,11 @@ import java.util.Scanner;
 
 /**
  * Main.java
- *
+ * <p>
  * Contains the main method and runs the program
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
- *
  * @version 11/15/2021
- *
  */
 
 public class Main {
@@ -32,18 +30,19 @@ public class Main {
     private static final String setFirstNamePrompt = "Enter your first name:";
     private static final String setLastNamePrompt = "Enter your last name:";
     private static final String usernameUnavailablePrompt = "The username you entered is unavailable.";
-    private static final  String accountCreationSuccess = "Your account was successfully created";
+    private static final String accountCreationSuccess = "Your account was successfully created";
     private final static String accountTypePrompt = "Are you a teacher or a student?\n1. Teacher\n2. Student";
     private final static String accountDeletionSuccess = "Your account has been deleted";
     static ArrayList<ArrayList<String>> accountDetailsArray = null;
 
-    public Main (String username, String password, String firstName, String lastName, boolean ifTeacher) {
+    public Main(String username, String password, String firstName, String lastName, boolean ifTeacher) {
         Main.username = username;
         Main.password = password;
         Main.firstName = firstName;
         Main.lastName = lastName;
         Main.ifTeacher = ifTeacher;
     }
+
     //creates user info string, with their info separated by "§§§"
     public static String convertToString() {
         String output = username + "§§§";
@@ -57,6 +56,7 @@ public class Main {
         }
         return output;
     }
+
     //writes a given string to an account file
     public static void writeToFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(accountsFile, true);
@@ -64,6 +64,7 @@ public class Main {
         pw.println(convertToString());
         pw.close();
     }
+
     //reads text file to an ArrayList inside an ArrayList called "output"
     public static void readFile() throws IOException {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
@@ -80,6 +81,7 @@ public class Main {
         bfr.close();
         accountDetailsArray = output;
     }
+
     //checks if a given username exists using while loop
     public static boolean checkUsernameAvailability(String username) throws IOException {
         boolean output = false;
@@ -91,6 +93,7 @@ public class Main {
         }
         return output;
     }
+
     //prompts user to create a new account
     //also checks if the details they enter are still available
     public static void getNewAccountDetails(Scanner scan) throws IOException {
@@ -111,7 +114,7 @@ public class Main {
         if (username == null) {
             accountSet = false;
             System.out.println("The username you entered is invalid.");
-        } else if (checkUsernameAvailability(username)){
+        } else if (checkUsernameAvailability(username)) {
             accountSet = false;
             System.out.println(usernameUnavailablePrompt);
         }
@@ -139,6 +142,7 @@ public class Main {
             System.out.println(accountCreationSuccess);
         }
     }
+
     //finds a given account from Accounts.txt file
     public static void findAccount(String username) throws IOException {
         readFile();
@@ -150,6 +154,7 @@ public class Main {
             }
         }
     }
+
     //checks whether or not username and password match with what is stored in Accounts.txt file
     public static int securityCheck(Scanner scan) throws IOException {
         int output = 0;
@@ -183,6 +188,7 @@ public class Main {
         }
         return output;
     }
+
     //checks if the user is logged in
     //deletes the users account
     public static void deleteAccount(Scanner scan) throws IOException {
@@ -215,6 +221,7 @@ public class Main {
             System.out.println(accountDeletionSuccess);
         }
     }
+
     //allows users to access, create, or delete their account
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
@@ -228,7 +235,7 @@ public class Main {
                 if (option < 1 || option > 4) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 4.");
                 } else {
-                    switch(option) {
+                    switch (option) {
                         case 1 -> {
                             int accountCheck = securityCheck(scan);
                             Account account;
@@ -242,8 +249,8 @@ public class Main {
                                 account.accountMainMethod(scan);
                             }
                         }
-                        case 2 -> getNewAccountDetails(scan); 
-                        case 3 -> deleteAccount(scan); 
+                        case 2 -> getNewAccountDetails(scan);
+                        case 3 -> deleteAccount(scan);
                     }
                 }
             } catch (InputMismatchException e) {

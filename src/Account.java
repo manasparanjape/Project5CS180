@@ -2,13 +2,11 @@ import java.util.Scanner;
 
 /**
  * Account.java
- *
+ * <p>
  * Bifurcates to teacher and student methods respectively
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
- *
  * @version 11/15/2021
- *
  */
 
 public class Account {
@@ -19,12 +17,12 @@ public class Account {
     Teacher teacher;
     Student student;
 
-    private static String teacherAccountEnteredPrompt = "Please enter the option number of " + 
-        "what you want to do.\n" +
-        "1) Create course\n2) Open course\n3) Log out";
-    private static String studentAccountEnteredPrompt = "Please enter the option number of " + 
-        "what you want to do.\n" +
-        "1) Open course\n2) Log out";
+    private static String teacherAccountEnteredPrompt = "Please enter the option number of " +
+            "what you want to do.\n" +
+            "1) Create course\n2) Open course\n3) Log out";
+    private static String studentAccountEnteredPrompt = "Please enter the option number of " +
+            "what you want to do.\n" +
+            "1) Open course\n2) Log out";
 
     public Account(String username, String firstName, String lastName, boolean ifTeacher) {
         this.username = username;
@@ -32,6 +30,7 @@ public class Account {
         this.lastName = lastName;
         this.ifTeacher = ifTeacher;
     }
+
     //gives the teacher three options: create course, open course, or exit
     public void teacherMainMethod(Scanner scan) throws Exception {
         teacher = new Teacher(username, firstName, lastName, null);
@@ -57,6 +56,7 @@ public class Account {
             }
         }
     }
+
     //gives the student two options: open a course or exit
     public void studentMainMethod(Scanner scan) throws Exception {
         student = new Student(username, firstName, lastName, null, "CoursesList.txt");
@@ -81,6 +81,7 @@ public class Account {
             }
         }
     }
+
     //decides which method to run in the main method depending on whether the user is a student or a teacher
     public void accountMainMethod(Scanner scan) throws Exception {
         if (ifTeacher) {

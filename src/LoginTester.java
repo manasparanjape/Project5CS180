@@ -4,26 +4,24 @@ import java.util.Scanner;
 
 /**
  * StudentTester.java
- *
+ * <p>
  * Contains instructions for testing Main class
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
- *
  * @version 11/15/2021
- *
  */
 
 public class LoginTester {
-  
+
     public static void main(String[] args) throws Exception {
-    
+
         //main method in Accounts that tests full functionality of the project
         //Accounts test:
         //Tests capabilities of the program to create, delete, login, and logout of an account
         //[] indicate input
-    
+
         Main.main(args);
-    
+
         //Test: Creating teacher account and loggging in and logging out
         /*
         Welcome!
@@ -283,7 +281,6 @@ public class LoginTester {
         */
 
 
-    
     }
-  
+
 }
