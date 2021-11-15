@@ -59,7 +59,7 @@ public class DiscussionForum {
         this.upvotesFile = upvotesFile;
         this.scan = scan;
     }
-    //reads user entered file and returns a string of the contents
+    //reads user entered file and returns a string of the contents called output
     public String readNewPostFile() {
         StringBuilder output = new StringBuilder();
         try {
@@ -83,6 +83,7 @@ public class DiscussionForum {
         return output.toString();
     }
     //reads file where all upvotes are stored
+    //stores that information into an arraylist
     public void readUpvotesFile() throws IOException {
         File f = new File(upvotesFile);
         FileReader fr = new FileReader(f);
@@ -98,7 +99,7 @@ public class DiscussionForum {
         bfr.close();
         upvotesArray = output;
     }
-    //checks if a user already upvoted a post/message
+    //checks if a user already upvoted a post/message by going through a arraylist called upvotesArray
     public boolean checkAlreadyUpvoted(int messageNumber) {
         boolean output = false;
         String messageNumberString = Integer.toString(messageNumber);
@@ -115,6 +116,7 @@ public class DiscussionForum {
         return output;
     }
     //reads file that stores all messages in discussion forum
+    //splits this info and store into arraylist
     public void readMessagesFile() throws Exception {
         File f = new File(messagesFileName);
         FileReader fr = new FileReader(f);
@@ -168,6 +170,7 @@ public class DiscussionForum {
         System.out.println(output);
     }
     //adds all the messages stored in the discussion to a file
+    //infromation is split by "§§§"
     public String convertMessagesArrayToFileString() {
         StringBuilder output = new StringBuilder();
         for (ArrayList<String> strings : messagesArray) {
@@ -192,6 +195,7 @@ public class DiscussionForum {
         pw.close();
     }
     //posts a message
+    //adds that new array to the messages Array
     public void postMessage() throws Exception {
         boolean cancelled = false;
         int option = 0;
@@ -238,6 +242,7 @@ public class DiscussionForum {
         }
     }
     //replies to post
+    //updates all the information in the messages file
     public void replyToPost() throws Exception {
         int replyNumber = 0;
         boolean cancelled = false;
@@ -303,6 +308,7 @@ public class DiscussionForum {
         }
     }
     //upvotes a post/message
+    //checks if user upvoted a message or not
     public void upvote() throws Exception {
         int messageNumber = 0;
         try {
@@ -344,6 +350,7 @@ public class DiscussionForum {
         }
     }
     //writes information to upvote file
+    //uses "§§§" as delimiter
     public void writeToUpvotesFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(upvotesFile);
         PrintWriter pw = new PrintWriter(fos);
@@ -372,6 +379,7 @@ public class DiscussionForum {
         }
     }
     //read points file and store into an array
+    //assigns the array to the points array
     public void readPointsFile() throws Exception {
         File f = new File(pointsFileName);
         FileReader fr = new FileReader(f);
@@ -386,7 +394,7 @@ public class DiscussionForum {
         }
         pointsArray = output;
     }
-    //prints student messages/replies (if any)
+    //prints student messages/replies (if they have any) 
     public void printSpecificStudentMessages(String studentUsername) {
         StringBuilder output = new StringBuilder("Messages by " + studentUsername + "\n");
         boolean studentHasPosted = false;
@@ -441,6 +449,7 @@ public class DiscussionForum {
         return !output;
     }
     //prints student messages and grade
+    //adds the new information to the points array and updates the points file
     public void responseGrading() throws Exception {
         boolean checkIfPointsExist = false;
         System.out.println(studentSpecificMessagesPrompt);
@@ -510,7 +519,7 @@ public class DiscussionForum {
         System.out.println(output);
         System.out.println("Check");
     }
-    //sorts upvotes array
+    //sorts upvotes array using a simple sorting algorithm
     public ArrayList<ArrayList<String>> sortUpvotesArray() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;
         boolean swapped = true;
