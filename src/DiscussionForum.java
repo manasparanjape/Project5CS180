@@ -59,7 +59,7 @@ public class DiscussionForum {
         this.upvotesFile = upvotesFile;
         this.scan = scan;
     }
-
+    //reads user entered file and returns a string of the contents
     public String readNewPostFile() {
         StringBuilder output = new StringBuilder();
         try {
@@ -82,7 +82,7 @@ public class DiscussionForum {
         }
         return output.toString();
     }
-
+    //reads file where all upvotes are stored
     public void readUpvotesFile() throws IOException {
         File f = new File(upvotesFile);
         FileReader fr = new FileReader(f);
@@ -98,7 +98,7 @@ public class DiscussionForum {
         bfr.close();
         upvotesArray = output;
     }
-
+    //checks if a user already upvoted a post/message
     public boolean checkAlreadyUpvoted(int messageNumber) {
         boolean output = false;
         String messageNumberString = Integer.toString(messageNumber);
@@ -114,7 +114,7 @@ public class DiscussionForum {
         }
         return output;
     }
-
+    //reads file that stores all messages in discussion forum
     public void readMessagesFile() throws Exception {
         File f = new File(messagesFileName);
         FileReader fr = new FileReader(f);
@@ -135,7 +135,7 @@ public class DiscussionForum {
         bfr.close();
         messagesArray = output;
     }
-
+    //checks whether username is found in upvotes array 
     public boolean checkUsernameInUpvotesArray() {
         boolean output = false;
         for (ArrayList<String> strings : upvotesArray) {
@@ -146,7 +146,7 @@ public class DiscussionForum {
         }
         return output;
     }
-
+    //reads Messages file, then adds all information stored in discussion forum to a string
     public void printMessages() throws Exception {
         readMessagesFile();
         StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
@@ -167,7 +167,7 @@ public class DiscussionForum {
         }
         System.out.println(output);
     }
-
+    //adds all the messages stored in the discussion to a file
     public String convertMessagesArrayToFileString() {
         StringBuilder output = new StringBuilder();
         for (ArrayList<String> strings : messagesArray) {
@@ -180,7 +180,7 @@ public class DiscussionForum {
         }
         return output.toString();
     }
-
+    //writes message to specificed file
     public void writeToMessagesFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(messagesFileName, false);
         PrintWriter pw = new PrintWriter(fos);
@@ -191,7 +191,7 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
-
+    //posts a message
     public void postMessage() throws Exception {
         boolean cancelled = false;
         int option = 0;
@@ -237,7 +237,7 @@ public class DiscussionForum {
             }
         }
     }
-
+    //replies to post
     public void replyToPost() throws Exception {
         int replyNumber = 0;
         boolean cancelled = false;
@@ -302,7 +302,7 @@ public class DiscussionForum {
             }
         }
     }
-
+    //upvotes a post/message
     public void upvote() throws Exception {
         int messageNumber = 0;
         try {
@@ -343,7 +343,7 @@ public class DiscussionForum {
             }
         }
     }
-
+    //writes information to upvote file
     public void writeToUpvotesFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(upvotesFile);
         PrintWriter pw = new PrintWriter(fos);
@@ -358,7 +358,7 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
-
+    //changes topic/updates time changed
     public void changeTopic() throws Exception {
         System.out.println(topicChangePrompt);
         String newTopic = scan.nextLine();
@@ -371,7 +371,7 @@ public class DiscussionForum {
             writeToMessagesFile();
         }
     }
-
+    //read points file and store into an array
     public void readPointsFile() throws Exception {
         File f = new File(pointsFileName);
         FileReader fr = new FileReader(f);
@@ -386,7 +386,7 @@ public class DiscussionForum {
         }
         pointsArray = output;
     }
-
+    //prints student messages/replies (if any)
     public void printSpecificStudentMessages(String studentUsername) {
         StringBuilder output = new StringBuilder("Messages by " + studentUsername + "\n");
         boolean studentHasPosted = false;
@@ -415,7 +415,7 @@ public class DiscussionForum {
             System.out.println(output);
         }
     }
-
+    //checks if a username exists
     public boolean checkUsernameNonexistence(String usernameInput) throws IOException {
         ArrayList<ArrayList<String>> accountsArray = new ArrayList<>();
         String accountsFile = "AccountsFile.txt";
@@ -440,7 +440,7 @@ public class DiscussionForum {
         }
         return !output;
     }
-
+    //prints student messages and grade
     public void responseGrading() throws Exception {
         boolean checkIfPointsExist = false;
         System.out.println(studentSpecificMessagesPrompt);
@@ -477,7 +477,7 @@ public class DiscussionForum {
             writeToPointsFile();
         }
     }
-
+    //writes to points file
     public void writeToPointsFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(pointsFileName, false);
         PrintWriter pw = new PrintWriter(fos);
@@ -490,7 +490,7 @@ public class DiscussionForum {
         pw.println(toWrite);
         pw.close();
     }
-
+    //displays messages in order of lowest to highest upvotes
     public void showDashboard() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = sortUpvotesArray();
         StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
@@ -510,7 +510,7 @@ public class DiscussionForum {
         System.out.println(output);
         System.out.println("Check");
     }
-
+    //sorts upvotes array
     public ArrayList<ArrayList<String>> sortUpvotesArray() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;
         boolean swapped = true;
