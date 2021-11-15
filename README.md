@@ -3,6 +3,8 @@
 ### Compiling & Running
 - Main class contains a main method that is used to run the program.
 - Main includes static methods from other classes, so they need to be compiled
+- In order to run the code in Vocareum, first cd into the correct folder: $ cd Project4CS180/src
+
 ### Submissions
 - Manas Paranjape submitted the code on Vocareum
 - Rishabh Pandey submitted the report on Brightspace
