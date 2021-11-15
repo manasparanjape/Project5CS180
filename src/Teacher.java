@@ -105,6 +105,7 @@ public class Teacher {
             try {
         		System.out.println(courseEnteredPrompt);
         		option = scan.nextInt();
+                scan.nextLine();
         	} catch (Exception e) {
         		System.out.println("You did not input an integer. Please input an integer between 1 and 5.");
         		option = 0;
