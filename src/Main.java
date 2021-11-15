@@ -234,11 +234,11 @@ public class Main {
                             Account account;
                             if (accountCheck == 1) {
                                 findAccount(username);
-                                account = new Account(username, firstName, lastName, true, scan);
+                                account = new Account(username, firstName, lastName, true);
                                 account.accountMainMethod(scan);
                             } else if (accountCheck == 2) {
                                 findAccount(username);
-                                account = new Account(username, firstName, lastName, false, scan);
+                                account = new Account(username, firstName, lastName, false);
                                 account.accountMainMethod(scan);
                             }
                         }
