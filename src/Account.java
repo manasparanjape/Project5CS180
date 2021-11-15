@@ -18,7 +18,6 @@ public class Account {
     boolean ifTeacher;
     Teacher teacher;
     Student student;
-    Scanner scan;
 
     private static String teacherAccountEnteredPrompt = "Please enter the option number of " + 
         "what you want to do.\n" +
@@ -27,15 +26,14 @@ public class Account {
         "what you want to do.\n" +
         "1) Open course\n2) Log out";
 
-    public Account(String username, String firstName, String lastName, boolean ifTeacher, Scanner scan) {
+    public Account(String username, String firstName, String lastName, boolean ifTeacher) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.ifTeacher = ifTeacher;
-        this.scan = scan;
     }
     //gives the teacher three options: create course, open course, or exit
-    public void teacherMainMethod() throws Exception {
+    public void teacherMainMethod(Scanner scan) throws Exception {
         teacher = new Teacher(username, firstName, lastName, null, scan);
         int option = 0;
         while (option != 3) {
@@ -60,7 +58,7 @@ public class Account {
         }
     }
     //gives the student two options: open a course or exit
-    public void studentMainMethod() throws Exception {
+    public void studentMainMethod(Scanner scan) throws Exception {
         student = new Student(username, firstName, lastName, null, "CoursesList.txt", scan);
         int option = 0;
         while (option != 2) {
@@ -84,11 +82,11 @@ public class Account {
         }
     }
     //decides which method to run in the main method depending on whether the user is a student or a teacher
-    public void accountMainMethod() throws Exception {
+    public void accountMainMethod(Scanner scan) throws Exception {
         if (ifTeacher) {
-            teacherMainMethod();
+            teacherMainMethod(scan);
         } else {
-            studentMainMethod();
+            studentMainMethod(scan);
         }
     }
 }
