@@ -31,11 +31,6 @@ public class StudentTester {
     //checks if username is already in use; true if username is used and false otherwise
     System.out.println(studentOne.checkUsernameAvailability("Billy23"));
     
-    //main method in Accounts that tests full functionality of the project
-    //Tests capabilities of the program to create, delete, login, and logout of an account
-    //Tests if Students can create replies
-    //Tests whether students can open courses and view forums and points. 
-    Accounts.main(args);
   }
   
 }
