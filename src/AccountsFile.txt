@@ -6,4 +6,3 @@ abcdef---abcdef---abcdef---abcdef---teacher
 abcde---abcde---abcde---abcde---student
 qwerty---qwerty---qwerty---qwerty---student
 manasp---manas---manas---p---student
-sachinp---sp!2---Sachin---Patel---student
