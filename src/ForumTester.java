@@ -651,9 +651,11 @@ public class ForumTester {
     [Hi Joe!]
     Please enter the option number of what you want to do.
     1) View messages
-    2) Post message3) Reply to message
+    2) Post message
+    3) Reply to message
     4) Grade student messages
-    5) Change topic6) View dashboard
+    5) Change topic
+    6) View dashboard
     7) Exit forum
     [1]
     Threads 18:32:13 11-13-2021
@@ -690,9 +692,11 @@ public class ForumTester {
 
     Please enter the option number of what you want to do.
     1) View messages
-    2) Post message3) Reply to message
+    2) Post message
+    3) Reply to message
     4) Grade student messages
-    5) Change topic6) View dashboard
+    5) Change topic
+    6) View dashboard
     7) Exit forum
     [4]
     Please enter username of the student who's posts you want to view.
@@ -759,9 +763,10 @@ public class ForumTester {
     Check
     Please enter the option number of what you want to do.
     1) View messages
-    2) Post message3) Reply to message
+    2) Post message
     4) Grade student messages
-    5) Change topic6) View dashboard
+    5) Change topic
+    6) View dashboard
     7) Exit forum
     [7]
     Please enter the option number of what you want to do.
