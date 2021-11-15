@@ -1,8 +1,8 @@
-m---m---m---m---student
-teacher---teach---m---p---teacher
-abc---abc---abc---abc---student
-abcd---abcd---abcd---abcd---student
-abcdef---abcdef---abcdef---abcdef---teacher
-abcde---abcde---abcde---abcde---student
-qwerty---qwerty---qwerty---qwerty---student
-manasp---manas---manas---p---student
+m§§§m§§§m§§§m§§§student
+teacher§§§teach§§§m§§§p§§§teacher
+abc§§§abc§§§abc§§§abc§§§student
+abcd§§§abcd§§§abcd§§§abcd§§§student
+abcdef§§§abcdef§§§abcdef§§§abcdef§§§teacher
+abcde§§§abcde§§§abcde§§§abcde§§§student
+qwerty§§§qwerty§§§qwerty§§§qwerty§§§student
+manasp§§§manas§§§manas§§§p§§§student
