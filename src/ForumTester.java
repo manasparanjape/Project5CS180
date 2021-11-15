@@ -151,9 +151,9 @@ public class ForumTester {
     1) 1) Write the reply via terminal line.
     2) Import text file with reply in file.
     3) Cancel.
-    [1]
-    What is your reply?
-    [Nice!]
+    [2]
+    Please enter the file name and path of the file which contains the post                                                                  
+    [work/StudentMessage]
     Please enter the option number of what you want to do.
     1) View discussion forum
     2) Post message
