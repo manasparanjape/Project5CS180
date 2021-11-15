@@ -394,7 +394,7 @@ public class ForumTester {
     */
     
     //Test: As a teacher: open/create course, view discussion forum, create forum, delete forum, update forum, 
-    //post message, reply to message, upvote message, grade student messages 
+    //post message, reply to message, grade student messages 
     /*
     Welcome!
     What would you like to do today?
