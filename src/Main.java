@@ -235,11 +235,11 @@ public class Main {
                             if (accountCheck == 1) {
                                 findAccount(username);
                                 account = new Account(username, firstName, lastName, true, scan);
-                                account.accountMainMethod();
+                                account.accountMainMethod(scan);
                             } else if (accountCheck == 2) {
                                 findAccount(username);
                                 account = new Account(username, firstName, lastName, false, scan);
-                                account.accountMainMethod();
+                                account.accountMainMethod(scan);
                             }
                         }
                         case 2 -> getNewAccountDetails(scan); 
