@@ -58,6 +58,10 @@
         - openCourseMainMethod is called to allow user to open a specific forum or view how many points they received
       - openCourseMainMethod:
         - gives the user four options: open discussion forum, create forum, delete forum, and show dashboard
+      - printCourseList:
+        - uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
+        - prints out the cumulative string
+
 - Student
   - general description
   - Methods:
@@ -146,7 +150,7 @@
         - writeToPointsFile
         - prints the information in the points array to the points file by using a delimiter of  “§§§”
       - showDashboard
-        - displays the messages when they are sorted in order by highest upvote to lowest upvote
+        - displays the messages when they are sorted in order by lowest upvote to highest upvote
       - sortUpvotesArray
         - Sorts the arraylists by comparing the number of upvotes each message has received
         - uses .get() method to access the number of upvotes
