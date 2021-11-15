@@ -18,7 +18,6 @@ public class Teacher {
     String firstName;
     String lastName;
     private Course course;
-    private Scanner scan;
     private final String coursesListFileName = "CoursesList.txt";
 
     private final static String newCourseNamePrompt = "What would you like to name the new course?";
@@ -28,12 +27,11 @@ public class Teacher {
          + " Open discussion forum\n2) Create discussion forum\n3) Delete discussion forum\n4) Exit course";
     private ArrayList<String> courseList = new ArrayList<>();
 
-    public Teacher (String username, String firstName, String lastName, Course course, Scanner scan) {
+    public Teacher (String username, String firstName, String lastName, Course course) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
-        this.scan = scan;
     }
     //uses a for loop to iterate through the courseList array and appends 
     //every course to a StringBuilder object
@@ -75,7 +73,7 @@ public class Teacher {
     //creates a course
     //adds course name to courseList array list
     //writes course name to text file using PrintWriter 
-    public void createCourse() throws IOException {
+    public void createCourse(Scanner scan) throws IOException {
         System.out.println(newCourseNamePrompt);
         String newCourseName = scan.nextLine();
         if (newCourseName == null || newCourseName.isBlank()) {
@@ -97,7 +95,7 @@ public class Teacher {
     }
     //checks if user inputted course is present in the courseList array list
     //reads all the discussion forum title names for that specific course
-    public void openCourse() throws Exception {
+    public void openCourse(Scanner scan) throws Exception {
         readCourseListsFile();
         printCourseList();
         System.out.println(courseSelectionPrompt);
@@ -112,7 +110,7 @@ public class Teacher {
         }
     }
     //gives user four options: open discussion forum, create forum, delete forum, and show dashboard
-    public void openCourseMainMethod() throws Exception {
+    public void openCourseMainMethod(Scanner scan) throws Exception {
         int option = 0;
         while (option != 4) {
             try {
