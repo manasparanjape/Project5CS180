@@ -37,6 +37,7 @@ public class Student {
         this.coursesListFileName = coursesListFileName;
         this.scan = scan;
     }
+    //uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
     //prints out course list
     public void printCourseList() {
         StringBuilder output = new StringBuilder();
