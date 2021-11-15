@@ -35,6 +35,8 @@ public class Teacher {
         this.course = course;
         this.scan = scan;
     }
+    //uses a for loop to iterate through the courseList array and appends 
+    //every course to a StringBuilder object
     //prints out course list as string
     public void printCourseList() {
         StringBuilder output = new StringBuilder();
@@ -48,6 +50,7 @@ public class Teacher {
         }
     }
     //reads courses the “CoursesList.txt” file and stores in arraylist
+    //stores all the course names in the courseList array list
     public void readCourseListsFile() throws IOException {  
         File f = new File(coursesListFileName);
         FileReader fr = new FileReader(f);
@@ -70,6 +73,8 @@ public class Teacher {
         }
     }
     //creates a course
+    //adds course name to courseList array list
+    //writes course name to text file using PrintWriter 
     public void createCourse() throws IOException {
         System.out.println(newCourseNamePrompt);
         String newCourseName = scan.nextLine();
@@ -90,6 +95,7 @@ public class Teacher {
             pw.close();
         }
     }
+    //checks if user inputted course is present in the courseList array list
     //reads all the discussion forum title names for that specific course
     public void openCourse() throws Exception {
         readCourseListsFile();
