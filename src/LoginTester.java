@@ -188,6 +188,39 @@ public class LoginTester {
     4) Exit
     [4]
     */
+    //Test: Invalid Login
+    /*
+    Welcome!
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [1]
+    Please enter your username.
+    [peepee]
+    Please enter your password
+    [poopoo]
+    The account details you entered are invalid.
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [1]
+    Please enter your username.
+    [SachinP]
+    Please enter your password
+    [poopoo]
+    The account details you entered are invalid.
+    What would you like to do today?
+    1) Login to my account
+    2) Create new account
+    3) Delete my account
+    4) Exit
+    [4]    
+    */
+
     
   }
   
