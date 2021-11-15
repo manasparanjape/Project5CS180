@@ -32,7 +32,7 @@ public class DiscussionForum {
 
     private static String newPostPrompt = "What do you want to post?";
     private static String replyNumberPrompt = "Which message do you want to reply to? " + 
-        "Please enter the message number or 0 if you do not want to upvote any message.";
+        "Please enter the message number or 0 if you do not want to reply any message.";
     private static String replyMessagePrompt = "What is your reply?";
     private static String upvotePrompt = "Which message do you want to upvote? " + 
         "Please enter the message number or 0 if you do not want to upvote any message.";
