@@ -223,11 +223,11 @@ public class Accounts {
                             Main main;
                             if (accountCheck == 1) {
                                 findAccount(username);
-                                main = new Main(username, firstName, lastName, true);
+                                main = new Main(username, firstName, lastName, true, scan);
                                 main.accountMainMethod();
                             } else if (accountCheck == 2) {
                                 findAccount(username);
-                                main = new Main(username, firstName, lastName, false);
+                                main = new Main(username, firstName, lastName, false, scan);
                                 main.accountMainMethod();
                             }
                         }

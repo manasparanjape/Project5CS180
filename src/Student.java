@@ -11,6 +11,7 @@ public class Student {
     private final String lastName;
     private Course course;
     private final String coursesListFileName;
+    private Scanner scan;
 
     private final static String courseSelectionPrompt = "Which course would you like to open?";
     private final static String courseEnteredPrompt = """
@@ -20,12 +21,13 @@ public class Student {
             3) Exit course""";
     private final ArrayList<String> courseList = new ArrayList<>();
 
-    public Student(String username, String firstName, String lastName, Course course, String coursesListFileName) {
+    public Student(String username, String firstName, String lastName, Course course, String coursesListFileName, Scanner scan) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
         this.coursesListFileName = coursesListFileName;
+        this.scan = scan;
     }
 
     public void printCourseList() {
@@ -60,7 +62,6 @@ public class Student {
     }
 
     public void openCourse() throws Exception {
-        Scanner scan = new Scanner(System.in);
         readCourseListsFile();
         printCourseList();
         System.out.println(courseSelectionPrompt);
@@ -69,14 +70,13 @@ public class Student {
             System.out.println("The course you entered does not exist!");
         } else {
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan);
             course.readForumListFile();
             openCourseMainMethod();
         }
     }
 
     public void openCourseMainMethod() throws Exception {
-        Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 3) {
         	try {

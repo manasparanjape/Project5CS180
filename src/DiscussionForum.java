@@ -30,6 +30,7 @@ public class DiscussionForum {
     private ArrayList<ArrayList<String>> pointsArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
     private String forumCreationTime;
+    private Scanner scan;
 
     private final static String newPostPrompt = "What do you want to post?";
     private final static String replyNumberPrompt = "Which message do you want to reply to? Please enter the message number or 0 if you do not want to upvote any message.";
@@ -50,7 +51,7 @@ public class DiscussionForum {
             3) Cancel.""";
     private static final String fileNamePrompt = "Please enter the file name and path of the file which contains the post";
 
-    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName, String lastName, String username, String upvotesFile) {
+    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName, String lastName, String username, String upvotesFile, Scanner scan) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
@@ -58,10 +59,10 @@ public class DiscussionForum {
         this.lastName = lastName;
         this.username = username;
         this.upvotesFile = upvotesFile;
+        this.scan = scan;
     }
 
     public String readNewPostFile() {
-        Scanner scan = new Scanner(System.in);
         StringBuilder output = new StringBuilder();
         try {
             System.out.println(fileNamePrompt);
@@ -194,7 +195,6 @@ public class DiscussionForum {
     }
 
     public void postMessage() throws Exception {
-        Scanner scan = new Scanner(System.in);
         boolean cancelled = false;
         int option = 0;
         while (option != 3 && !cancelled) {
@@ -241,7 +241,6 @@ public class DiscussionForum {
     }
 
     public void replyToPost() throws Exception {
-        Scanner scan = new Scanner(System.in);
         int replyNumber = 0;
         boolean cancelled = false;
         try {
@@ -305,7 +304,6 @@ public class DiscussionForum {
     }
 
     public void upvote() throws Exception {
-        Scanner scan = new Scanner(System.in);
         int messageNumber = 0;
         try {
             System.out.println(upvotePrompt);
@@ -366,7 +364,6 @@ public class DiscussionForum {
     }
 
     public void changeTopic() throws Exception {
-        Scanner scan = new Scanner(System.in);
         System.out.println(topicChangePrompt);
         String newTopic = scan.nextLine();
         if (newTopic == null || newTopic.isBlank()) {
@@ -449,7 +446,6 @@ public class DiscussionForum {
     }
 
     public void responseGrading() throws Exception {
-        Scanner scan = new Scanner(System.in);
         boolean checkIfPointsExist = false;
         System.out.println(studentSpecificMessagesPrompt);
         String studentUsername = scan.nextLine();

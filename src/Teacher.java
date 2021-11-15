@@ -7,6 +7,7 @@ public class Teacher {
     String firstName;
     String lastName;
     private Course course;
+    private Scanner scan;
     private final String coursesListFileName = "CoursesList.txt";
 
     private final static String newCourseNamePrompt = "What would you like to name the new course?";
@@ -20,11 +21,12 @@ public class Teacher {
             4) Exit course""";
     private ArrayList<String> courseList = new ArrayList<>();
 
-    public Teacher (String username, String firstName, String lastName, Course course) {
+    public Teacher (String username, String firstName, String lastName, Course course, Scanner scan) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
+        this.scan = scan;
     }
 
     public void printCourseList() {
@@ -62,7 +64,6 @@ public class Teacher {
     }
 
     public void createCourse() throws IOException {
-        Scanner scan = new Scanner(System.in);
         System.out.println(newCourseNamePrompt);
         String newCourseName = scan.nextLine();
         if (newCourseName == null || newCourseName.isBlank()) {
@@ -84,7 +85,6 @@ public class Teacher {
     }
 
     public void openCourse() throws Exception {
-        Scanner scan = new Scanner(System.in);
         readCourseListsFile();
         printCourseList();
         System.out.println(courseSelectionPrompt);
@@ -93,14 +93,13 @@ public class Teacher {
             System.out.println("The course you entered does not exist!");
         } else {
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName);
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan);
             course.readForumListFile();
             openCourseMainMethod();
         }
     }
 
     public void openCourseMainMethod() throws Exception {
-        Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 4) {
             try {

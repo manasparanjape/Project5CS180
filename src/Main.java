@@ -7,20 +7,21 @@ public class Main {
     boolean ifTeacher;
     Teacher teacher;
     Student student;
+    Scanner scan;
 
     private final static String teacherAccountEnteredPrompt = "Please enter the option number of what you want to do.\n1) Create course\n2) Open course\n3) Log out";
     private final static String studentAccountEnteredPrompt = "Please enter the option number of what you want to do.\n1) Open course\n2) Log out";
 
-    public Main(String username, String firstName, String lastName, boolean ifTeacher) {
+    public Main(String username, String firstName, String lastName, boolean ifTeacher, Scanner scan) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.ifTeacher = ifTeacher;
+        this.scan = scan;
     }
 
     public void teacherMainMethod() throws Exception {
-        teacher = new Teacher(username, firstName, lastName, null);
-        Scanner scan = new Scanner(System.in);
+        teacher = new Teacher(username, firstName, lastName, null, scan);
         int option = 0;
         while (option != 3) {
         	try {
@@ -44,8 +45,7 @@ public class Main {
     }
 
     public void studentMainMethod() throws Exception {
-        student = new Student(username, firstName, lastName, null, "CoursesList.txt");
-        Scanner scan = new Scanner(System.in);
+        student = new Student(username, firstName, lastName, null, "CoursesList.txt", scan);
         int option = 0;
         while (option != 2) {
         	try {

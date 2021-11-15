@@ -18,6 +18,7 @@ public class Course {
     private final String lastName;
     private final String discussionBoardsListFileName;
     private DiscussionForum discussionForum;
+    private Scanner scan;
     private final static String newForumNamePrompt = "What would you like to name the new discussion forum?";
     private final static String newForumCreated = "New forum has been created!";
     private final static String deleteForumPrompt = "Which forum would you like to delete?";
@@ -60,18 +61,17 @@ public class Course {
         }
     }
 
-    public Course(String courseName, String username, String firstName, String lastName, DiscussionForum discussionForum, String discussionBoardsListFileName /*String discussionsPointsFileName*/) {
+    public Course(String courseName, String username, String firstName, String lastName, DiscussionForum discussionForum, String discussionBoardsListFileName, Scanner scan) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.discussionForum = discussionForum;
         this.discussionBoardsListFileName = discussionBoardsListFileName;
-        //this.discussionsPointsFileName = discussionsPointsFileName;
+        this.scan = scan;
     }
 
     public String readNewForumFile() {
-        Scanner scan = new Scanner(System.in);
         StringBuilder output = new StringBuilder();
         try {
             System.out.println(forumNamePrompt);
@@ -116,7 +116,6 @@ public class Course {
     }
 
     public void createForum() {
-        Scanner scan = new Scanner(System.in);
         boolean cancelled = false;
         int option = 0;
         while (option != 3 && !cancelled) {
@@ -170,7 +169,6 @@ public class Course {
     }
 
     public void deleteForum() throws Exception {
-        Scanner scan = new Scanner(System.in);
         System.out.println(deleteForumPrompt);
         String toDeleteForum = scan.nextLine();
         boolean deleted = false;
@@ -230,7 +228,6 @@ public class Course {
     }
 
     public void studentDiscussionForumOpened() throws Exception {
-        Scanner scan = new Scanner(System.in);
         readForumListFile();
         printForumList();
         System.out.println(forumSelectionPrompt);
@@ -241,7 +238,7 @@ public class Course {
             String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
             String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
             String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
-            discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
+            discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, scan);
             discussionForum.readMessagesFile();
             discussionForum.readPointsFile();
             discussionForum.readUpvotesFile();
@@ -250,7 +247,6 @@ public class Course {
     }
 
     public void teacherDiscussionForumOpened() throws Exception {
-        Scanner scan = new Scanner(System.in);
         readForumListFile();
         printForumList();
         System.out.println(forumSelectionPrompt);
@@ -261,7 +257,7 @@ public class Course {
             String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
             String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
             String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
-            discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName);
+            discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName, discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, scan);
             discussionForum.readMessagesFile();
             discussionForum.readPointsFile();
             discussionForum.readUpvotesFile();
@@ -270,7 +266,6 @@ public class Course {
     }
 
     public void showDiscussionForumMainMethodStudent() throws Exception {
-        Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 5) {
         	try {
@@ -296,7 +291,6 @@ public class Course {
     }
 
     public void showDiscussionForumMainMethodTeacher() {
-        Scanner scan = new Scanner(System.in);
         int option = 0;
         while (option != 7) {
         	try {
