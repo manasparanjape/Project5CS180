@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 /**
@@ -36,27 +37,36 @@ public class Account {
 
     //gives the teacher three options: create course, open course, or exit
     public void teacherMainMethod() throws Exception {
-        teacher = new Teacher(username, firstName, lastName, null, scan);
-        int option = 0;
-        while (option != 3) {
-            try {
-                System.out.println(teacherAccountEnteredPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-            } catch (Exception e) {
-                System.out.println("You did not input an integer. Please input a number between 1 and 3.");
-                option = 0;
-                scan.nextLine();
-                continue;
-            }
-            if (option < 1 || option > 3) {
-                System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
-            } else {
-                switch (option) {
-                    case 1 -> teacher.createCourse();
-                    case 2 -> teacher.openCourse();
+        try {
+            int option = 0;
+            //make an array of options and display the teacher options from there
+            String[] options = {"Create a course", "Open a course"};
+            option = JOptionPane.showOptionDialog(null, "Select an option",
+                    "Option choosing", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                    options, options[0]+1);
+            teacher = new Teacher(username, firstName, lastName, null, scan);
+            while (option != 3) {
+                try {
+                    System.out.println(teacherAccountEnteredPrompt);
+                    option = scan.nextInt();
+                    scan.nextLine();
+                } catch (Exception e) {
+                    System.out.println("You did not input an integer. Please input a number between 1 and 3.");
+                    option = 0;
+                    scan.nextLine();
+                    continue;
+                }
+                if (option < 1 || option > 3) {
+                    System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
+                } else {
+                    switch (option) {
+                        case 1 -> teacher.createCourse();
+                        case 2 -> teacher.openCourse();
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
