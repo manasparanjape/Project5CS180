@@ -1,5 +1,3 @@
-import com.ibm.virtualization.management.GuestOSInfoRetrievalException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

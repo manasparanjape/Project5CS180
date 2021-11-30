@@ -272,6 +272,7 @@ public class Main {
                 //System.out.println(initialPrompt);
                 //option = scan.nextInt();
                 //scan.nextLine();
+                //todo: make a new jframe object
                 Object[] options = {"Login to my account", "Create new account", "Change my password", "Delete my account", "Exit"};
                 option = JOptionPane.showOptionDialog(null, "Select an option", "Option choosing",JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]) + 1;
                 if (option < 1 || option > 5) {
