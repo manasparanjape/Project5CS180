@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,41 +8,50 @@ import java.util.Scanner;
 
 /**
  * DiscussionForum.java
- *
+ * <p>
  * Contains all possible methods to be executed after opening a discussion forum
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
- *
  * @version 11/15/2021
- *
  */
 
 public class DiscussionForum {
     private String forumName;
-    private final String messagesFileName;
-    private final String pointsFileName;
-    private final String upvotesFile;
-    private final String firstName;
-    private final String lastName;
-    private final String username;
+    private String messagesFileName;
+    private String pointsFileName;
+    private String upvotesFile;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private Scanner scan;
     private ArrayList<ArrayList<String>> messagesArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> pointsArray = new ArrayList<>();
     private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
     private String forumCreationTime;
-    private Scanner scan;
+    //private static ArrayList<String> restrictedWords = new ArrayList<>();
 
-    private final static String newPostPrompt = "What do you want to post?";
-    private final static String replyNumberPrompt = "Which message do you want to reply to? Please enter the message number or 0 if you do not want to upvote any message.";
-    private final static String replyMessagePrompt = "What is your reply?";
-    private final static String upvotePrompt = "Which message do you want to upvote? Please enter the message number or 0 if you do not want to upvote any message.";
-    private final static String topicChangePrompt = "What do you want to change the topic to?";
-    private final static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want to view.";
-    private final static String gradingStudentPrompt = "Please enter the number of point you wish to assign this student.";
-    private final static String methodOfNewPostPrompt = "How do you want to write the new post?\n1) Write the post via terminal line.\n2) Import text file with post in file.\n3) Cancel.";
-    private final static String methodOfNewReplyPrompt = "How do you want to write the new reply?\n1) 1) Write the reply via terminal line.\n2) Import text file with reply in file.\n3) Cancel.";
-    private static final String fileNamePrompt = "Please enter the file name and path of the file which contains the post";
+    private static String newPostPrompt = "What do you want to post?";
+    private static String replyNumberPrompt = "Which message do you want to reply to? " +
+            "Please enter the message number or 0 if you do not want to reply any message.";
+    private static String replyMessagePrompt = "What is your reply?";
+    private static String upvotePrompt = "Which message do you want to upvote? " +
+            "Please enter the message number or 0 if you do not want to upvote any message.";
+    private static String topicChangePrompt = "What do you want to change the topic to?";
+    private static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want"
+            + "to view.";
+    private static String gradingStudentPrompt = "Please enter the number of point you wish to assign this"
+            + " student.";
+    private static String methodOfNewPostPrompt = "How do you want to write the new post?\n" +
+            "1) Write the post via terminal line.\n2) Import text file with post in file.\n3) Cancel.";
+    private static String methodOfNewReplyPrompt = "How do you want to write the new reply?\n1)" +
+            "1) Write the reply via terminal line.\n2) Import text file with reply in file.\n3) Cancel.";
+    private static String fileNamePrompt = "Please enter the file name and path of the file which contains the "
+            + "post";
+    private static String deleteMessagePrompt = "Which message do you want to delete? " +
+            "Please enter the message number or 0 if you do not want to upvote any message.";
 
-    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName, String lastName, String username, String upvotesFile, Scanner scan) {
+    public DiscussionForum(String forumName, String messagesFileName, String pointsFileName, String firstName,
+                           String lastName, String username, String upvotesFile, Scanner scan, JTextArea textArea) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
@@ -50,8 +60,10 @@ public class DiscussionForum {
         this.username = username;
         this.upvotesFile = upvotesFile;
         this.scan = scan;
+        this.textArea = textArea;
     }
 
+    //reads user entered file and returns a string of the contents called output
     public String readNewPostFile() {
         StringBuilder output = new StringBuilder();
         try {
@@ -67,14 +79,16 @@ public class DiscussionForum {
             }
             output = new StringBuilder(output.toString().replace("\r\n", " ").replace("\n", " "));
             output = new StringBuilder(output.toString().replace(".", ". "));
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("The file you entered was not found.");
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.out.println("Error parsing contents of the file.");
         }
         return output.toString();
     }
 
+    //reads file where all upvotes are stored
+    //stores that information into an arraylist
     public void readUpvotesFile() throws IOException {
         File f = new File(upvotesFile);
         FileReader fr = new FileReader(f);
@@ -82,7 +96,7 @@ public class DiscussionForum {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -91,6 +105,7 @@ public class DiscussionForum {
         upvotesArray = output;
     }
 
+    //checks if a user already upvoted a post/message by going through a arraylist called upvotesArray
     public boolean checkAlreadyUpvoted(int messageNumber) {
         boolean output = false;
         String messageNumberString = Integer.toString(messageNumber);
@@ -107,16 +122,18 @@ public class DiscussionForum {
         return output;
     }
 
+    //reads file that stores all messages in discussion forum
+    //splits this info and store into arraylist
     public void readMessagesFile() throws Exception {
         File f = new File(messagesFileName);
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
-        forumCreationTime = line.split("---")[1];
+        forumCreationTime = line.split("§§§")[1];
         line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -128,6 +145,7 @@ public class DiscussionForum {
         messagesArray = output;
     }
 
+    //checks whether username is found in upvotes array
     public boolean checkUsernameInUpvotesArray() {
         boolean output = false;
         for (ArrayList<String> strings : upvotesArray) {
@@ -139,6 +157,7 @@ public class DiscussionForum {
         return output;
     }
 
+    //reads Messages file, then adds all information stored in discussion forum to a string
     public void printMessages() throws Exception {
         readMessagesFile();
         StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
@@ -160,12 +179,14 @@ public class DiscussionForum {
         System.out.println(output);
     }
 
+    //adds all the messages stored in the discussion to a file
+    //infromation is split by "§§§"
     public String convertMessagesArrayToFileString() {
         StringBuilder output = new StringBuilder();
         for (ArrayList<String> strings : messagesArray) {
             StringBuilder line = new StringBuilder();
             for (int j = 0; j < 8; j++) {
-                line.append(strings.get(j)).append("---");
+                line.append(strings.get(j)).append("§§§");
             }
             line = new StringBuilder(line.substring(0, line.length() - 3));
             output.append(line).append("\n");
@@ -173,10 +194,11 @@ public class DiscussionForum {
         return output.toString();
     }
 
+    //writes message to specificed file
     public void writeToMessagesFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(messagesFileName, false);
         PrintWriter pw = new PrintWriter(fos);
-        String toWrite = forumName + "---" + forumCreationTime;
+        String toWrite = forumName + "§§§" + forumCreationTime;
         if (messagesArray.size() > 0) {
             toWrite += "\n" + convertMessagesArrayToFileString();
         }
@@ -184,19 +206,21 @@ public class DiscussionForum {
         pw.close();
     }
 
+    //posts a message
+    //adds that new array to the messages Array
     public void postMessage() throws Exception {
         boolean cancelled = false;
         int option = 0;
         while (option != 3 && !cancelled) {
             System.out.println(methodOfNewPostPrompt);
             try {
-            	option = scan.nextInt();
+                option = scan.nextInt();
                 scan.nextLine();
             } catch (Exception e) {
-            	System.out.println("Please enter a valid number!");
-            	option = 0;
-            	scan.nextLine();
-            	continue;
+                System.out.println("Please enter a valid number!");
+                option = 0;
+                scan.nextLine();
+                continue;
             }
             String newPost = "";
             if (option == 1) {
@@ -204,14 +228,14 @@ public class DiscussionForum {
                 newPost = scan.nextLine();
             } else if (option == 2) {
                 newPost = readNewPostFile();
-            } else if (option != 3){
+            } else if (option != 3) {
                 System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
             }
             if (option == 1 || option == 2) {
                 if (newPost == null || newPost.isBlank()) {
                     System.out.println("Please enter a valid post(ie. Not all spaces or blank).");
                 } else {
-                    String fullName = firstName + lastName;
+                    String fullName = firstName + " " + lastName;
                     DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
                     ArrayList<String> newPostArray = new ArrayList<>();
                     newPostArray.add(0, Integer.toString(messagesArray.size() + 1));
@@ -230,6 +254,8 @@ public class DiscussionForum {
         }
     }
 
+    //replies to post
+    //updates all the information in the messages file
     public void replyToPost() throws Exception {
         int replyNumber = 0;
         boolean cancelled = false;
@@ -238,39 +264,41 @@ public class DiscussionForum {
             replyNumber = scan.nextInt();
             scan.nextLine();
         } catch (Exception e) {
-            System.out.println("You did not enter an integer. Please enter a valid integer between 1 and " + messagesArray.size() + ".");
+            System.out.println("You did not enter an integer. Please enter a valid integer between 1 and "
+                    + messagesArray.size() + ".");
             scan.nextLine();
         }
         if (replyNumber < 0 || replyNumber > messagesArray.size()) {
-            System.out.println("You entered an invalid number. Please enter a valid message number between 1 and " + messagesArray.size() + ".");
+            System.out.println("You entered an invalid number. Please enter a valid message number between 1 and "
+                    + messagesArray.size() + ".");
         }
         if (replyNumber > 0 && replyNumber < messagesArray.size() + 1) {
             int option = 0;
             while (option != 3 && !cancelled) {
-            	try {
-            		System.out.println(methodOfNewReplyPrompt);
-            		option = scan.nextInt();
+                try {
+                    System.out.println(methodOfNewReplyPrompt);
+                    option = scan.nextInt();
                     scan.nextLine();
-            	} catch (Exception e) {
-            		System.out.println("Please enter a valid number!");
+                } catch (Exception e) {
+                    System.out.println("Please enter a valid number!");
                     scan.nextLine();
                     option = 0;
                     continue;
-            	}
+                }
                 String newPost = "";
                 if (option == 1) {
                     System.out.println(replyMessagePrompt);
                     newPost = scan.nextLine();
                 } else if (option == 2) {
                     newPost = readNewPostFile();
-                } else if (option != 3){
+                } else if (option != 3) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
                 }
                 if (option == 1 || option == 2) {
                     if (newPost == null || newPost.isBlank()) {
                         System.out.println("Please enter a valid reply(ie. Not all spaces or blank).");
                     } else {
-                        String fullName = firstName + lastName;
+                        String fullName = firstName + " " + lastName;
                         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
                         ArrayList<String> newPostArray = new ArrayList<>();
                         newPostArray.add(Integer.toString(replyNumber + 1));
@@ -293,6 +321,34 @@ public class DiscussionForum {
         }
     }
 
+    public void deletePost() throws Exception {
+        int messageNumber = 0;
+        try {
+            System.out.println(deleteMessagePrompt);
+            messageNumber = scan.nextInt();
+            scan.nextLine();
+        } catch (Exception e) {
+            System.out.println("You did not input an integer. Please input an integer between 1 and "
+                    + messagesArray.size() + ".");
+            scan.nextLine();
+        }
+        if (messageNumber < 0 || messageNumber > messagesArray.size()) {
+            System.out.println("You entered an invalid option. Please enter a number between 1 and "
+                    + messagesArray.size() + ".");
+        } else {
+            if (messageNumber > 0) {
+                String fullName = firstName + " " + lastName;
+                messagesArray.get(messageNumber - 1).set(1, "This message has been deleted by " + fullName);
+                messagesArray.get(messageNumber - 1).set(4, "0");
+                messagesArray.get(messageNumber - 1).set(7, String.valueOf(messagesArray.size()));
+                writeToMessagesFile();
+                System.out.println("The message you chose has been deleted");
+            }
+        }
+    }
+
+    //upvotes a post/message
+    //checks if user upvoted a message or not
     public void upvote() throws Exception {
         int messageNumber = 0;
         try {
@@ -300,14 +356,16 @@ public class DiscussionForum {
             messageNumber = scan.nextInt();
             scan.nextLine();
         } catch (Exception e) {
-            System.out.println("You did not input an integer. Please input an integer between 1 and " + messagesArray.size() + ".");
+            System.out.println("You did not input an integer. Please input an integer between 1 and "
+                    + messagesArray.size() + ".");
             scan.nextLine();
         }
         if (messageNumber < 0 || messageNumber > messagesArray.size()) {
             if (checkAlreadyUpvoted(messageNumber)) {
                 System.out.println("You already upvoted this message. You can only upvote a message once");
             } else {
-                System.out.println("You entered an invalid option. Please enter a number between 1 and " + messagesArray.size() + ".");
+                System.out.println("You entered an invalid option. Please enter a number between 1 and "
+                        + messagesArray.size() + ".");
             }
         } else {
             if (messageNumber > 0) {
@@ -329,22 +387,18 @@ public class DiscussionForum {
                 writeToMessagesFile();
                 writeToUpvotesFile();
             }
-            /*ArrayList<String> temp = messagesArray.get(messageNumber);
-            int index = sortedUpvotesArray.indexOf(temp);
-            temp = sortedUpvotesArray.get(index);
-            sortUpvotesArray();
-            int newIndex = sortedUpvotesArray.indexOf(temp);
-            messagesArray.set()*/
         }
     }
 
+    //writes information to upvote file
+    //uses "§§§" as delimiter
     public void writeToUpvotesFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(upvotesFile);
         PrintWriter pw = new PrintWriter(fos);
         StringBuilder toWrite = new StringBuilder();
         for (ArrayList<String> strings : upvotesArray) {
             for (String string : strings) {
-                toWrite.append(string).append("---");
+                toWrite.append(string).append("§§§");
             }
             toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 3) + "\n");
         }
@@ -353,6 +407,7 @@ public class DiscussionForum {
         pw.close();
     }
 
+    //changes topic/updates time changed
     public void changeTopic() throws Exception {
         System.out.println(topicChangePrompt);
         String newTopic = scan.nextLine();
@@ -366,6 +421,8 @@ public class DiscussionForum {
         }
     }
 
+    //read points file and store into an array
+    //assigns the array to the points array
     public void readPointsFile() throws Exception {
         File f = new File(pointsFileName);
         FileReader fr = new FileReader(f);
@@ -373,7 +430,7 @@ public class DiscussionForum {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
@@ -381,6 +438,7 @@ public class DiscussionForum {
         pointsArray = output;
     }
 
+    //prints student messages/replies (if they have any)
     public void printSpecificStudentMessages(String studentUsername) {
         StringBuilder output = new StringBuilder("Messages by " + studentUsername + "\n");
         boolean studentHasPosted = false;
@@ -410,7 +468,8 @@ public class DiscussionForum {
         }
     }
 
-    public boolean checkUsernameNonexistence(String username) throws IOException {
+    //checks if a username exists
+    public boolean checkUsernameNonexistence(String usernameInput) throws IOException {
         ArrayList<ArrayList<String>> accountsArray = new ArrayList<>();
         String accountsFile = "AccountsFile.txt";
         File f = new File(accountsFile);
@@ -418,7 +477,7 @@ public class DiscussionForum {
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
         while (line != null) {
-            String[] separatedLine = line.split("---");
+            String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             accountsArray.add(singleLine);
             line = bfr.readLine();
@@ -427,7 +486,7 @@ public class DiscussionForum {
         boolean output = false;
         int i = 0;
         while (!output && i < accountsArray.size()) {
-            if (accountsArray.get(i).get(0).equals(username)) {
+            if (accountsArray.get(i).get(0).equals(usernameInput)) {
                 output = true;
             }
             i++;
@@ -435,6 +494,8 @@ public class DiscussionForum {
         return !output;
     }
 
+    //prints student messages and grade
+    //adds the new information to the points array and updates the points file
     public void responseGrading() throws Exception {
         boolean checkIfPointsExist = false;
         System.out.println(studentSpecificMessagesPrompt);
@@ -472,19 +533,21 @@ public class DiscussionForum {
         }
     }
 
+    //writes to points file
     public void writeToPointsFile() throws Exception {
         FileOutputStream fos = new FileOutputStream(pointsFileName, false);
         PrintWriter pw = new PrintWriter(fos);
         StringBuilder toWrite = new StringBuilder();
         System.out.println(pointsArray);
         for (ArrayList<String> strings : pointsArray) {
-            toWrite.append(strings.get(0)).append("---").append(strings.get(1)).append("\n");
+            toWrite.append(strings.get(0)).append("§§§").append(strings.get(1)).append("\n");
         }
         toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
         pw.println(toWrite);
         pw.close();
     }
 
+    //displays messages in order of lowest to highest upvotes
     public void showDashboard() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = sortUpvotesArray();
         StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
@@ -501,18 +564,18 @@ public class DiscussionForum {
             }
             output.append("\n");
         }
-        //output = new StringBuilder(output.substring(output.length() - 1));
         System.out.println(output);
-        System.out.println("Check");
     }
 
+    //sorts upvotes array using a simple sorting algorithm
     public ArrayList<ArrayList<String>> sortUpvotesArray() {
         ArrayList<ArrayList<String>> sortedUpvotesArray = messagesArray;
         boolean swapped = true;
-        while(swapped) {
+        while (swapped) {
             swapped = false;
             for (int i = 0; i < sortedUpvotesArray.size() - 1; i++) {
-                if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) > Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
+                if (Integer.parseInt(sortedUpvotesArray.get(i).get(4)) >
+                        Integer.parseInt(sortedUpvotesArray.get(i + 1).get(4))) {
                     ArrayList<String> temp = sortedUpvotesArray.get(i);
                     sortedUpvotesArray.set(i, sortedUpvotesArray.get(i + 1));
                     sortedUpvotesArray.set(i + 1, temp);
@@ -521,5 +584,243 @@ public class DiscussionForum {
             }
         }
         return sortedUpvotesArray;
+    }
+
+
+    /*
+     * GUI part
+     * how to create the interface.
+     */
+
+    JTextArea textArea;
+
+    public String convertToPrintFormat() throws Exception {
+        readMessagesFile();
+        StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
+        for (ArrayList<String> strings : messagesArray) {
+            output.append(strings.get(0)).append(". ");
+            output.append(strings.get(1)).append("\n");
+            output.append("   - ").append(strings.get(2)).append(" ");
+            output.append(strings.get(3)).append("\n");
+            int upvotes = Integer.parseInt(strings.get(4));
+            if (upvotes > 0) {
+                output.append("Upvotes: ").append(upvotes).append("\n");
+            }
+            int replyTo = Integer.parseInt(strings.get(5));
+            if (replyTo > 0) {
+                output.append("Reply to message no.: ").append(replyTo).append("\n");
+            }
+            output.append("\n");
+        }
+        return String.valueOf(output);
+    }
+
+    public void printMessagesInGUI() throws Exception {
+        String output = convertToPrintFormat();
+        textArea.setText(String.valueOf(output));
+    }
+
+    public void postMessageInGUI(String newPost, String messageNumberString) throws Exception {
+        boolean errorCheck = false;
+        boolean reply = false;
+        int messageNumber = 0;
+        try {
+            if (messageNumberString == null || messageNumberString.isBlank()) {
+                reply = false;
+            } else {
+                messageNumber = Integer.parseInt(messageNumberString);
+                if (messageNumber < 0 || messageNumber > messagesArray.size()) {
+                    String errorMessage = "You did not input a valid integer. Please input 0 or leave blank if you want to post a message. Please input an integer between 1 and "
+                            + messagesArray.size() + " if you want to reply to a message.";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    errorCheck = true;
+                } else {
+                    reply = messageNumber != 0;
+                }
+            }
+        } catch (NumberFormatException e) {
+            String errorMessage = "You did not input an integer. Please input 0 or leave blank if you want to post a message. Please input an integer between 1 and "
+                    + messagesArray.size() + " if you want to reply to a message.";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            errorCheck = true;
+        }
+        if (newPost == null || newPost.isBlank()) {
+            String errorMessage = "Please enter a valid post(ie. Not all spaces or blank).";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!errorCheck){
+            String fullName = firstName + " " + lastName;
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+            ArrayList<String> newPostArray = new ArrayList<>();
+            if (reply) {
+                newPostArray.add(Integer.toString(messageNumber + 1));
+                newPostArray.add(newPost);
+                newPostArray.add(fullName);
+                newPostArray.add(LocalDateTime.now().format(format));
+                newPostArray.add("0");
+                newPostArray.add(Integer.toString(messageNumber));
+                newPostArray.add(username);
+                newPostArray.add(Integer.toString(messagesArray.size() + 1));
+                messagesArray.add(messageNumber, newPostArray);
+                for (int i = messageNumber + 1; i < messagesArray.size(); i++) {
+                    messagesArray.get(i).set(0, Integer.toString(i + 1));
+                }
+            } else {
+                newPostArray.add(0, Integer.toString(messagesArray.size() + 1));
+                newPostArray.add(1, newPost);
+                newPostArray.add(2, fullName);
+                newPostArray.add(3, LocalDateTime.now().format(format));
+                newPostArray.add(4, "0");
+                newPostArray.add(5, "0");
+                newPostArray.add(6, username);
+                newPostArray.add(7, Integer.toString(messagesArray.size()));
+                messagesArray.add(newPostArray);
+            }
+            writeToMessagesFile();
+            printMessagesInGUI();
+        }
+    }
+
+    public void upvoteMessageInGUI(String upvoteMessageNumber) throws Exception {
+        int messageNumber = 0;
+        try {
+            messageNumber = Integer.parseInt(upvoteMessageNumber);
+        } catch (NumberFormatException e) {
+            String errorMessage = "You did not input an integer. Please input an integer between 1 and "
+                    + messagesArray.size() + ".";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (messageNumber < 0 || messageNumber > messagesArray.size()) {
+            if (checkAlreadyUpvoted(messageNumber)) {
+                String errorMessage = "You have already upvoted this message. You cannot upvote the same message twice.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String errorMessage = "You entered an invalid option. Please enter a number between 1 and "
+                        + messagesArray.size() + ".";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            if (messageNumber > 0) {
+                int upvotes = Integer.parseInt(messagesArray.get(messageNumber - 1).get(4));
+                upvotes++;
+                messagesArray.get(messageNumber - 1).set(4, Integer.toString(upvotes));
+                if (checkUsernameInUpvotesArray()) {
+                    for (ArrayList<String> strings : upvotesArray) {
+                        if (strings.get(0).equals(username)) {
+                            strings.add(Integer.toString(messageNumber));
+                        }
+                    }
+                } else {
+                    ArrayList<String> newUpvoteArray = new ArrayList<>();
+                    newUpvoteArray.add(username);
+                    newUpvoteArray.add(Integer.toString(messageNumber));
+                    upvotesArray.add(newUpvoteArray);
+                }
+                writeToMessagesFile();
+                writeToUpvotesFile();
+                printMessagesInGUI();
+            }
+        }
+    }
+
+    public void deleteMessageInGUI(String messageNumberString) throws Exception {
+        int messageNumber = 0;
+        boolean numberValid = true;
+        try {
+            messageNumber = Integer.parseInt(messageNumberString);
+        } catch (NumberFormatException e) {
+            String errorMessage = "You did not input an integer. In order to delete a message, please input an integer between 1 and "
+                    + messagesArray.size() + ".";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            numberValid = false;
+        }
+        if (numberValid) {
+            if (messageNumber < 1 || messageNumber > messagesArray.size()) {
+                String errorMessage = "You entered an invalid option. In order to delete a message, please enter a number between 1 and "
+                        + messagesArray.size() + ".";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                numberValid = false;
+            }
+        }
+        if (numberValid) {
+            String fullName = firstName + " " + lastName;
+            messagesArray.get(messageNumber - 1).set(1, "This message has been deleted by " + fullName);
+            messagesArray.get(messageNumber - 1).set(4, "0");
+            messagesArray.get(messageNumber - 1).set(7, String.valueOf(messagesArray.size()));
+            writeToMessagesFile();
+            printMessagesInGUI();
+        }
+    }
+
+    public void setTextArea(JTextArea textArea) {
+        this.textArea = textArea;
+    }
+
+    public void showDashboardInGUI() {
+        ArrayList<ArrayList<String>> sortedUpvotesArray = sortUpvotesArray();
+        StringBuilder output = new StringBuilder(forumName + " " + forumCreationTime + "\n");
+        for (ArrayList<String> strings : sortedUpvotesArray) {
+            output.append(strings.get(0)).append(". ");
+            output.append(strings.get(1)).append("\n");
+            output.append("   - ").append(strings.get(2)).append(" ");
+            output.append(strings.get(3)).append("\n");
+            int upvotes = Integer.parseInt(strings.get(4));
+            output.append("Upvotes: ").append(upvotes).append("\n");
+            int replyTo = Integer.parseInt(strings.get(5));
+            if (replyTo > 0) {
+                output.append("Reply to message no.: ").append(replyTo).append("\n");
+            }
+            output.append("\n");
+        }
+        textArea.setText(String.valueOf(output));
+    }
+
+    public void gradeStudentsInGUI() throws Exception {
+        boolean checkIfPointsExist = false;
+        String studentUsername = JOptionPane.showInputDialog(null, studentSpecificMessagesPrompt, "Student Grading", JOptionPane.QUESTION_MESSAGE);
+        int i = 0;
+        while (!checkIfPointsExist && i < pointsArray.size()) {
+            if (pointsArray.get(i).get(0).equals(studentUsername)) {
+                checkIfPointsExist = true;
+            }
+            i++;
+        }
+        if (studentUsername == null || checkUsernameNonexistence(studentUsername)) {
+            String errorMessage = "The student username you entered does not exist!";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            printSpecificStudentMessages(studentUsername);
+            String pointsString;
+            int points = 0;
+            try {
+                pointsString = JOptionPane.showInputDialog(null, gradingStudentPrompt, "Student Grading", JOptionPane.QUESTION_MESSAGE);
+                points = Integer.parseInt(pointsString);
+                ArrayList<String> output = new ArrayList<>();
+                output.add(studentUsername);
+                output.add(Integer.toString(points));
+                if (checkIfPointsExist) {
+                    pointsArray.set(i - 1, output);
+                } else {
+                    pointsArray.add(output);
+                }
+                writeToPointsFile();
+            } catch (Exception e) {
+                String errorMessage = "You did not enter an integer. Please enter an integer in order to assign points.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    public void changeTopicInGUI() throws Exception {
+        String newTopic = JOptionPane.showInputDialog(null, topicChangePrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
+        if (newTopic == null || newTopic.isBlank()) {
+            String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            forumName = newTopic;
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+            forumCreationTime = LocalDateTime.now().format(format);
+            writeToMessagesFile();
+            printMessagesInGUI();
+        }
     }
 }

@@ -8,7 +8,6 @@ import java.util.Scanner;
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
  *
  * @version 11/15/2021
- *
  */
 
 public class Account {
@@ -20,8 +19,12 @@ public class Account {
     Student student;
     Scanner scan;
 
-    private final static String teacherAccountEnteredPrompt = "Please enter the option number of what you want to do.\n1) Create course\n2) Open course\n3) Log out";
-    private final static String studentAccountEnteredPrompt = "Please enter the option number of what you want to do.\n1) Open course\n2) Log out";
+    private static String teacherAccountEnteredPrompt = "Please enter the option number of " +
+            "what you want to do.\n" +
+            "1) Create course\n2) Open course\n3) Log out";
+    private static String studentAccountEnteredPrompt = "Please enter the option number of " +
+            "what you want to do.\n" +
+            "1) Open course\n2) Log out";
 
     public Account(String username, String firstName, String lastName, boolean ifTeacher, Scanner scan) {
         this.username = username;
@@ -31,6 +34,7 @@ public class Account {
         this.scan = scan;
     }
 
+    //gives the teacher three options: create course, open course, or exit
     public void teacherMainMethod() throws Exception {
         teacher = new Teacher(username, firstName, lastName, null, scan);
         int option = 0;
@@ -56,6 +60,7 @@ public class Account {
         }
     }
 
+    //gives the student two options: open a course or exit
     public void studentMainMethod() throws Exception {
         student = new Student(username, firstName, lastName, null, "CoursesList.txt", scan);
         int option = 0;
@@ -80,6 +85,7 @@ public class Account {
         }
     }
 
+    //decides which method to run in the main method depending on whether the user is a student or a teacher
     public void accountMainMethod() throws Exception {
         if (ifTeacher) {
             teacherMainMethod();
