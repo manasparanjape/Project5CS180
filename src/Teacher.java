@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -130,19 +132,6 @@ public class Teacher {
         }
     }
 
-    public void runnableMethod() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    runMethodTeacher();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     //gives user four options: open discussion forum, create forum, delete forum, and show dashboard
     public void openCourseMainMethod() throws Exception {
         int option = 0;
@@ -180,25 +169,38 @@ public class Teacher {
     JButton createDiscussionForumButton;
     JButton deleteDiscussionForumButton;
     JButton openDiscussionForumsButton;
+    JButton backButton;
 
-    public void createDiscussionForumButtonMethod() {
-
+    public void createDiscussionForumButtonMethod() throws FileNotFoundException {
+        course.createForumInGUI();
     }
-    public void deleteDiscussionForumButtonMethod() {
-
+    public void deleteDiscussionForumButtonMethod() throws FileNotFoundException {
+        course.deleteForumInGUI();
     }
     public void openDiscussionForumsButtonMethod() throws Exception {
         course.teacherDiscussionForumOpened();
+    }
+    public void backButtonMethod() throws Exception {
+        Account account = new Account(username, firstName, lastName, true, scan);
+        account.accountMainMethod();
     }
 
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == createDiscussionForumButton) {
-                createDiscussionForumButtonMethod();
+                try {
+                    createDiscussionForumButtonMethod();
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                }
             }
             if (e.getSource() == deleteDiscussionForumButton) {
-                deleteDiscussionForumButtonMethod();
+                try {
+                    deleteDiscussionForumButtonMethod();
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                }
             }
             if (e.getSource() == openDiscussionForumsButton) {
                 try {
@@ -207,6 +209,13 @@ public class Teacher {
                     System.out.println("Check1");
                     ex.printStackTrace();
                     System.out.println("Check2");
+                }
+            }
+            if (e.getSource() == backButton) {
+                try {
+                    backButtonMethod();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -224,6 +233,8 @@ public class Teacher {
         deleteDiscussionForumButton.addActionListener(actionListener);
         openDiscussionForumsButton = new JButton("Open discussion forums");
         openDiscussionForumsButton.addActionListener(actionListener);
+        backButton = new JButton("Back");
+        backButton.addActionListener(actionListener);
 
         jframe.setSize(900, 600);
         jframe.setLocationRelativeTo(null);
@@ -235,6 +246,24 @@ public class Teacher {
         centerPanel.add(createDiscussionForumButton);
         centerPanel.add(deleteDiscussionForumButton);
 
+        JPanel leftPanel = new JPanel(new GridLayout(2, 1));
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.add(backButton);
+
         container.add(centerPanel, BorderLayout.CENTER);
+        container.add(leftPanel, BorderLayout.WEST);
+    }
+
+    public void runnableMethod() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runMethodTeacher();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

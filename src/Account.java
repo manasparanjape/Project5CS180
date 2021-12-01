@@ -44,7 +44,7 @@ public class Account {
             option = JOptionPane.showOptionDialog(null, "Select an option",
                     "Option choosing", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                     options, options[1]);
-            teacher = new Teacher(username, firstName, lastName, null, scan, new JFrame());
+            teacher = new Teacher(username, firstName, lastName, null, scan, jframe);
             while (option != 3) {
                 /*try {
                     System.out.println(teacherAccountEnteredPrompt);
@@ -76,7 +76,7 @@ public class Account {
 
     //gives the student two options: open a course or exit
     public void studentMainMethod() throws Exception {
-        student = new Student(username, firstName, lastName, null, "CoursesList.txt", scan);
+        student = new Student(username, firstName, lastName, null, scan, jframe);
         int option = 0;
         try {
             String[] options = {"Open a course", "Log Out"};
@@ -118,4 +118,6 @@ public class Account {
             studentMainMethod();
         }
     }
+
+    JFrame jframe = new JFrame();
 }

@@ -371,7 +371,8 @@ public class Course {
     JButton gradeStudentButton;
     JButton dashboardButton;
     JButton changeTopicButton;
-    JButton backButton;
+    JButton backButtonTeacher;
+    JButton backButtonStudent;
 
     boolean ifDashBoard = false;
 
@@ -440,9 +441,13 @@ public class Course {
             ex.printStackTrace();
         }
     }
-    public void backButtonMethod() throws Exception {
+    public void backButtonTeacherMethod() {
         Teacher teacher = new Teacher(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
         teacher.runnableMethod();
+    }
+    public void backButtonStudentMethod() {
+        Student student = new Student(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
+
     }
 
     public void openDiscussionForumTeacher(String forumName) throws Exception {
@@ -464,12 +469,11 @@ public class Course {
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == backButton) {
-                try {
-                    backButtonMethod();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+            if (e.getSource() == backButtonTeacher) {
+                backButtonTeacherMethod();
+            }
+            if (e.getSource() == backButtonStudent) {
+                backButtonStudentMethod();
             }
             if (e.getSource() == sendButton) {
                 sendButtonMethod();
@@ -498,8 +502,8 @@ public class Course {
         container.setLayout(new BorderLayout());
         container.revalidate();
 
-        backButton = new JButton("Back");
-        backButton.addActionListener(actionListener);
+        backButtonTeacher = new JButton("Back");
+        backButtonTeacher.addActionListener(actionListener);
         sendButton = new JButton("Send/Reply");
         sendButton.addActionListener(actionListener);
         upvoteButton = new JButton("Upvote");
@@ -540,7 +544,7 @@ public class Course {
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.add(backButton);
+        leftPanel.add(backButtonTeacher);
         for (int i = 0; i < forumList.size(); i++) {
             discussionForumButtonsArray.add(new JButton(forumList.get(i)));
             discussionForumButtonsArray.get(i).setMaximumSize(new Dimension(150, 200));
@@ -592,6 +596,8 @@ public class Course {
         sendButton.addActionListener(actionListener);
         upvoteButton = new JButton("Upvote");
         upvoteButton.addActionListener(actionListener);
+        backButtonStudent = new JButton("Back");
+        backButtonStudent.addActionListener(actionListener);
 
         textArea = new JTextArea();
         textArea.setLineWrap(true);
@@ -619,6 +625,7 @@ public class Course {
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.add(backButtonStudent);
         for (int i = 0; i < forumList.size(); i++) {
             discussionForumButtonsArray.add(new JButton(forumList.get(i)));
             discussionForumButtonsArray.get(i).setMaximumSize(new Dimension(150, 200));
@@ -647,5 +654,73 @@ public class Course {
         container.add(leftScrollPane, BorderLayout.WEST);
         discussionForum.setTextArea(textArea);
         discussionForum.printMessagesInGUI();
+    }
+
+    public void createForumInGUI() throws FileNotFoundException {
+        String newForumName = JOptionPane.showInputDialog(null, newForumNamePrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
+        if (newForumName == null || newForumName.isBlank()) {
+            String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (discussionForumExists(newForumName)) {
+            String errorMessage = "A discussion forum with that name already exists in this course.";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+            forumList.add(newForumName);
+            FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName +
+                    "-messages" + ".txt", true);
+            PrintWriter pw = new PrintWriter(fos);
+            pw.println(newForumName + "§§§" + LocalDateTime.now().format(format));
+            pw.close();
+            fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
+            pw = new PrintWriter(fos);
+            pw.println("");
+            pw.close();
+            fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
+            pw = new PrintWriter(fos);
+            pw.println("");
+            pw.close();
+            fos = new FileOutputStream(discussionBoardsListFileName, true);
+            pw = new PrintWriter(fos);
+            pw.println(newForumName);
+            pw.close();
+            JOptionPane.showMessageDialog(null, newForumCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void deleteForumInGUI() throws FileNotFoundException {
+        String toDeleteForum = JOptionPane.showInputDialog(null, deleteForumPrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
+        boolean deleted = false;
+        if (toDeleteForum == null || !discussionForumExists(toDeleteForum)) {
+            if (!discussionForumExists(toDeleteForum)) {
+                String errorMessage = "The discussion forum you entered does not exist.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            forumList.remove(toDeleteForum);
+            File f = new File(courseName + "-" + toDeleteForum + "-messages" + ".txt");
+            deleted = f.delete();
+            f = new File(courseName + "-" + toDeleteForum + "-points" + ".txt");
+            deleted &= f.delete();
+            f = new File(courseName + "-" + toDeleteForum + "-upvotes" + ".txt");
+            deleted &= f.delete();
+            FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName, false);
+            PrintWriter pw = new PrintWriter(fos);
+            StringBuilder output = new StringBuilder();
+            for (String s : forumList) {
+                output.append(s).append("\n");
+            }
+            if (output.length() > 0) {
+                output = new StringBuilder(output.substring(0, output.length() - 1));
+            }
+            pw.println(output);
+            pw.close();
+        }
+        if (deleted) {
+            JOptionPane.showMessageDialog(null, forumDeleted, "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }

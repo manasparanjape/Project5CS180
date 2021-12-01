@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,7 +20,7 @@ public class Student {
     private String firstName;
     private String lastName;
     private Course course;
-    private String coursesListFileName;
+    private String coursesListFileName = "CoursesList.txt";
     private Scanner scan;
 
     private static String courseSelectionPrompt = "Which course would you like to open?";
@@ -27,13 +28,13 @@ public class Student {
             + " Open discussion forum\n2) View points\n3) Exit course";
     private ArrayList<String> courseList = new ArrayList<>();
 
-    public Student(String username, String firstName, String lastName, Course course, String coursesListFileName, Scanner scan) {
+    public Student(String username, String firstName, String lastName, Course course, Scanner scan, JFrame jframe) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
-        this.coursesListFileName = coursesListFileName;
         this.scan = scan;
+        this.jframe = jframe;
     }
 
     //uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
@@ -110,5 +111,11 @@ public class Student {
                 }
             }
         }
+    }
+
+    JFrame jframe;
+
+    public void runnableMethod() {
+
     }
 }
