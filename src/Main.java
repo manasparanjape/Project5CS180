@@ -66,7 +66,7 @@ public class Main {
             String newPassword = scan.nextLine();
             if (newPassword == null) {
                 System.out.println("The password you entered is invalid.");
-            } else if(newPassword.equals(password)) {
+            } else if (newPassword.equals(password)) {
                 System.out.println("The new password you entered is the same as your old one.");
             } else {
                 String output = "";
@@ -274,7 +274,7 @@ public class Main {
                 //scan.nextLine();
                 //todo: make a new jframe object
                 Object[] options = {"Login to my account", "Create new account", "Change my password", "Delete my account", "Exit"};
-                option = JOptionPane.showOptionDialog(null, "Select an option", "Option choosing",JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]) + 1;
+                option = JOptionPane.showOptionDialog(null, "Select an option", "Option choosing", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]) + 1;
                 if (option < 1 || option > 5) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 5.");
                 } else {
