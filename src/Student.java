@@ -81,7 +81,7 @@ public class Student {
             System.out.println("The course you entered does not exist!");
         } else {
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan);
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan, null);
             course.readForumListFile();
             openCourseMainMethod(scan);
         }

@@ -61,7 +61,7 @@ public class Course {
     }
 
     public Course(String courseName, String username, String firstName, String lastName,
-                  DiscussionForum discussionForum, String discussionBoardsListFileName, Scanner scan) {
+                  DiscussionForum discussionForum, String discussionBoardsListFileName, Scanner scan, JFrame jframe) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
@@ -69,6 +69,7 @@ public class Course {
         this.discussionForum = discussionForum;
         this.discussionBoardsListFileName = discussionBoardsListFileName;
         this.scan = scan;
+        this.jframe = jframe;
     }
 
     //takes input for file location and puts contents onto string
@@ -294,7 +295,7 @@ public class Course {
                     }
                 }
             });
-            showDiscussionForumMainMethodTeacher();
+            //showDiscussionForumMainMethodTeacher();
         }
     }
 
@@ -361,7 +362,8 @@ public class Course {
     * how to create the interface.
      */
 
-    JFrame jframe = new JFrame(courseName);
+    //JFrame jframe = new JFrame(courseName);
+    JFrame jframe;
     ArrayList<JButton> discussionForumButtonsArray = new ArrayList<>(0);
     JButton sendButton;
     JButton upvoteButton;
@@ -369,6 +371,7 @@ public class Course {
     JButton gradeStudentButton;
     JButton dashboardButton;
     JButton changeTopicButton;
+    JButton backButton;
 
     boolean ifDashBoard = false;
 
@@ -437,6 +440,11 @@ public class Course {
             ex.printStackTrace();
         }
     }
+    public void backButtonMethod() throws Exception {
+        Teacher teacher = new Teacher(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
+        teacher.runnableMethod();
+    }
+
     public void openDiscussionForumTeacher(String forumName) throws Exception {
         String discussionForumMessagesFileName = courseName + "-" + forumName + "-messages" + ".txt";
         String discussionForumPointsFileName = courseName + "-" + forumName + "-points" + ".txt";
@@ -456,6 +464,13 @@ public class Course {
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == backButton) {
+                try {
+                    backButtonMethod();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
             if (e.getSource() == sendButton) {
                 sendButtonMethod();
             }
@@ -481,7 +496,10 @@ public class Course {
         Container container = jframe.getContentPane();
         container.removeAll();
         container.setLayout(new BorderLayout());
+        container.revalidate();
 
+        backButton = new JButton("Back");
+        backButton.addActionListener(actionListener);
         sendButton = new JButton("Send/Reply");
         sendButton.addActionListener(actionListener);
         upvoteButton = new JButton("Upvote");
@@ -522,6 +540,7 @@ public class Course {
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.add(backButton);
         for (int i = 0; i < forumList.size(); i++) {
             discussionForumButtonsArray.add(new JButton(forumList.get(i)));
             discussionForumButtonsArray.get(i).setMaximumSize(new Dimension(150, 200));

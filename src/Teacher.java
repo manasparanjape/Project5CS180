@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -26,12 +30,13 @@ public class Teacher {
             + " Open discussion forum\n2) Create discussion forum\n3) Delete discussion forum\n4) Exit course";
     private ArrayList<String> courseList = new ArrayList<>();
 
-    public Teacher(String username, String firstName, String lastName, Course course, Scanner scan) {
+    public Teacher(String username, String firstName, String lastName, Course course, Scanner scan, JFrame jframe) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
         this.scan = scan;
+        this.jframe = jframe;
     }
 
     //uses a for loop to iterate through the courseList array and appends
@@ -109,10 +114,33 @@ public class Teacher {
             System.out.println("The course you entered does not exist!");
         } else {
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan);
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe);
             course.readForumListFile();
-            openCourseMainMethod();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        runMethodTeacher();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            //openCourseMainMethod();
         }
+    }
+
+    public void runnableMethod() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runMethodTeacher();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     //gives user four options: open discussion forum, create forum, delete forum, and show dashboard
@@ -139,5 +167,74 @@ public class Teacher {
                 }
             }
         }
+    }
+
+    /*
+     * GUI part
+     * how to create the interface.
+     */
+
+    //JFrame jframe = new JFrame();
+    JFrame jframe;
+
+    JButton createDiscussionForumButton;
+    JButton deleteDiscussionForumButton;
+    JButton openDiscussionForumsButton;
+
+    public void createDiscussionForumButtonMethod() {
+
+    }
+    public void deleteDiscussionForumButtonMethod() {
+
+    }
+    public void openDiscussionForumsButtonMethod() throws Exception {
+        course.teacherDiscussionForumOpened();
+    }
+
+    ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == createDiscussionForumButton) {
+                createDiscussionForumButtonMethod();
+            }
+            if (e.getSource() == deleteDiscussionForumButton) {
+                deleteDiscussionForumButtonMethod();
+            }
+            if (e.getSource() == openDiscussionForumsButton) {
+                try {
+                    openDiscussionForumsButtonMethod();
+                } catch (Exception ex) {
+                    System.out.println("Check1");
+                    ex.printStackTrace();
+                    System.out.println("Check2");
+                }
+            }
+        }
+    };
+
+    public void runMethodTeacher() {
+        Container container = jframe.getContentPane();
+        container.removeAll();
+        container.setLayout(new BorderLayout());
+        container.revalidate();
+
+        createDiscussionForumButton = new JButton("Create new discussion forum");
+        createDiscussionForumButton.addActionListener(actionListener);
+        deleteDiscussionForumButton = new JButton("Delete discussion forum");
+        deleteDiscussionForumButton.addActionListener(actionListener);
+        openDiscussionForumsButton = new JButton("Open discussion forums");
+        openDiscussionForumsButton.addActionListener(actionListener);
+
+        jframe.setSize(900, 600);
+        jframe.setLocationRelativeTo(null);
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setVisible(true);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(openDiscussionForumsButton);
+        centerPanel.add(createDiscussionForumButton);
+        centerPanel.add(deleteDiscussionForumButton);
+
+        container.add(centerPanel, BorderLayout.CENTER);
     }
 }

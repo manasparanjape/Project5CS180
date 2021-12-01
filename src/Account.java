@@ -43,10 +43,10 @@ public class Account {
             String[] options = {"Create a course", "Open a course", "Log Out"};
             option = JOptionPane.showOptionDialog(null, "Select an option",
                     "Option choosing", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-                    options, options[0]);
-            teacher = new Teacher(username, firstName, lastName, null, scan);
-            while (option != 2) {
-                try {
+                    options, options[1]);
+            teacher = new Teacher(username, firstName, lastName, null, scan, new JFrame());
+            while (option != 3) {
+                /*try {
                     System.out.println(teacherAccountEnteredPrompt);
                     option = scan.nextInt();
                     scan.nextLine();
@@ -57,15 +57,15 @@ public class Account {
                     scan.nextLine();
                     continue;
                 }
-                if (option < 0 || option > 1) {
+                if (option < 0 || option > 3) {
                     System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
-                } else {
+                } else {*/
                     switch (option) {
                         case 0 -> teacher.createCourse();
                         case 1 -> teacher.openCourse();
                         //case 2 -> JOptionPane.showMessageDialog();
                     }
-                }
+                //}
             }
         } catch (InputMismatchException e) {
             System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
