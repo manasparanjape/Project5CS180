@@ -139,7 +139,7 @@ public class Account {
 
     JButton createCourseButton;
     JButton openCourseButton;
-    JButton backButton;
+    JButton logoutButton;
 
     public void createCourseButtonMethod() throws IOException {
         teacher.createCourseInGUI();
@@ -147,9 +147,17 @@ public class Account {
     public void openCourseButtonMethod() throws Exception {
         teacher.openCourse();
     }
-    public void backButtonMethod() throws Exception {
-        //Main.main(null);
-    }
+    public void logoutButtonMethod() throws Exception {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Main.mainRunMethod();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });    }
 
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -168,9 +176,9 @@ public class Account {
                     ex.printStackTrace();
                 }
             }
-            if (e.getSource() == backButton) {
+            if (e.getSource() == logoutButton) {
                 try {
-                    backButtonMethod();
+                    logoutButtonMethod();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -188,8 +196,8 @@ public class Account {
         createCourseButton.addActionListener(actionListener);
         openCourseButton = new JButton("Open Course");
         openCourseButton.addActionListener(actionListener);
-        backButton = new JButton("Back");
-        backButton.addActionListener(actionListener);
+        logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(actionListener);
 
         jframe.setSize(900, 600);
         jframe.setLocationRelativeTo(null);
@@ -202,7 +210,7 @@ public class Account {
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.add(backButton);
+        leftPanel.add(logoutButton);
 
         container.add(centerPanel, BorderLayout.CENTER);
         container.add(leftPanel, BorderLayout.WEST);
