@@ -265,7 +265,7 @@ public class Course {
                     }
                 }
             });
-            showDiscussionForumMainMethodStudent();
+            //showDiscussionForumMainMethodStudent();
         }
     }
 
@@ -445,9 +445,9 @@ public class Course {
         Teacher teacher = new Teacher(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
         teacher.runnableMethod();
     }
-    public void backButtonStudentMethod() {
+    public void backButtonStudentMethod() throws Exception {
         Student student = new Student(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
-
+        student.runnableMethod();
     }
 
     public void openDiscussionForumTeacher(String forumName) throws Exception {
@@ -473,7 +473,11 @@ public class Course {
                 backButtonTeacherMethod();
             }
             if (e.getSource() == backButtonStudent) {
-                backButtonStudentMethod();
+                try {
+                    backButtonStudentMethod();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
             if (e.getSource() == sendButton) {
                 sendButtonMethod();
@@ -591,6 +595,7 @@ public class Course {
         Container container = jframe.getContentPane();
         container.removeAll();
         container.setLayout(new BorderLayout());
+        container.revalidate();
 
         sendButton = new JButton("Send/Reply");
         sendButton.addActionListener(actionListener);

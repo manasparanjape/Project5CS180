@@ -84,7 +84,8 @@ public class Account {
     //gives the student two options: open a course or exit
     public void studentMainMethod() throws Exception {
         student = new Student(username, firstName, lastName, null, scan, jframe);
-        int option = 0;
+        runMethodStudent();
+        /*int option = 0;
         try {
             String[] options = {"Open a course", "Log Out"};
             option = JOptionPane.showOptionDialog(null, "Select an option",
@@ -114,7 +115,7 @@ public class Account {
             System.out.println("You did not input an integer. Please input an integer between 1 and 4.");
             option = 0;
             scan.nextLine();
-        }
+        }*/
     }
 
     //decides which method to run in the main method depending on whether the user is a student or a teacher
@@ -145,9 +146,13 @@ public class Account {
         teacher.createCourseInGUI();
     }
     public void openCourseButtonMethod() throws Exception {
-        teacher.openCourse();
+        if (ifTeacher) {
+            teacher.openCourse();
+        } else {
+            student.openCourse();
+        }
     }
-    public void logoutButtonMethod() throws Exception {
+    public void logoutButtonMethod(){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -177,11 +182,7 @@ public class Account {
                 }
             }
             if (e.getSource() == logoutButton) {
-                try {
-                    logoutButtonMethod();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                logoutButtonMethod();
             }
         }
     };
@@ -214,6 +215,32 @@ public class Account {
 
         container.add(centerPanel, BorderLayout.CENTER);
         container.add(leftPanel, BorderLayout.WEST);
-        System.out.println("Check");
+    }
+
+    public void runMethodStudent() {
+        Container container = jframe.getContentPane();
+        container.removeAll();
+        container.setLayout(new BorderLayout());
+        container.revalidate();
+
+        openCourseButton = new JButton("Open Course");
+        openCourseButton.addActionListener(actionListener);
+        logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(actionListener);
+
+        jframe.setSize(900, 600);
+        jframe.setLocationRelativeTo(null);
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setVisible(true);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(openCourseButton);
+
+        JPanel leftPanel = new JPanel(new GridLayout(2, 1));
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.add(logoutButton);
+
+        container.add(centerPanel, BorderLayout.CENTER);
+        container.add(leftPanel, BorderLayout.WEST);
     }
 }

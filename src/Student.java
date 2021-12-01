@@ -74,7 +74,7 @@ public class Student {
 
     //checks if user inputted course is present in the courseList array list
     public void openCourse() throws Exception {
-        readCourseListsFile();
+        /*readCourseListsFile();
         printCourseList();
         System.out.println(courseSelectionPrompt);
         String selectedCourse = scan.nextLine();
@@ -85,6 +85,29 @@ public class Student {
             course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan, null);
             course.readForumListFile();
             openCourseMainMethod(scan);
+        }*/
+        readCourseListsFile();
+        printCourseList();
+        Object[] options = new Object[courseList.size()];
+        for (int i = 0; i < courseList.size(); i++) {
+            options[i] = courseList.get(i);
+        }
+        Object selectedObject = JOptionPane.showInputDialog(null, courseSelectionPrompt, "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
+        if (selectedObject != null) {
+            String selectedCourse = selectedObject.toString();
+            String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe);
+            course.readForumListFile();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        runMethodStudent();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 
@@ -115,7 +138,12 @@ public class Student {
 
     JFrame jframe;
 
-    public void runnableMethod() {
+    public void runMethodStudent() throws Exception {
+        course.studentDiscussionForumOpened();
+    }
 
+    public void runnableMethod() throws Exception {
+        Account account = new Account(username, firstName, lastName, false, scan, jframe);
+        account.accountMainMethod();
     }
 }
