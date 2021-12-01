@@ -1,8 +1,10 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -60,7 +62,7 @@ public class Main {
 
     public static void changePassword(Scanner scan) throws IOException {
         readFile();
-        boolean accountVerification = (securityCheck(scan) != 0);
+        boolean accountVerification = (securityCheck() != 0);
         if (accountVerification) {
             System.out.println("What do you want to set your new password to?");
             String newPassword = scan.nextLine();
@@ -194,7 +196,7 @@ public class Main {
     }
 
     //checks whether or not username and password match with what is stored in Accounts.txt file
-    public static int securityCheck(Scanner scan) throws IOException {
+    public static int securityCheck() throws IOException {
         int output = 0;
         //System.out.println(usernamePrompt);
         //username = scan.nextLine();
@@ -232,7 +234,7 @@ public class Main {
     //checks if the user is logged in
     //deletes the users account
     public static void deleteAccount(Scanner scan) throws IOException {
-        boolean accountVerification = (securityCheck(scan) != 0);
+        boolean accountVerification = (securityCheck() != 0);
         StringBuilder toWrite = new StringBuilder();
         if (accountVerification) {
             for (ArrayList<String> strings : accountDetailsArray) {
@@ -264,10 +266,11 @@ public class Main {
 
     //allows users to access, create, or delete their account
     public static void main(String[] args) throws Exception {
-        Scanner scan = new Scanner(System.in);
+        /*Scanner scan = new Scanner(System.in);
         int option = 0;
         System.out.println(welcomeMessage);
         while (option != 5) {
+            System.out.println("Check 1");
             try {
                 //System.out.println(initialPrompt);
                 //option = scan.nextInt();
@@ -286,6 +289,7 @@ public class Main {
                                 findAccount(username);
                                 account = new Account(username, firstName, lastName, true, scan);
                                 account.accountMainMethod();
+                                System.out.println("Check 2");
                             } else if (accountCheck == 2) {
                                 findAccount(username);
                                 account = new Account(username, firstName, lastName, false, scan);
@@ -303,6 +307,149 @@ public class Main {
                 scan.nextLine();
             }
         }
-        scan.close();
+        scan.close();*/
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mainRunMethod();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    static JFrame jframe = new JFrame();
+    static JButton loginButton;
+    static JButton createNewAccountButton;
+    static JButton deleteAccountButton;
+    static JButton changePasswordButton;
+
+    public static void loginButtonMethod() throws Exception {
+        Scanner scan = new Scanner(System.in);
+        int accountCheck = securityCheck();
+        Account account;
+        if (accountCheck == 1) {
+            findAccount(username);
+            account = new Account(username, firstName, lastName, true, scan, jframe);
+            account.accountMainMethod();
+            System.out.println("Check 2");
+        } else if (accountCheck == 2) {
+            findAccount(username);
+            account = new Account(username, firstName, lastName, false, scan, jframe);
+            account.accountMainMethod();
+        } else {
+            String errorMessage = "The account details you entered were invalid!";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public static void createNewAccountButtonMethod() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        boolean accountSet;
+        accountSet = true;
+        System.out.println(setUsernamePrompt);
+        System.out.println("All usernames are case insensitive.");
+        username = scan.nextLine();
+        System.out.println(setPasswordPrompt);
+        password = scan.nextLine();
+        System.out.println(setFirstNamePrompt);
+        firstName = scan.nextLine();
+        System.out.println(setLastNamePrompt);
+        lastName = scan.nextLine();
+        System.out.println(accountTypePrompt);
+        String accountType = scan.nextLine();
+
+        if (username == null) {
+            accountSet = false;
+            System.out.println("The username you entered is invalid.");
+        } else if (checkUsernameAvailability(username)) {
+            accountSet = false;
+            System.out.println(usernameUnavailablePrompt);
+        }
+        if (password == null) {
+            accountSet = false;
+            System.out.println("The password you entered is invalid.");
+        }
+        if (firstName == null) {
+            accountSet = false;
+            System.out.println("The first name you entered is invalid.");
+        }
+        if (lastName == null) {
+            accountSet = false;
+            System.out.println("The last name you entered is invalid.");
+        }
+        if (!accountType.equals("1") && !accountType.equals("2")) {
+            accountSet = false;
+            System.out.println("Please choose a valid account type.");
+        } else {
+            ifTeacher = accountType.equals("1");
+        }
+        if (accountSet) {
+            username = username.toLowerCase();
+            writeToFile();
+            System.out.println(accountCreationSuccess);
+        }
+    }
+    public static void deleteAccountButtonMethod() {
+
+    }
+    public static void changePasswordButtonMethod() {
+
+    }
+
+    static ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == loginButton) {
+                try {
+                    loginButtonMethod();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (e.getSource() == createNewAccountButton) {
+                try {
+                    createNewAccountButtonMethod();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (e.getSource() == deleteAccountButton) {
+                deleteAccountButtonMethod();
+            }
+            if (e.getSource() == changePasswordButton) {
+                changePasswordButtonMethod();
+            }
+        }
+    };
+
+    public static void mainRunMethod() {
+        Container container = jframe.getContentPane();
+        container.removeAll();
+        container.setLayout(new BorderLayout());
+        container.revalidate();
+
+        loginButton = new JButton("Login");
+        loginButton.addActionListener(actionListener);
+        createNewAccountButton = new JButton("Create new account");
+        createNewAccountButton.addActionListener(actionListener);
+        deleteAccountButton = new JButton("Delete account");
+        deleteAccountButton.addActionListener(actionListener);
+        changePasswordButton = new JButton("Change Password");
+        changePasswordButton.addActionListener(actionListener);
+
+        jframe.setSize(900, 600);
+        jframe.setLocationRelativeTo(null);
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setVisible(true);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(loginButton);
+        centerPanel.add(createNewAccountButton);
+        centerPanel.add(deleteAccountButton);
+        centerPanel.add(changePasswordButton);
+
+        container.add(centerPanel);
     }
 }

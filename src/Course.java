@@ -657,49 +657,48 @@ public class Course {
     }
 
     public void createForumInGUI() throws FileNotFoundException {
-        String newForumName = JOptionPane.showInputDialog(null, newForumNamePrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
-        if (newForumName == null || newForumName.isBlank()) {
-            String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
-            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (discussionForumExists(newForumName)) {
-            String errorMessage = "A discussion forum with that name already exists in this course.";
-            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-            forumList.add(newForumName);
-            FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName +
-                    "-messages" + ".txt", true);
-            PrintWriter pw = new PrintWriter(fos);
-            pw.println(newForumName + "§§§" + LocalDateTime.now().format(format));
-            pw.close();
-            fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
-            pw = new PrintWriter(fos);
-            pw.println("");
-            pw.close();
-            fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
-            pw = new PrintWriter(fos);
-            pw.println("");
-            pw.close();
-            fos = new FileOutputStream(discussionBoardsListFileName, true);
-            pw = new PrintWriter(fos);
-            pw.println(newForumName);
-            pw.close();
-            JOptionPane.showMessageDialog(null, newForumCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
+        String newForumName = JOptionPane.showInputDialog(null, newForumNamePrompt, "New Forum", JOptionPane.QUESTION_MESSAGE);
+        if (newForumName != null) {
+            if (newForumName.isBlank()) {
+                String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (discussionForumExists(newForumName)) {
+                String errorMessage = "A discussion forum with that name already exists in this course.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+                forumList.add(newForumName);
+                FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName +
+                        "-messages" + ".txt", true);
+                PrintWriter pw = new PrintWriter(fos);
+                pw.println(newForumName + "§§§" + LocalDateTime.now().format(format));
+                pw.close();
+                fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
+                pw = new PrintWriter(fos);
+                pw.println("");
+                pw.close();
+                fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
+                pw = new PrintWriter(fos);
+                pw.println("");
+                pw.close();
+                fos = new FileOutputStream(discussionBoardsListFileName, true);
+                pw = new PrintWriter(fos);
+                pw.println(newForumName);
+                pw.close();
+                JOptionPane.showMessageDialog(null, newForumCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
     public void deleteForumInGUI() throws FileNotFoundException {
-        String toDeleteForum = JOptionPane.showInputDialog(null, deleteForumPrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
         boolean deleted = false;
-        if (toDeleteForum == null || !discussionForumExists(toDeleteForum)) {
-            if (!discussionForumExists(toDeleteForum)) {
-                String errorMessage = "The discussion forum you entered does not exist.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
+        Object[] options = new Object[forumList.size()];
+        for (int i = 0; i < forumList.size(); i++) {
+            options[i] = forumList.get(i);
+        }
+        Object selectedObject = JOptionPane.showInputDialog(null, deleteForumPrompt, "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
+        if (selectedObject != null) {
+            String toDeleteForum = selectedObject.toString();
             forumList.remove(toDeleteForum);
             File f = new File(courseName + "-" + toDeleteForum + "-messages" + ".txt");
             deleted = f.delete();
@@ -718,9 +717,9 @@ public class Course {
             }
             pw.println(output);
             pw.close();
-        }
-        if (deleted) {
-            JOptionPane.showMessageDialog(null, forumDeleted, "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (deleted) {
+                JOptionPane.showMessageDialog(null, forumDeleted, "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 }

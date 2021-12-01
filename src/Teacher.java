@@ -110,7 +110,28 @@ public class Teacher {
     public void openCourse() throws Exception {
         readCourseListsFile();
         printCourseList();
-        System.out.println(courseSelectionPrompt);
+        Object[] options = new Object[courseList.size()];
+        for (int i = 0; i < courseList.size(); i++) {
+            options[i] = courseList.get(i);
+        }
+        Object selectedObject = JOptionPane.showInputDialog(null, courseSelectionPrompt, "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
+        if (selectedObject != null) {
+            String selectedCourse = selectedObject.toString();
+            String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe);
+            course.readForumListFile();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        runMethodTeacher();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        /*System.out.println(courseSelectionPrompt);
         String selectedCourse = scan.nextLine();
         if (selectedCourse == null || !courseExists(selectedCourse)) {
             System.out.println("The course you entered does not exist!");
@@ -128,8 +149,8 @@ public class Teacher {
                     }
                 }
             });
-            //openCourseMainMethod();
-        }
+            openCourseMainMethod();
+        }*/
     }
 
     //gives user four options: open discussion forum, create forum, delete forum, and show dashboard
@@ -181,7 +202,7 @@ public class Teacher {
         course.teacherDiscussionForumOpened();
     }
     public void backButtonMethod() throws Exception {
-        Account account = new Account(username, firstName, lastName, true, scan);
+        Account account = new Account(username, firstName, lastName, true, scan, jframe);
         account.accountMainMethod();
     }
 
@@ -265,5 +286,29 @@ public class Teacher {
                 }
             }
         });
+    }
+
+    public void createCourseInGUI() throws IOException {
+        String newCourseName = JOptionPane.showInputDialog(null, newCourseNamePrompt, "New Course", JOptionPane.QUESTION_MESSAGE);
+        if (newCourseName != null) {
+            if (newCourseName.isBlank()) {
+                String errorMessage = "Please enter a valid course name(ie. Not all spaces or blank).";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (courseExists(newCourseName)) {
+                String errorMessage = "A course with that name already exists.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                courseList.add(newCourseName);
+                FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt", false);
+                PrintWriter pw = new PrintWriter(fos);
+                pw.println();
+                pw.close();
+                fos = new FileOutputStream(coursesListFileName, true);
+                pw = new PrintWriter(fos);
+                pw.println(newCourseName);
+                System.out.println(newCourseCreated);
+                pw.close();
+            }
+        }
     }
 }
