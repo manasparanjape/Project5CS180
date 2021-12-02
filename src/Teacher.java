@@ -194,7 +194,7 @@ public class Teacher {
     public void createDiscussionForumButtonMethod() throws FileNotFoundException {
         course.createForumInGUI();
     }
-    public void deleteDiscussionForumButtonMethod() throws FileNotFoundException {
+    public void deleteDiscussionForumButtonMethod() throws Exception {
         course.deleteForumInGUI();
     }
     public void openDiscussionForumsButtonMethod() throws Exception {
@@ -218,7 +218,7 @@ public class Teacher {
             if (e.getSource() == deleteDiscussionForumButton) {
                 try {
                     deleteDiscussionForumButtonMethod();
-                } catch (FileNotFoundException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }

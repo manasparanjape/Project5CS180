@@ -695,8 +695,9 @@ public class Course {
         }
     }
 
-    public void deleteForumInGUI() throws FileNotFoundException {
+    public void deleteForumInGUI() throws Exception {
         boolean deleted = false;
+        readForumListFile();
         Object[] options = new Object[forumList.size()];
         for (int i = 0; i < forumList.size(); i++) {
             options[i] = forumList.get(i);
