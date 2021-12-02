@@ -205,7 +205,8 @@ public class Main {
         //password = scan.nextLine();
         password = JOptionPane.showInputDialog(null, passwordPrompt, "Account verification", JOptionPane.QUESTION_MESSAGE);
         if (username == null || password == null) {
-            System.out.println("The details entered were invalid");
+            String errorMessage = "The account details entered were invalid";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             readFile();
             int i = 0;
@@ -225,7 +226,8 @@ public class Main {
                     output = 2;
                 }
             } else {
-                System.out.println("The account details you entered are invalid.");
+                String errorMessage = "The account details entered were invalid";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         return output;
@@ -321,10 +323,25 @@ public class Main {
     }
 
     static JFrame jframe = new JFrame();
+
     static JButton loginButton;
     static JButton createNewAccountButton;
     static JButton deleteAccountButton;
     static JButton changePasswordButton;
+    static JButton createAccountButton;
+    static JButton backButton;
+
+    static JTextField usernameField;
+    static JTextField passwordField;
+    static JTextField firstNameField;
+    static JTextField lastNameField;
+    static JTextField ifTeacherField;
+
+    static JLabel usernameLabel = new JLabel("Username");
+    static JLabel passwordLabel = new JLabel("Password");
+    static JLabel firstNameLabel = new JLabel("First Name");
+    static JLabel lastNameLabel = new JLabel("Last Name");
+    static JLabel ifTeacherLabel = new JLabel("Are you a teacher or student?");
 
     public static void loginButtonMethod() throws Exception {
         Scanner scan = new Scanner(System.in);
@@ -334,68 +351,178 @@ public class Main {
             findAccount(username);
             account = new Account(username, firstName, lastName, true, scan, jframe);
             account.accountMainMethod();
-            System.out.println("Check 2");
         } else if (accountCheck == 2) {
             findAccount(username);
             account = new Account(username, firstName, lastName, false, scan, jframe);
             account.accountMainMethod();
-        } else {
-            String errorMessage = "The account details you entered were invalid!";
-            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     public static void createNewAccountButtonMethod() throws IOException {
-        Scanner scan = new Scanner(System.in);
-        boolean accountSet;
-        accountSet = true;
-        System.out.println(setUsernamePrompt);
-        System.out.println("All usernames are case insensitive.");
-        username = scan.nextLine();
-        System.out.println(setPasswordPrompt);
-        password = scan.nextLine();
-        System.out.println(setFirstNamePrompt);
-        firstName = scan.nextLine();
-        System.out.println(setLastNamePrompt);
-        lastName = scan.nextLine();
-        System.out.println(accountTypePrompt);
-        String accountType = scan.nextLine();
+        Container container = jframe.getContentPane();
+        container.removeAll();
+        container.setLayout(new BorderLayout());
+        container.revalidate();
 
+        createAccountButton = new JButton("Create Account");
+        createAccountButton.addActionListener(actionListener);
+        backButton = new JButton("Back");
+        backButton.addActionListener(actionListener);
+
+        usernameField = new JTextField(20);
+        usernameField.setMaximumSize(usernameField.getPreferredSize());
+        passwordField = new JTextField(20);
+        passwordField.setMaximumSize(passwordField.getPreferredSize());
+        firstNameField = new JTextField(20);
+        firstNameField.setMaximumSize(firstNameField.getPreferredSize());
+        lastNameField = new JTextField(20);
+        lastNameField.setMaximumSize(lastNameField.getPreferredSize());
+        ifTeacherField = new JTextField(20);
+        ifTeacherField.setMaximumSize(ifTeacherField.getPreferredSize());
+
+        jframe.setSize(900, 600);
+        jframe.setLocationRelativeTo(null);
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setVisible(true);
+
+        JPanel leftPanel = new JPanel();
+        JPanel rightPanel = new JPanel();
+        JPanel topPanel = new JPanel();
+
+        JPanel centerPanel = new JPanel(new GridLayout(20, 1));
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(usernameLabel);
+        centerPanel.add(usernameField);
+        centerPanel.add(passwordLabel);
+        centerPanel.add(passwordField);
+        centerPanel.add(firstNameLabel);
+        centerPanel.add(firstNameField);
+        centerPanel.add(lastNameLabel);
+        centerPanel.add(lastNameField);
+        centerPanel.add(ifTeacherLabel);
+        centerPanel.add(ifTeacherField);
+        centerPanel.add(createAccountButton);
+
+        leftPanel.add(backButton);
+
+        container.add(leftPanel, BorderLayout.WEST);
+        container.add(rightPanel, BorderLayout.EAST);
+        container.add(topPanel, BorderLayout.NORTH);
+        container.add(centerPanel, BorderLayout.CENTER);
+    }
+    public static void deleteAccountButtonMethod() throws IOException {
+        boolean accountVerification = (securityCheck() != 0);
+        StringBuilder toWrite = new StringBuilder();
+        if (accountVerification) {
+            for (ArrayList<String> strings : accountDetailsArray) {
+                if (!strings.get(0).equals(username)) {
+                    for (int j = 0; j < 5; j++) {
+                        toWrite.append(strings.get(j)).append("§§§");
+                    }
+                    toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 3));
+                    toWrite.append("\n");
+                }
+            }
+            toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
+            boolean accountRemoved = false;
+            int i = 0;
+            while (!accountRemoved && i < accountDetailsArray.size()) {
+                if (accountDetailsArray.get(i).get(0).equals(username)) {
+                    accountDetailsArray.remove(i);
+                    accountRemoved = true;
+                }
+                i++;
+            }
+            FileOutputStream fos = new FileOutputStream(accountsFile, false);
+            PrintWriter pw = new PrintWriter(fos);
+            pw.println(toWrite);
+            pw.close();
+            JOptionPane.showMessageDialog(null, accountDeletionSuccess, "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    public static void changePasswordButtonMethod() throws IOException {
+        readFile();
+        boolean accountVerification = (securityCheck() != 0);
+        if (accountVerification) {
+            String newPassword = JOptionPane.showInputDialog(null, "What do you want to set your new password to?", "Account verification", JOptionPane.QUESTION_MESSAGE);
+            if (newPassword == null) {
+                String errorMessage = "The password you entered is invalid.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (newPassword.equals(password)) {
+                String errorMessage = "The new password you entered is the same as your old one.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String output = "";
+                for (int i = 0; i < accountDetailsArray.size(); i++) {
+                    if (accountDetailsArray.get(i).get(0).equals(username)) {
+                        accountDetailsArray.get(i).set(1, newPassword);
+                    }
+                    output += accountDetailsArray.get(i).get(0) + "§§§";
+                    output += accountDetailsArray.get(i).get(1) + "§§§";
+                    output += accountDetailsArray.get(i).get(2) + "§§§";
+                    output += accountDetailsArray.get(i).get(3) + "§§§";
+                    if (accountDetailsArray.get(i).get(4).equals("teacher")) {
+                        output += "teacher";
+                    } else if (accountDetailsArray.get(i).get(4).equals("student")) {
+                        output += "student";
+                    }
+                    output += "\n";
+                }
+                output = output.substring(0, output.length() - 1);
+                FileOutputStream fos = new FileOutputStream(accountsFile, false);
+                PrintWriter pw = new PrintWriter(fos);
+                pw.println(output);
+                pw.close();
+                JOptionPane.showMessageDialog(null, "Your password has been changed!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    public static void createAccountButtonMethod() throws IOException {
+        boolean accountSet = true;
+        String errorMessage = "";
+        username = usernameField.getText();
+        password = passwordField.getText();
+        firstName = firstNameField.getText();
+        lastName = lastNameField.getText();
+        if (ifTeacherField.getText().equalsIgnoreCase("teacher")) {
+            ifTeacher = true;
+        } else if (ifTeacherField.getText().equalsIgnoreCase("student")) {
+            ifTeacher = false;
+        } else {
+            accountSet = false;
+            errorMessage += "Please enter either 'student' or 'teacher' to create an account";
+        }
         if (username == null) {
             accountSet = false;
-            System.out.println("The username you entered is invalid.");
+            errorMessage += "The username you entered is invalid.";
         } else if (checkUsernameAvailability(username)) {
             accountSet = false;
-            System.out.println(usernameUnavailablePrompt);
+            errorMessage += usernameUnavailablePrompt;
         }
         if (password == null) {
             accountSet = false;
-            System.out.println("The password you entered is invalid.");
+            errorMessage += "The password you entered is invalid.";
         }
         if (firstName == null) {
             accountSet = false;
-            System.out.println("The first name you entered is invalid.");
+            errorMessage += "The first name you entered is invalid.";
         }
         if (lastName == null) {
             accountSet = false;
-            System.out.println("The last name you entered is invalid.");
-        }
-        if (!accountType.equals("1") && !accountType.equals("2")) {
-            accountSet = false;
-            System.out.println("Please choose a valid account type.");
-        } else {
-            ifTeacher = accountType.equals("1");
+            errorMessage += "The last name you entered is invalid.";
         }
         if (accountSet) {
             username = username.toLowerCase();
             writeToFile();
-            System.out.println(accountCreationSuccess);
+            JOptionPane.showMessageDialog(null, accountCreationSuccess, "Success", JOptionPane.INFORMATION_MESSAGE);
+            mainRunMethod();
+        } else {
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-    public static void deleteAccountButtonMethod() {
-
-    }
-    public static void changePasswordButtonMethod() {
-
+        usernameField.setText("");
+        passwordField.setText("");
+        firstNameField.setText("");
+        lastNameField.setText("");
+        ifTeacherField.setText("");
     }
 
     static ActionListener actionListener = new ActionListener() {
@@ -416,10 +543,28 @@ public class Main {
                 }
             }
             if (e.getSource() == deleteAccountButton) {
-                deleteAccountButtonMethod();
+                try {
+                    deleteAccountButtonMethod();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
             if (e.getSource() == changePasswordButton) {
-                changePasswordButtonMethod();
+                try {
+                    changePasswordButtonMethod();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (e.getSource() == createAccountButton) {
+                try {
+                    createAccountButtonMethod();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (e.getSource() == backButton) {
+                mainRunMethod();
             }
         }
     };

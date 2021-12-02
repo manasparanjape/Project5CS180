@@ -276,7 +276,7 @@ public class Course {
             String errorMessage = "This course does not have any discussion forums.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            String selectedForum = forumList.get(1);
+            String selectedForum = forumList.get(0);
             String discussionForumMessagesFileName = courseName + "-" + selectedForum + "-messages" + ".txt";
             String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
             String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
@@ -566,8 +566,8 @@ public class Course {
                 }
             });
         }
-        for (int i = 0; i < discussionForumButtonsArray.size() - 1; i++) {
-            leftPanel.add(discussionForumButtonsArray.get(i + 1));
+        for (int i = 0; i < discussionForumButtonsArray.size(); i++) {
+            leftPanel.add(discussionForumButtonsArray.get(i));
         }
         JScrollPane leftScrollPane = new JScrollPane(leftPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         leftScrollPane.setPreferredSize(new Dimension(150, 600));
@@ -648,8 +648,8 @@ public class Course {
                 }
             });
         }
-        for (int i = 0; i < discussionForumButtonsArray.size() - 1; i++) {
-            leftPanel.add(discussionForumButtonsArray.get(i + 1));
+        for (int i = 0; i < discussionForumButtonsArray.size(); i++) {
+            leftPanel.add(discussionForumButtonsArray.get(i));
         }
         JScrollPane leftScrollPane = new JScrollPane(leftPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         leftScrollPane.setPreferredSize(new Dimension(150, 600));

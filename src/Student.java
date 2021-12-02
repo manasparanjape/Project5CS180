@@ -87,7 +87,6 @@ public class Student {
             openCourseMainMethod(scan);
         }*/
         readCourseListsFile();
-        printCourseList();
         Object[] options = new Object[courseList.size()];
         for (int i = 0; i < courseList.size(); i++) {
             options[i] = courseList.get(i);

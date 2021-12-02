@@ -109,12 +109,11 @@ public class Teacher {
     //reads all the discussion forum title names for that specific course
     public void openCourse() throws Exception {
         readCourseListsFile();
-        printCourseList();
         Object[] options = new Object[courseList.size()];
         for (int i = 0; i < courseList.size(); i++) {
             options[i] = courseList.get(i);
         }
-        Object selectedObject = JOptionPane.showInputDialog(null, courseSelectionPrompt, "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
+        Object selectedObject = JOptionPane.showInputDialog(jframe, courseSelectionPrompt, "Open Course", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
         if (selectedObject != null) {
             String selectedCourse = selectedObject.toString();
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
