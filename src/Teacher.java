@@ -189,6 +189,7 @@ public class Teacher {
     JButton createDiscussionForumButton;
     JButton deleteDiscussionForumButton;
     JButton openDiscussionForumsButton;
+    JButton createDiscussionForumViaFileImportButton;
     JButton backButton;
 
     public void createDiscussionForumButtonMethod() throws FileNotFoundException {
@@ -199,6 +200,9 @@ public class Teacher {
     }
     public void openDiscussionForumsButtonMethod() throws Exception {
         course.teacherDiscussionForumOpened();
+    }
+    public void createDiscussionForumViaFileImportButtonMethod() {
+        course.createForumViaFileImportInGUI();
     }
     public void backButtonMethod() throws Exception {
         Account account = new Account(username, firstName, lastName, true, scan, jframe);
@@ -238,6 +242,9 @@ public class Teacher {
                     ex.printStackTrace();
                 }
             }
+            if (e.getSource() == createDiscussionForumViaFileImportButton) {
+                createDiscussionForumViaFileImportButtonMethod();
+            }
         }
     };
 
@@ -253,6 +260,8 @@ public class Teacher {
         deleteDiscussionForumButton.addActionListener(actionListener);
         openDiscussionForumsButton = new JButton("Open discussion forums");
         openDiscussionForumsButton.addActionListener(actionListener);
+        createDiscussionForumViaFileImportButton = new JButton("Create new discussion forum via file import");
+        createDiscussionForumViaFileImportButton.addActionListener(actionListener);
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
 
@@ -265,6 +274,7 @@ public class Teacher {
         centerPanel.add(openDiscussionForumsButton);
         centerPanel.add(createDiscussionForumButton);
         centerPanel.add(deleteDiscussionForumButton);
+        centerPanel.add(createDiscussionForumViaFileImportButton);
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));

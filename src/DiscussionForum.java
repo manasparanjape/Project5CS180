@@ -823,4 +823,51 @@ public class DiscussionForum {
             printMessagesInGUI();
         }
     }
+
+    public void readNewPostFileInGUI() throws Exception {
+        StringBuilder output = new StringBuilder();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(new JOptionPane());
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            try {
+                FileReader fr = new FileReader(f);
+                BufferedReader bfr = new BufferedReader(fr);
+                String line = bfr.readLine();
+                while (line != null) {
+                    output.append(line);
+                    line = bfr.readLine();
+                }
+                output = new StringBuilder(output.toString().replace("\r\n", " ").replace("\n", " "));
+                output = new StringBuilder(output.toString().replace(".", ". "));
+                String newPost = String.valueOf(output);
+                if (newPost == null || newPost.isBlank()) {
+                    String errorMessage = "Please enter a valid post(ie. Not all spaces or blank).";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String fullName = firstName + " " + lastName;
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+                    ArrayList<String> newPostArray = new ArrayList<>();
+                    newPostArray.add(0, Integer.toString(messagesArray.size() + 1));
+                    newPostArray.add(1, newPost);
+                    newPostArray.add(2, fullName);
+                    newPostArray.add(3, LocalDateTime.now().format(format));
+                    newPostArray.add(4, "0");
+                    newPostArray.add(5, "0");
+                    newPostArray.add(6, username);
+                    newPostArray.add(7, Integer.toString(messagesArray.size()));
+                    messagesArray.add(newPostArray);
+                    writeToMessagesFile();
+                    printMessagesInGUI();
+                }
+            } catch (FileNotFoundException e) {
+                String errorMessage = "The file you entered was not found.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                String errorMessage = "Error parsing contents of the file.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 }

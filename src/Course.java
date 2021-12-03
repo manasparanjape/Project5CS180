@@ -26,39 +26,37 @@ public class Course {
     private String discussionBoardsListFileName;
     private DiscussionForum discussionForum;
     private Scanner scan;
+    JFrame jframe;
+    ArrayList<JButton> discussionForumButtonsArray = new ArrayList<>(0);
+    JButton sendButton;
+    JButton upvoteButton;
+    JButton deleteMessageButton;
+    JButton gradeStudentButton;
+    JButton dashboardButton;
+    JButton changeTopicButton;
+    JButton backButtonTeacher;
+    JButton backButtonStudent;
+    JButton sendMessageViaFileImportButton;
+
+    boolean ifDashBoard = false;
+
+    JTextArea textArea;
+    JTextField messageNumberField;
+    JTextField newMessageField;
+
+    JLabel newMessageFieldLabel;
+    JLabel messageNumberFieldLabel;
+
     private static String newForumNamePrompt = "What would you like to name the new discussion forum?";
     private static String newForumCreated = "New forum has been created!";
     private static String deleteForumPrompt = "Which forum would you like to delete?";
     private static String forumDeleted = "The forum you selected has been deleted";
-    private static String forumSelectionPrompt = "Which discussion forum would you like to open?";
     private static String forumNamePrompt = "Please enter the file name and path of the file which "
             + "contains the new forum name.";
-    private static String discussionForumEnteredStudentPrompt = "Please enter the option number of what "
-            + "you want to do.\n"
-            + "1) View discussion forum\n2) Post message\n3) Reply to message\n4) Upvote message\n5) Exit forum";
-    private static String discussionForumEnteredTeacherPrompt = "Please enter the option number "
-            + "of what you want to do.\n" +
-            "1) View messages\n2) Post message\n3) Reply to message\n" + "4) Delete message\n" +
-            "5) Grade student messages\n6) Change topic\n7) View dashboard\n" +
-            "8) Exit forum";
     private static String methodOfNewForumPrompt = "How do you want to create the new discussion forum?\n" +
             "1) Enter the new forum name via terminal.\n2) Import text file with the forum name.\n3) Cancel.";
 
     private ArrayList<String> forumList = new ArrayList<>();
-
-    //prints a list of forums
-    public void printForumList() {
-        StringBuilder output = new StringBuilder();
-        for (String s : forumList) {
-            output.append(s).append("\n");
-        }
-        output = new StringBuilder(output.substring(0, output.length() - 1));
-        if (output.toString().isEmpty()) {
-            System.out.println("No courses created yet.");
-        } else {
-            System.out.println(output);
-        }
-    }
 
     public Course(String courseName, String username, String firstName, String lastName,
                   DiscussionForum discussionForum, String discussionBoardsListFileName, Scanner scan, JFrame jframe) {
@@ -265,7 +263,6 @@ public class Course {
                     }
                 }
             });
-            //showDiscussionForumMainMethodStudent();
         }
     }
 
@@ -295,65 +292,6 @@ public class Course {
                     }
                 }
             });
-            //showDiscussionForumMainMethodTeacher();
-        }
-    }
-
-    //gives students the choice to: print messages, post messages,
-    //reply to a post, upvote a message, or exit
-    public void showDiscussionForumMainMethodStudent() throws Exception {
-        int option = 0;
-        while (option != 5) {
-            try {
-                System.out.println(discussionForumEnteredStudentPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-            } catch (Exception e) {
-                System.out.println("Please enter a valid number!");
-                option = 0;
-                scan.nextLine();
-            }
-            if (option < 1 || option > 5) {
-                System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
-            } else {
-                switch (option) {
-                    case 1 -> discussionForum.printMessages();
-                    case 2 -> discussionForum.postMessage();
-                    case 3 -> discussionForum.replyToPost();
-                    case 4 -> discussionForum.upvote();
-                }
-            }
-        }
-    }
-
-    //gives teachers the option to: print messages, post messages, reply to a post
-    //grade a response, change the forum topic, show dashboard, or exit
-    public void showDiscussionForumMainMethodTeacher() {
-        int option = 0;
-        while (option != 8) {
-            try {
-                System.out.println(discussionForumEnteredTeacherPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-                if (option < 1 || option > 8) {
-                    System.out.println("You entered an invalid number. Please enter a number between 1 and 6.");
-                } else {
-                    switch (option) {
-                        case 1 -> discussionForum.printMessages();
-                        case 2 -> discussionForum.postMessage();
-                        case 3 -> discussionForum.replyToPost();
-                        case 4 -> discussionForum.deletePost();
-                        case 5 -> discussionForum.responseGrading();
-                        case 6 -> discussionForum.changeTopic();
-                        case 7 -> discussionForum.showDashboard();
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("Please enter a valid number");
-                scan.nextLine();
-                option = 0;
-
-            }
         }
     }
 
@@ -361,27 +299,6 @@ public class Course {
     * GUI part
     * how to create the interface.
      */
-
-    //JFrame jframe = new JFrame(courseName);
-    JFrame jframe;
-    ArrayList<JButton> discussionForumButtonsArray = new ArrayList<>(0);
-    JButton sendButton;
-    JButton upvoteButton;
-    JButton deleteMessageButton;
-    JButton gradeStudentButton;
-    JButton dashboardButton;
-    JButton changeTopicButton;
-    JButton backButtonTeacher;
-    JButton backButtonStudent;
-
-    boolean ifDashBoard = false;
-
-    JTextArea textArea;
-    JTextField messageNumberField;
-    JTextField newMessageField;
-
-    JLabel newMessageFieldLabel;
-    JLabel messageNumberFieldLabel;
 
     public void sendButtonMethod() {
         try {
@@ -449,6 +366,9 @@ public class Course {
         Student student = new Student(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
         student.runnableMethod();
     }
+    public void sendMessageViaFileImportButtonMethod() throws Exception {
+        discussionForum.readNewPostFileInGUI();
+    }
 
     public void openDiscussionForumTeacher(String forumName) throws Exception {
         String discussionForumMessagesFileName = courseName + "-" + forumName + "-messages" + ".txt";
@@ -497,6 +417,13 @@ public class Course {
             if (e.getSource() == changeTopicButton) {
                 changeTopicButtonMethod();
             }
+            if (e.getSource() == sendMessageViaFileImportButton) {
+                try {
+                    sendMessageViaFileImportButtonMethod();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     };
 
@@ -520,6 +447,8 @@ public class Course {
         dashboardButton.addActionListener(actionListener);
         changeTopicButton = new JButton("Change Topic");
         changeTopicButton.addActionListener(actionListener);
+        sendMessageViaFileImportButton = new JButton("Import File with message");
+        sendMessageViaFileImportButton.addActionListener(actionListener);
 
         newMessageFieldLabel = new JLabel("New Message");
         messageNumberFieldLabel = new JLabel("Message No. to reply/delete");
@@ -545,6 +474,7 @@ public class Course {
         bottomPanel.add(sendButton);
         bottomPanel.add(messageNumberFieldLabel);
         bottomPanel.add(messageNumberField);
+        bottomPanel.add(sendMessageViaFileImportButton);
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -603,6 +533,8 @@ public class Course {
         upvoteButton.addActionListener(actionListener);
         backButtonStudent = new JButton("Back");
         backButtonStudent.addActionListener(actionListener);
+        sendMessageViaFileImportButton = new JButton("Import File with message");
+        sendMessageViaFileImportButton.addActionListener(actionListener);
 
         textArea = new JTextArea();
         textArea.setLineWrap(true);
@@ -627,6 +559,7 @@ public class Course {
         bottomPanel.add(sendButton);
         bottomPanel.add(messageNumberField);
         bottomPanel.add(upvoteButton);
+        bottomPanel.add(sendMessageViaFileImportButton);
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -726,6 +659,63 @@ public class Course {
             if (deleted) {
                 JOptionPane.showMessageDialog(null, forumDeleted, "Success", JOptionPane.INFORMATION_MESSAGE);
             }
+        }
+    }
+
+    public void createForumViaFileImportInGUI() {
+        StringBuilder output = new StringBuilder();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(new JOptionPane());
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            try {
+                FileReader fr = new FileReader(f);
+                BufferedReader bfr = new BufferedReader(fr);
+                String line = bfr.readLine();
+                while (line != null) {
+                    output.append(line);
+                    line = bfr.readLine();
+                }
+                output = new StringBuilder(output.toString().replace("\r\n", " ").replace("\n", " "));
+                output = new StringBuilder(output.toString().replace(".", ". "));
+                String newForumName = String.valueOf(output);
+                if (newForumName == null || newForumName.isBlank()) {
+                    String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (discussionForumExists(newForumName)) {
+                    String errorMessage = "A discussion forum with that name already exists in this course.";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+                    forumList.add(newForumName);
+                    FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName +
+                            "-messages" + ".txt", true);
+                    PrintWriter pw = new PrintWriter(fos);
+                    pw.println(newForumName + "§§§" + LocalDateTime.now().format(format));
+                    pw.close();
+                    fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
+                    pw = new PrintWriter(fos);
+                    pw.println("");
+                    pw.close();
+                    fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
+                    pw = new PrintWriter(fos);
+                    pw.println("");
+                    pw.close();
+                    fos = new FileOutputStream(discussionBoardsListFileName, true);
+                    pw = new PrintWriter(fos);
+                    pw.println(newForumName);
+                    System.out.println(newForumCreated);
+                    pw.close();
+                }
+            } catch (FileNotFoundException e) {
+                String errorMessage = "The file you entered was not found.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                String errorMessage = "Error parsing contents of the file.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         }
     }
 }
