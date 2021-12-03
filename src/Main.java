@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -37,6 +38,7 @@ public class Main {
     private static String accountTypePrompt = "Are you a teacher or a student?\n1. Teacher\n2. Student";
     private static String accountDeletionSuccess = "Your account has been deleted";
     static ArrayList<ArrayList<String>> accountDetailsArray = null;
+
 
     public Main(String username, String password, String firstName, String lastName, boolean ifTeacher) {
         Main.username = username;
@@ -108,17 +110,30 @@ public class Main {
     //reads text file to an ArrayList inside an ArrayList called "output"
     public static void readFile() throws IOException {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
-        File f = new File(accountsFile);
-        FileReader fr = new FileReader(f);
-        BufferedReader bfr = new BufferedReader(fr);
-        String line = bfr.readLine();
-        while (line != null) {
-            String[] separatedLine = line.split("§§§");
-            ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
-            output.add(singleLine);
-            line = bfr.readLine();
+//        File f = new File(accountsFile);
+//        FileReader fr = new FileReader(f);
+//        BufferedReader bfr = new BufferedReader(fr);
+        try {
+            Socket socket = new Socket("localhost", 1234);
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
+            out.writeUTF("Read Accounts File");
+            String line = in.readUTF();
+            do {
+                String[] separatedLine = line.split("§§§");
+                ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
+                output.add(singleLine);
+                line = in.readUTF();
+            } while (!line.equals("End"));
+
+            socket.close();
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        bfr.close();
+
         accountDetailsArray = output;
     }
 
@@ -310,6 +325,9 @@ public class Main {
             }
         }
         scan.close();*/
+
+
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -530,6 +548,7 @@ public class Main {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 try {
+
                     loginButtonMethod();
                 } catch (Exception ex) {
                     ex.printStackTrace();
