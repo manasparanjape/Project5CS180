@@ -23,37 +23,18 @@ public class Teacher {
     String lastName;
     private Course course;
     private String coursesListFileName = "CoursesList.txt";
-    Scanner scan;
 
     private static String newCourseNamePrompt = "What would you like to name the new course?";
     private static String newCourseCreated = "New course has been created!";
     private static String courseSelectionPrompt = "Which course would you like to open?";
-    private static String courseEnteredPrompt = "Please enter the option number of what you want to do.\n1)"
-            + " Open discussion forum\n2) Create discussion forum\n3) Delete discussion forum\n4) Exit course";
     private ArrayList<String> courseList = new ArrayList<>();
 
-    public Teacher(String username, String firstName, String lastName, Course course, Scanner scan, JFrame jframe) {
+    public Teacher(String username, String firstName, String lastName, Course course, JFrame jframe) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.course = course;
-        this.scan = scan;
         this.jframe = jframe;
-    }
-
-    //uses a for loop to iterate through the courseList array and appends
-    //every course to a StringBuilder object
-    //prints out course list as string
-    public void printCourseList() {
-        StringBuilder output = new StringBuilder();
-        for (String s : courseList) {
-            output.append(s).append("\n");
-        }
-        output = new StringBuilder(output.substring(0, output.length() - 1));
-        System.out.println(output);
-        if (output.toString().isEmpty()) {
-            System.out.println("No courses created yet.");
-        }
     }
 
     //reads courses the “CoursesList.txt" file and stores in arraylist
@@ -81,30 +62,6 @@ public class Teacher {
         }
     }
 
-    //creates a course
-    //adds course name to courseList array list
-    //writes course name to text file using PrintWriter
-    public void createCourse() throws IOException {
-        System.out.println(newCourseNamePrompt);
-        String newCourseName = scan.nextLine();
-        if (newCourseName == null || newCourseName.isBlank()) {
-            System.out.println("Please enter a valid course name(ie. Not all spaces or blank).");
-        } else if (courseExists(newCourseName)) {
-            System.out.println("A course with that name already exists.");
-        } else {
-            courseList.add(newCourseName);
-            FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt", false);
-            PrintWriter pw = new PrintWriter(fos);
-            pw.println();
-            pw.close();
-            fos = new FileOutputStream(coursesListFileName, true);
-            pw = new PrintWriter(fos);
-            pw.println(newCourseName);
-            System.out.println(newCourseCreated);
-            pw.close();
-        }
-    }
-
     //checks if user inputted course is present in the courseList array list
     //reads all the discussion forum title names for that specific course
     public void openCourse() throws Exception {
@@ -117,7 +74,7 @@ public class Teacher {
         if (selectedObject != null) {
             String selectedCourse = selectedObject.toString();
             String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe);
+            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, jframe);
             course.readForumListFile();
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -129,52 +86,6 @@ public class Teacher {
                     }
                 }
             });
-        }
-        /*System.out.println(courseSelectionPrompt);
-        String selectedCourse = scan.nextLine();
-        if (selectedCourse == null || !courseExists(selectedCourse)) {
-            System.out.println("The course you entered does not exist!");
-        } else {
-            String discussionBoardsListFileName = selectedCourse + "-forumslist.txt";
-            course = new Course(selectedCourse, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe);
-            course.readForumListFile();
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        runMethodTeacher();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            openCourseMainMethod();
-        }*/
-    }
-
-    //gives user four options: open discussion forum, create forum, delete forum, and show dashboard
-    public void openCourseMainMethod() throws Exception {
-        int option = 0;
-        while (option != 4) {
-            try {
-                System.out.println(courseEnteredPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-            } catch (Exception e) {
-                System.out.println("You did not input an integer. Please input an integer between 1 and 5.");
-                option = 0;
-                scan.nextLine();
-                continue;
-            }
-            if (option < 1 || option > 4) {
-                System.out.println("You entered an invalid number. Please enter a number between 1 and 5.");
-            } else {
-                switch (option) {
-                    case 1 -> course.teacherDiscussionForumOpened();
-                    case 2 -> course.createForum();
-                    case 3 -> course.deleteForum();
-                }
-            }
         }
     }
 
@@ -183,7 +94,6 @@ public class Teacher {
      * how to create the interface.
      */
 
-    //JFrame jframe = new JFrame();
     JFrame jframe;
 
     JButton createDiscussionForumButton;
@@ -205,7 +115,7 @@ public class Teacher {
         course.createForumViaFileImportInGUI();
     }
     public void backButtonMethod() throws Exception {
-        Account account = new Account(username, firstName, lastName, true, scan, jframe);
+        Account account = new Account(username, firstName, lastName, true, jframe);
         account.accountMainMethod();
     }
 
@@ -230,9 +140,7 @@ public class Teacher {
                 try {
                     openDiscussionForumsButtonMethod();
                 } catch (Exception ex) {
-                    System.out.println("Check1");
                     ex.printStackTrace();
-                    System.out.println("Check2");
                 }
             }
             if (e.getSource() == backButton) {

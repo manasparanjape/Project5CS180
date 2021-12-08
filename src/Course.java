@@ -6,7 +6,6 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Course.java
@@ -25,7 +24,6 @@ public class Course {
     private String lastName;
     private String discussionBoardsListFileName;
     private DiscussionForum discussionForum;
-    private Scanner scan;
     JFrame jframe;
     ArrayList<JButton> discussionForumButtonsArray = new ArrayList<>(0);
     JButton sendButton;
@@ -51,47 +49,18 @@ public class Course {
     private static String newForumCreated = "New forum has been created!";
     private static String deleteForumPrompt = "Which forum would you like to delete?";
     private static String forumDeleted = "The forum you selected has been deleted";
-    private static String forumNamePrompt = "Please enter the file name and path of the file which "
-            + "contains the new forum name.";
-    private static String methodOfNewForumPrompt = "How do you want to create the new discussion forum?\n" +
-            "1) Enter the new forum name via terminal.\n2) Import text file with the forum name.\n3) Cancel.";
 
     private ArrayList<String> forumList = new ArrayList<>();
 
     public Course(String courseName, String username, String firstName, String lastName,
-                  DiscussionForum discussionForum, String discussionBoardsListFileName, Scanner scan, JFrame jframe) {
+                  DiscussionForum discussionForum, String discussionBoardsListFileName, JFrame jframe) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.discussionForum = discussionForum;
         this.discussionBoardsListFileName = discussionBoardsListFileName;
-        this.scan = scan;
         this.jframe = jframe;
-    }
-
-    //takes input for file location and puts contents onto string
-    public String readNewForumFile() {
-        StringBuilder output = new StringBuilder();
-        try {
-            System.out.println(forumNamePrompt);
-            String fileName = scan.nextLine();
-            File f = new File(fileName);
-            FileReader fr = new FileReader(f);
-            BufferedReader bfr = new BufferedReader(fr);
-            String line = bfr.readLine();
-            while (line != null) {
-                output.append(line);
-                line = bfr.readLine();
-            }
-            output = new StringBuilder(output.toString().replace("\r\n", " ").replace("\n", " "));
-            output = new StringBuilder(output.toString().replace(".", ". "));
-        } catch (FileNotFoundException e) {
-            System.out.println("The file you entered was not found.");
-        } catch (IOException e) {
-            System.out.println("Error parsing contents of the file.");
-        }
-        return output.toString();
     }
 
     //reads discussionBoardsListFileName and puts onto string
@@ -117,126 +86,6 @@ public class Course {
         }
     }
 
-    //asks user how they want to create a forum
-    //creates forum accordingly, adds to forumList array list
-    public void createForum() {
-        boolean cancelled = false;
-        int option = 0;
-        while (option != 3 && !cancelled) {
-            try {
-                System.out.println(methodOfNewForumPrompt);
-                option = scan.nextInt();
-                scan.nextLine();
-                String newForumName = "";
-                if (option == 1) {
-                    System.out.println(newForumNamePrompt);
-                    newForumName = scan.nextLine();
-                } else if (option == 2) {
-                    newForumName = readNewForumFile();
-                } else if (option != 3) {
-                    System.out.println("You entered an invalid option. Please enter a number between 1 and 3.");
-                }
-                if (option == 1 || option == 2) {
-                    if (newForumName == null || newForumName.isBlank()) {
-                        System.out.println("Please enter a valid discussion forum name" +
-                                "(ie. Not all spaces or blank).");
-                    } else if (discussionForumExists(newForumName)) {
-                        System.out.println("A discussion forum with that name already exists in this course.");
-                    } else {
-                        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-                        forumList.add(newForumName);
-                        FileOutputStream fos = new FileOutputStream(courseName + "-" + newForumName +
-                                "-messages" + ".txt", true);
-                        PrintWriter pw = new PrintWriter(fos);
-                        pw.println(newForumName + "§§§" + LocalDateTime.now().format(format));
-                        pw.close();
-                        fos = new FileOutputStream(courseName + "-" + newForumName + "-points" + ".txt", false);
-                        pw = new PrintWriter(fos);
-                        pw.println("");
-                        pw.close();
-                        fos = new FileOutputStream(courseName + "-" + newForumName + "-upvotes" + ".txt", false);
-                        pw = new PrintWriter(fos);
-                        pw.println("");
-                        pw.close();
-                        fos = new FileOutputStream(discussionBoardsListFileName, true);
-                        pw = new PrintWriter(fos);
-                        pw.println(newForumName);
-                        System.out.println(newForumCreated);
-                        pw.close();
-                        cancelled = true;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("Please enter a valid number!");
-                option = 0;
-                scan.nextLine();
-            }
-        }
-    }
-
-    //deletes a forum
-    //rewrites all the discussion boards file names to the String Builder object called output
-    public void deleteForum() throws Exception {
-        System.out.println(deleteForumPrompt);
-        String toDeleteForum = scan.nextLine();
-        boolean deleted = false;
-        if (toDeleteForum == null || !discussionForumExists(toDeleteForum)) {
-            if (!discussionForumExists(toDeleteForum)) {
-                System.out.println("The discussion forum you entered does not exist.");
-            } else {
-                System.out.println("Please enter a valid discussion forum name(ie. Not all spaces or blank).");
-            }
-        } else {
-            forumList.remove(toDeleteForum);
-            File f = new File(courseName + "-" + toDeleteForum + "-messages" + ".txt");
-            deleted = f.delete();
-            f = new File(courseName + "-" + toDeleteForum + "-points" + ".txt");
-            deleted &= f.delete();
-            f = new File(courseName + "-" + toDeleteForum + "-upvotes" + ".txt");
-            deleted &= f.delete();
-            FileOutputStream fos = new FileOutputStream(discussionBoardsListFileName, false);
-            PrintWriter pw = new PrintWriter(fos);
-            StringBuilder output = new StringBuilder();
-            for (String s : forumList) {
-                output.append(s).append("\n");
-            }
-            if (output.length() > 0) {
-                output = new StringBuilder(output.substring(0, output.length() - 1));
-            }
-            pw.println(output);
-            pw.close();
-        }
-        if (deleted) {
-            System.out.println(forumDeleted);
-        }
-    }
-
-    //returns points for a student for each forum
-    //by searching through points txt file
-    public void viewPoints() throws IOException {
-        StringBuilder output = new StringBuilder();
-        for (String s : forumList) {
-            output.append(s).append(": ");
-            File f = new File(courseName + "-" + s + "-points" + ".txt");
-            FileReader fr = new FileReader(f);
-            BufferedReader bfr = new BufferedReader(fr);
-            String line = bfr.readLine();
-            boolean pointsFound = false;
-            while (line != null) {
-                if (line.contains(username)) {
-                    String[] splitLine = line.split("§§§");
-                    output.append(splitLine[1]).append("\n");
-                    pointsFound = true;
-                }
-                line = bfr.readLine();
-            }
-            if (!pointsFound) {
-                output.append("Points not assigned to this forum yet.\n");
-            }
-        }
-        System.out.println(output);
-    }
-
     //displays list of discussion forums and asks user to open one
     public void studentDiscussionForumOpened() throws Exception {
         readForumListFile();
@@ -249,7 +98,7 @@ public class Course {
             String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
             String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
             discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName,
-                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, scan, textArea);
+                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, textArea);
             discussionForum.readMessagesFile();
             discussionForum.readPointsFile();
             discussionForum.readUpvotesFile();
@@ -278,7 +127,7 @@ public class Course {
             String discussionForumPointsFileName = courseName + "-" + selectedForum + "-points" + ".txt";
             String discussionForumUpvotesFileName = courseName + "-" + selectedForum + "-upvotes" + ".txt";
             discussionForum = new DiscussionForum(selectedForum, discussionForumMessagesFileName,
-                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, scan, textArea);
+                    discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, textArea);
             discussionForum.readMessagesFile();
             discussionForum.readPointsFile();
             discussionForum.readUpvotesFile();
@@ -296,8 +145,8 @@ public class Course {
     }
 
     /*
-    * GUI part
-    * how to create the interface.
+     * GUI part
+     * how to create the interface.
      */
 
     public void sendButtonMethod() {
@@ -359,23 +208,23 @@ public class Course {
         }
     }
     public void backButtonTeacherMethod() {
-        Teacher teacher = new Teacher(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
+        Teacher teacher = new Teacher(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, jframe), jframe);
         teacher.runnableMethod();
     }
     public void backButtonStudentMethod() throws Exception {
-        Student student = new Student(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, scan, jframe), scan, jframe);
+        Student student = new Student(username, firstName, lastName, new Course(courseName, username, firstName, lastName, null, discussionBoardsListFileName, jframe), jframe);
         student.runnableMethod();
     }
     public void sendMessageViaFileImportButtonMethod() throws Exception {
         discussionForum.readNewPostFileInGUI();
     }
 
-    public void openDiscussionForumTeacher(String forumName) throws Exception {
+    public void openDiscussionForum(String forumName) throws Exception {
         String discussionForumMessagesFileName = courseName + "-" + forumName + "-messages" + ".txt";
         String discussionForumPointsFileName = courseName + "-" + forumName + "-points" + ".txt";
         String discussionForumUpvotesFileName = courseName + "-" + forumName + "-upvotes" + ".txt";
         discussionForum = new DiscussionForum(forumName, discussionForumMessagesFileName,
-                discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, scan, textArea);
+                discussionForumPointsFileName, firstName, lastName, username, discussionForumUpvotesFileName, textArea);
         try {
             discussionForum.readMessagesFile();
             discussionForum.readPointsFile();
@@ -489,7 +338,7 @@ public class Course {
                 public void actionPerformed(ActionEvent e) {
                     String selectedForum = discussionForumButtonsArray.get(finalI).getText();
                     try {
-                        openDiscussionForumTeacher(selectedForum);
+                        openDiscussionForum(selectedForum);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -574,7 +423,7 @@ public class Course {
                 public void actionPerformed(ActionEvent e) {
                     String selectedForum = discussionForumButtonsArray.get(finalI).getText();
                     try {
-                        openDiscussionForumTeacher(selectedForum);
+                        openDiscussionForum(selectedForum);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
