@@ -38,3 +38,8 @@
 5. User clicks open course button
 6. User clicks the OK button
 7. User clicks Open Discussion forums
+8. User clicks Threads
+9. User clicks GUI
+10. User clicks For statement
+11. User clicks If Statement
+12. Test passed: User is successfully brought to the discussion forums and can click through the different forums
