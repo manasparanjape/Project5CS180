@@ -1,6 +1,6 @@
 # Testing for Project 5
 
-###Test 1: Student Log in
+### Test 1: Student Log in
 1. User launches application
 2. User clicks log in
 3. User enters username: student
