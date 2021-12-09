@@ -90,7 +90,6 @@ public class CourseClient {
     }
 
     public void deleteForum() throws Exception {
-        boolean deleted = false;
         String receivedData = bufferedReader.readLine();
         if (receivedData.equals(" ")) {
             printWriter.write(" ");
@@ -214,10 +213,10 @@ public class CourseClient {
         newMessageField = new JTextField(30);
         messageNumberField = new JTextField(3);
 
-        jframe.setSize(900, 600);
-        jframe.setLocationRelativeTo(null);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setVisible(true);
+        //jframe.setSize(900, 600);
+        //jframe.setLocationRelativeTo(null);
+        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //jframe.setVisible(true);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(newMessageFieldLabel);
@@ -302,10 +301,10 @@ public class CourseClient {
         newMessageFieldLabel = new JLabel("New Message");
         messageNumberFieldLabel = new JLabel("Message No. to reply/upvote");
 
-        jframe.setSize(900, 600);
-        jframe.setLocationRelativeTo(null);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setVisible(true);
+        //jframe.setSize(900, 600);
+        //jframe.setLocationRelativeTo(null);
+        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //jframe.setVisible(true);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(newMessageField);
@@ -363,7 +362,7 @@ public class CourseClient {
         printWriter.println();
         printWriter.flush();
 
-        discussionForumClient = new DiscussionForumClient(forumName, firstName, lastName, username, printWriter, bufferedReader, textArea);
+        discussionForumClient = new DiscussionForumClient(printWriter, bufferedReader, textArea);
         changeForum();
     }
 
@@ -384,7 +383,6 @@ public class CourseClient {
         areaScrollPane.setPreferredSize(new Dimension(20, 100));
         String pointsString = bufferedReader.readLine();
         pointsString = pointsString.replaceAll("§§§", "\n" );
-        System.out.println(pointsString + "Check functionality");
         textArea.setText(pointsString);
 
 
@@ -547,7 +545,6 @@ public class CourseClient {
 
     public void studentDiscussionForumOpened() throws Exception {
         String receivedData = bufferedReader.readLine();
-        System.out.println(receivedData);
         if (receivedData.equals(" ")) {
             String errorMessage = "This course does not have any discussion forums.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);

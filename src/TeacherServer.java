@@ -13,12 +13,17 @@ public class TeacherServer {
 
     private BufferedReader bufferedReader;
 
-    public TeacherServer(String username, String firstName, String lastName, PrintWriter printWriter, BufferedReader bufferedReader) {
+    public static final Object object = new Object();
+
+    private int userNumber;
+
+    public TeacherServer(String username, String firstName, String lastName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
+        this.userNumber = userNumber;
     }
 
     public void readCourseListsFile() throws IOException {
@@ -51,11 +56,11 @@ public class TeacherServer {
 
         String chosenCourse = bufferedReader.readLine();
         if (chosenCourse.equals(" ")) {
-            AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader);
+            AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber);
             accountServer.mainMethod();
         } else {
             String discussionBoardsListFileName = chosenCourse + "-forumslist.txt";
-            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader);
+            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber);
             courseServer.mainMethod();
         }
     }
@@ -84,19 +89,21 @@ public class TeacherServer {
                 pw.close();
                 fos = new FileOutputStream(coursesListFileName, true);
                 pw = new PrintWriter(fos);
-                pw.println(newCourseName);
+                synchronized (object) {
+                    pw.println(newCourseName);
+                }
                 pw.close();
                 printWriter.write("1");
             }
         }
         printWriter.println();
         printWriter.flush();
-        AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader);
+        AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber);
         accountServer.mainMethod();
     }
 
     public void back() throws Exception {
-        AccountServer accountServer = new AccountServer(username, firstName, lastName, true, printWriter, bufferedReader);
+        AccountServer accountServer = new AccountServer(username, firstName, lastName, true, printWriter, bufferedReader, userNumber);
         accountServer.mainMethod();
     }
 }

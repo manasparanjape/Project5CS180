@@ -59,10 +59,10 @@ public class AccountClient {
         logoutButton = new JButton("Logout");
         logoutButton.addActionListener(actionListener);
 
-        jframe.setSize(900, 600);
-        jframe.setLocationRelativeTo(null);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setVisible(true);
+        //jframe.setSize(900, 600);
+        //jframe.setLocationRelativeTo(null);
+        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //jframe.setVisible(true);
 
         JPanel centerPanel = new JPanel();
         centerPanel.add(openCourseButton);
@@ -77,7 +77,6 @@ public class AccountClient {
     }
 
     public void runMethodStudent() {
-        System.out.println("Student run method reached");
         Container container = jframe.getContentPane();
         container.removeAll();
         container.setLayout(new BorderLayout());
@@ -88,10 +87,10 @@ public class AccountClient {
         logoutButton = new JButton("Logout");
         logoutButton.addActionListener(actionListener);
 
-        jframe.setSize(900, 600);
-        jframe.setLocationRelativeTo(null);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setVisible(true);
+        //jframe.setSize(900, 600);
+        //jframe.setLocationRelativeTo(null);
+        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //jframe.setVisible(true);
 
         JPanel centerPanel = new JPanel();
         centerPanel.add(openCourseButton);
@@ -141,7 +140,6 @@ public class AccountClient {
         }
     }
     public void logoutButtonMethod() {
-        System.out.println("Logout reached");
         printWriter.write("0");
         printWriter.println();
         printWriter.flush();

@@ -6,21 +6,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainServer {
-    private static String accountsFile = "AccountsFile.txt";
-    private static String username;
-    private static String password;
-    private static String firstName;
-    private static String lastName;
+    private String accountsFile = "AccountsFile.txt";
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
 
-    private static boolean ifTeacher;
+    private boolean ifTeacher;
 
-    private static ArrayList<ArrayList<String>> accountDetailsArray = null;
+    private ArrayList<ArrayList<String>> accountDetailsArray = null;
 
-    private static BufferedReader bufferedReader;
+    private BufferedReader bufferedReader;
 
-    private static PrintWriter printWriter;
+    private PrintWriter printWriter;
 
-    public static String convertToString() {
+    public static final Object object = new Object();
+
+    private static ArrayList<String> usernames = new ArrayList<>();
+
+    private int userNumber = 0;
+
+    public MainServer(BufferedReader bufferedReader, PrintWriter printWriter) {
+        this.bufferedReader = bufferedReader;
+        this.printWriter = printWriter;
+    }
+
+    public static ArrayList<String> getUsernames() {
+        return usernames;
+    }
+
+    public String convertToString() {
         String output = username + "§§§";
         output += password + "§§§";
         output += firstName + "§§§";
@@ -33,7 +48,7 @@ public class MainServer {
         return output;
     }
 
-    public static void readFile() throws IOException {
+    public void readFile() throws IOException {
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         File f = new File(accountsFile);
         FileReader fr = new FileReader(f);
@@ -49,7 +64,7 @@ public class MainServer {
         accountDetailsArray = output;
     }
 
-    public static boolean checkUsernameAvailability(String studentUsername) throws IOException {
+    public boolean checkUsernameAvailability(String studentUsername) throws IOException {
         boolean output = false;
         int i = 0;
         readFile();
@@ -60,84 +75,103 @@ public class MainServer {
         return output;
     }
 
-    public static void writeToFile() throws FileNotFoundException {
+    public void writeToFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(accountsFile, true);
         PrintWriter pw = new PrintWriter(fos);
-        pw.println(convertToString());
+        synchronized (object) {
+            pw.println(convertToString());
+        }
         pw.close();
     }
 
-    public static void writeAllAccountsToFile() throws FileNotFoundException {
+    public void writeAllAccountsToFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(accountsFile, false);
         PrintWriter pw = new PrintWriter(fos);
-        String toWrite = "";
-        for (int i = 0; i < accountDetailsArray.size(); i++) {
-            toWrite += accountDetailsArray.get(i).get(0) + "§§§";
-            toWrite += accountDetailsArray.get(i).get(1) + "§§§";
-            toWrite += accountDetailsArray.get(i).get(2) + "§§§";
-            toWrite += accountDetailsArray.get(i).get(3) + "§§§";
-            toWrite += accountDetailsArray.get(i).get(4) + "\n";
+        StringBuilder toWrite = new StringBuilder();
+        for (ArrayList<String> strings : accountDetailsArray) {
+            toWrite.append(strings.get(0)).append("§§§");
+            toWrite.append(strings.get(1)).append("§§§");
+            toWrite.append(strings.get(2)).append("§§§");
+            toWrite.append(strings.get(3)).append("§§§");
+            toWrite.append(strings.get(4)).append("\n");
         }
-        toWrite = toWrite.substring(0, toWrite.length() - 1);
-        pw.println(toWrite);
+        toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
+        synchronized (object) {
+            pw.println(toWrite);
+        }
         pw.close();
     }
 
-    public static boolean securityCheckServer() throws IOException {
+    public boolean securityCheckServer() throws IOException {
         readFile();
         boolean output = false;
         String receivedData = bufferedReader.readLine();
-        if (!receivedData.equals("0")) {
-            String[] receivedDataArray = receivedData.split("§§§");
-            username = receivedDataArray[0];
-            password = receivedDataArray[1];
+        if (!receivedData.equals("-1")) {
+            receivedData = bufferedReader.readLine();
+            if (!receivedData.equals("0")) {
+                String[] receivedDataArray = receivedData.split("§§§");
+                username = receivedDataArray[0];
+                password = receivedDataArray[1];
 
-            int i = 0;
-            String toSend = "0";
+                int i = 0;
+                String toSend = "0";
 
-            readFile();
-            boolean usernameFound = false;
-            boolean passwordMatch = false;
-            while (i < accountDetailsArray.size() && !usernameFound) {
-                usernameFound = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
-                i++;
-            }
-            if (usernameFound) {
-                passwordMatch = accountDetailsArray.get(i - 1).get(1).equals(password);
-            }
-            if (usernameFound && passwordMatch) {
-                output = true;
-                toSend = "1" + "§§§";
-                toSend += accountDetailsArray.get(i - 1).get(0) + "§§§";
-                toSend += accountDetailsArray.get(i - 1).get(1) + "§§§";
-                toSend += accountDetailsArray.get(i - 1).get(2) + "§§§";
-                toSend += accountDetailsArray.get(i - 1).get(3) + "§§§";
-                toSend += accountDetailsArray.get(i - 1).get(4);
-                username = accountDetailsArray.get(i - 1).get(0);
-                password = accountDetailsArray.get(i - 1).get(1);
-                firstName = accountDetailsArray.get(i - 1).get(2);
-                lastName = accountDetailsArray.get(i - 1).get(3);
-                ifTeacher = accountDetailsArray.get(i - 1).get(4).equalsIgnoreCase("teacher");
-            }
+                readFile();
+                boolean usernameFound = false;
+                boolean passwordMatch = false;
+                while (i < accountDetailsArray.size() && !usernameFound) {
+                    usernameFound = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
+                    i++;
+                }
+                if (usernameFound) {
+                    passwordMatch = accountDetailsArray.get(i - 1).get(1).equals(password);
+                }
+                if (usernameFound && passwordMatch) {
+                    output = true;
+                    toSend = "1" + "§§§";
+                    toSend += accountDetailsArray.get(i - 1).get(0) + "§§§";
+                    toSend += accountDetailsArray.get(i - 1).get(1) + "§§§";
+                    toSend += accountDetailsArray.get(i - 1).get(2) + "§§§";
+                    toSend += accountDetailsArray.get(i - 1).get(3) + "§§§";
+                    toSend += accountDetailsArray.get(i - 1).get(4);
+                    username = accountDetailsArray.get(i - 1).get(0);
+                    password = accountDetailsArray.get(i - 1).get(1);
+                    firstName = accountDetailsArray.get(i - 1).get(2);
+                    lastName = accountDetailsArray.get(i - 1).get(3);
+                    ifTeacher = accountDetailsArray.get(i - 1).get(4).equalsIgnoreCase("teacher");
+                }
 
-            printWriter.write(toSend);
-            printWriter.println();
-            printWriter.flush();
+                printWriter.write(toSend);
+                printWriter.println();
+                printWriter.flush();
+            }
         }
         return output;
     }
 
-    public static void loginMethod() throws Exception {
-        System.out.println(accountDetailsArray);
+    public void loginMethod() throws Exception {
         if (securityCheckServer()) {
-            AccountServer accountServer = new AccountServer(username, firstName, lastName, ifTeacher, printWriter, bufferedReader);
-            accountServer.mainMethod();
+            if (usernames.contains(username)) {
+                printWriter.write("0");
+                printWriter.println();
+                printWriter.flush();
+                mainRunMethod();
+            } else {
+                printWriter.write("1");
+                printWriter.println();
+                printWriter.flush();
+                usernames.add(username);
+                MainClass.forumUpdated.add(true);
+                AccountServer accountServer = new AccountServer(username, firstName, lastName, ifTeacher, printWriter, bufferedReader, userNumber);
+                userNumber++;
+                accountServer.mainMethod();
+            }
         } else {
             mainRunMethod();
         }
     }
 
-    public static void createAccountMethod() throws Exception {
+    public void createAccountMethod() throws Exception {
         String receivedData = bufferedReader.readLine();
         char charAt0 = receivedData.charAt(0);
         receivedData = receivedData.substring(1);
@@ -160,7 +194,7 @@ public class MainServer {
         mainRunMethod();
     }
 
-    public static void deleteAccountMethod() throws Exception {
+    public void deleteAccountMethod() throws Exception {
         if (securityCheckServer()) {
             int i = 0;
             readFile();
@@ -175,22 +209,24 @@ public class MainServer {
         mainRunMethod();
     }
 
-    public static void changePasswordMethod() throws Exception {
+    public void changePasswordMethod() throws Exception {
         if (securityCheckServer()) {
             password = bufferedReader.readLine();
-            int i = 0;
-            boolean usernameFound = false;
-            while (i < accountDetailsArray.size() && !usernameFound) {
-                usernameFound = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
-                i++;
+            if (!password.equals(" ")) {
+                int i = 0;
+                boolean usernameFound = false;
+                while (i < accountDetailsArray.size() && !usernameFound) {
+                    usernameFound = accountDetailsArray.get(i).get(0).equalsIgnoreCase(username);
+                    i++;
+                }
+                accountDetailsArray.get(i - 1).set(1, password);
+                writeAllAccountsToFile();
             }
-            accountDetailsArray.get(i - 1).set(1, password);
-            writeAllAccountsToFile();
         }
         mainRunMethod();
     }
 
-    public static void mainRunMethod() throws Exception {
+    public void mainRunMethod() throws Exception {
         readFile();
         String choice = bufferedReader.readLine();
 
@@ -200,25 +236,6 @@ public class MainServer {
             case "3" -> deleteAccountMethod();
             case "4" -> changePasswordMethod();
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(1000);
-        while (true) {
-            Socket socket = serverSocket.accept();
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            printWriter = new PrintWriter(socket.getOutputStream());
-
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        mainRunMethod();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
+        System.out.println("Main method ended");
     }
 }

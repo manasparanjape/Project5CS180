@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +28,11 @@ public class DiscussionForumServer {
 
     private boolean ifDashboard = false;
 
-    public DiscussionForumServer(String courseName, String forumName, String messagesFileName, String pointsFileName, String upvoteFileName, String firstName, String lastName, String username, PrintWriter printWriter, BufferedReader bufferedReader) {
+    public static final Object object = new Object();
+
+    private int userNumber;
+
+    public DiscussionForumServer(String courseName, String forumName, String messagesFileName, String pointsFileName, String upvoteFileName, String firstName, String lastName, String username, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
@@ -37,6 +43,7 @@ public class DiscussionForumServer {
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.courseName = courseName;
+        this.userNumber = userNumber;
     }
 
     public void readUpvoteFile() throws IOException {
@@ -98,7 +105,9 @@ public class DiscussionForumServer {
         if (messagesArray.size() > 0) {
             toWrite += "\n" + convertMessagesArrayToFileString();
         }
-        pw.println(toWrite);
+        synchronized (object) {
+            pw.println(toWrite);
+        }
         pw.close();
     }
 
@@ -148,8 +157,26 @@ public class DiscussionForumServer {
         printWriter.flush();
     }
 
+    public String choice;
+
+    public Timer timer;
+
     public void mainMethod() throws Exception {
-        String choice = bufferedReader.readLine();
+        choice = "-1";
+        timer = new Timer(1000, new MyTimerActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionListenerMethod();
+            }
+        });
+
+        timer.start();
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            System.out.println("Check 1");
+        }
+        timer.stop();
+        choice = bufferedReader.readLine();
         switch (choice) {
             case "-1" -> back();
             case "1" -> send();
@@ -161,7 +188,7 @@ public class DiscussionForumServer {
             case "7" -> sendMessageViaFileImport();
             default -> {
                 String discussionBoardsListFileName = courseName + "-forumslist.txt";
-                CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader);
+                CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber);
                 courseServer.changeForum();
             }
         }
@@ -169,7 +196,7 @@ public class DiscussionForumServer {
 
     public void back() throws Exception {
         String discussionBoardsListFileName = courseName + "-forumslist.txt";
-        CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader);
+        CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber);
         courseServer.mainMethod();
     }
 
@@ -184,6 +211,7 @@ public class DiscussionForumServer {
             ArrayList<String> newPostArray = new ArrayList<>();
             String fullName = firstName + " " + lastName;
             DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+            readMessagesFile();
             if (receivedDataArray[1].equals("0")) {
                 newPostArray.add(0, Integer.toString(messagesArray.size() + 1));
                 newPostArray.add(1, receivedDataArray[0]);
@@ -209,6 +237,10 @@ public class DiscussionForumServer {
                 }
             }
         }
+        for (int i = 0; i < MainClass.forumUpdated.size(); i++) {
+            MainClass.forumUpdated.set(i, false);
+        }
+        MainClass.forumUpdated.set(userNumber, true);
         writeToMessagesFile();
         printForum();
         mainMethod();
@@ -283,7 +315,7 @@ public class DiscussionForumServer {
         int i = 0;
 
         String studentUsername = bufferedReader.readLine();
-        if (!studentUsername.equals(" "))  {
+        if (!studentUsername.equals(" ")) {
             if (checkUsernameNonexistence(studentUsername)) {
                 printWriter.write("0");
                 printWriter.println();
@@ -457,7 +489,9 @@ public class DiscussionForumServer {
             toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 3) + "\n");
         }
         toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
-        pw.println(toWrite);
+        synchronized (object) {
+            pw.println(toWrite);
+        }
         pw.close();
     }
 
@@ -512,7 +546,32 @@ public class DiscussionForumServer {
             toWrite.append(strings.get(0)).append("§§§").append(strings.get(1)).append("\n");
         }
         toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
-        pw.println(toWrite);
+        synchronized (object) {
+            pw.println(toWrite);
+        }
         pw.close();
+    }
+
+    public void actionListenerMethod() {
+        try {
+            System.out.println("Method reached");
+            if (bufferedReader.ready()) {
+                choice = bufferedReader.readLine();
+                timer.stop();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        if (!MainClass.forumUpdated.get(userNumber)) {
+            System.out.println("Check");
+        }
+    }
+}
+
+class MyTimerActionListener implements ActionListener {
+    public void actionPerformed(ActionEvent e) {
+
+        System.out.println("asdf");
+
     }
 }

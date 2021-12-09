@@ -83,7 +83,7 @@ public class Account {
             @Override
             public void run() {
                 try {
-                    MainClient.mainRunMethod();
+                    //MainClient.mainRunMethod();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

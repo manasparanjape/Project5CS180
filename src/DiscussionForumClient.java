@@ -1,16 +1,7 @@
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DiscussionForumClient {
-    private String forumName;
-    private String firstName;
-    private String lastName;
-    private String username;
     private static String topicChangePrompt = "What do you want to change the topic to?";
     private static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want"
             + "to view.";
@@ -23,11 +14,7 @@ public class DiscussionForumClient {
 
     private JTextArea textArea;
 
-    public DiscussionForumClient(String forumName, String firstName, String lastName, String username, PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea) {
-        this.forumName = forumName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
+    public DiscussionForumClient(PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea) {
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.textArea = textArea;
@@ -195,7 +182,6 @@ public class DiscussionForumClient {
             String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            forumName = newTopic;
             printWriter.write(newTopic);
             printWriter.println();
             printWriter.flush();

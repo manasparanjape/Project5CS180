@@ -107,10 +107,10 @@ public class StudentClient {
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
 
-        jframe.setSize(900, 600);
-        jframe.setLocationRelativeTo(null);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setVisible(true);
+        //jframe.setSize(900, 600);
+        //jframe.setLocationRelativeTo(null);
+        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //jframe.setVisible(true);
 
         JPanel centerPanel = new JPanel();
         centerPanel.add(openDiscussionForumsButton);

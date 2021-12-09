@@ -16,13 +16,16 @@ public class AccountServer {
 
     private BufferedReader bufferedReader;
 
-    public AccountServer(String username, String firstname, String lastname, boolean ifTeacher, PrintWriter printWriter, BufferedReader bufferedReader) {
+    private int userNumber;
+
+    public AccountServer(String username, String firstname, String lastname, boolean ifTeacher, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
         this.username = username;
         this.firstName = firstname;
         this.lastName = lastname;
         this.ifTeacher = ifTeacher;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
+        this.userNumber = userNumber;
     }
 
     public void openCourseMethod() throws Exception {
@@ -34,16 +37,20 @@ public class AccountServer {
     }
 
     public void createCourseMethod() throws Exception {
-        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader);
+        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
         teacherServer.createCourse();
     }
 
     public void mainMethod() throws Exception {
         String choice = bufferedReader.readLine();
-        studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader);
-        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader);
+        studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
+        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
+        MainServer mainServer = new MainServer(bufferedReader, printWriter);
         switch (choice) {
-            case "0" -> MainServer.mainRunMethod();
+            case "0" -> {
+                MainServer.getUsernames().remove(username);
+                mainServer.mainRunMethod();
+            }
             case "1" -> openCourseMethod();
             case "2" -> createCourseMethod();
         }

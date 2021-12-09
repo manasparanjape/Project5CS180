@@ -6,7 +6,6 @@ import java.io.*;
 import java.net.Socket;
 
 public class MainClient {
-    private static String accountsFile = "AccountsFile.txt";
     private static String usernamePrompt = "Please enter your username.";
     private static String passwordPrompt = "Please enter your password";
     private static String usernameUnavailablePrompt = "The username you entered is unavailable.";
@@ -40,8 +39,6 @@ public class MainClient {
     private static JLabel lastNameLabel = new JLabel("Last Name");
     private static JLabel ifTeacherLabel = new JLabel("Are you a teacher or student?");
 
-    private static Socket socket;
-
     private static BufferedReader bufferedReader;
 
     private static PrintWriter printWriter;
@@ -49,35 +46,42 @@ public class MainClient {
     public static int securityCheckClient() throws IOException {
         int output = 0;
         username = JOptionPane.showInputDialog(null, usernamePrompt, "Account verification", JOptionPane.QUESTION_MESSAGE);
-        password = JOptionPane.showInputDialog(null, passwordPrompt, "Account verification", JOptionPane.QUESTION_MESSAGE);
-        if (username == null || password == null || username.isBlank() || password.isBlank()) {
-            String errorMessage = "The account details entered were invalid";
-            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            printWriter.write("0");
+        if (username == null) {
+            printWriter.write("-1");
             printWriter.println();
             printWriter.flush();
         } else {
-            printWriter.write(username + "§§§" + password);
+            printWriter.write("0");
             printWriter.println();
             printWriter.flush();
-
-            String accountVerificationString = bufferedReader.readLine();
-            String[] accountVerificationArray = accountVerificationString.split("§§§");
-            output = Integer.parseInt(accountVerificationArray[0]);
-
-            if (output == 0) {
-                String errorMessage = "The account details entered were invalid";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            password = JOptionPane.showInputDialog(null, passwordPrompt, "Account verification", JOptionPane.QUESTION_MESSAGE);
+            if (password == null) {
+                printWriter.write("0");
+                printWriter.println();
+                printWriter.flush();
             } else {
-                username = accountVerificationArray[1];
-                password = accountVerificationArray[2];
-                firstName = accountVerificationArray[3];
-                lastName = accountVerificationArray[4];
-                ifTeacher = accountVerificationArray[5].equals("teacher");
-                if (ifTeacher) {
-                    output = 1;
+                printWriter.write(username + "§§§" + password);
+                printWriter.println();
+                printWriter.flush();
+
+                String accountVerificationString = bufferedReader.readLine();
+                String[] accountVerificationArray = accountVerificationString.split("§§§");
+                output = Integer.parseInt(accountVerificationArray[0]);
+
+                if (output == 0) {
+                    String errorMessage = "The account details entered were invalid";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    output = 2;
+                    username = accountVerificationArray[1];
+                    password = accountVerificationArray[2];
+                    firstName = accountVerificationArray[3];
+                    lastName = accountVerificationArray[4];
+                    ifTeacher = accountVerificationArray[5].equals("teacher");
+                    if (ifTeacher) {
+                        output = 1;
+                    } else {
+                        output = 2;
+                    }
                 }
             }
         }
@@ -89,8 +93,13 @@ public class MainClient {
         printWriter.flush();
         int accountCheck = securityCheckClient();
         if (accountCheck != 0) {
-            AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe, printWriter, bufferedReader);
-            accountClient.mainMethod();
+            if (bufferedReader.readLine().equals("1")) {
+                AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe, printWriter, bufferedReader);
+                accountClient.mainMethod();
+            } else {
+                String errorMessage = "This account has logged in on another device. Please log out from that device to log in here.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     public static void createNewAccountButtonMethod() throws IOException {
@@ -218,13 +227,22 @@ public class MainClient {
         printWriter.write("4");
         printWriter.println();
         printWriter.flush();
-        boolean accountVerification = (securityCheckClient() != 0);
-        if (accountVerification) {
+        if (securityCheckClient() != 0) {
             String newPassword = JOptionPane.showInputDialog(null, "What do you want to set your new password to?", "Account verification", JOptionPane.QUESTION_MESSAGE);
             if (newPassword == null) {
+                printWriter.write(" ");
+                printWriter.println();
+                printWriter.flush();
+            } else if (newPassword.isBlank()) {
+                printWriter.write(" ");
+                printWriter.println();
+                printWriter.flush();
                 String errorMessage = "The password you entered is invalid.";
                 JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             } else if (newPassword.equals(password)) {
+                printWriter.write(" ");
+                printWriter.println();
+                printWriter.flush();
                 String errorMessage = "The new password you entered is the same as your old one.";
                 JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             } else {
@@ -314,7 +332,7 @@ public class MainClient {
     }
 
     public static void main(String[] args) throws IOException {
-        socket = new Socket("localhost", 1000);
+        Socket socket = new Socket("localhost", 2000);
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         printWriter = new PrintWriter(socket.getOutputStream());
 

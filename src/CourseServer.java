@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +18,9 @@ public class CourseServer {
 
     private BufferedReader bufferedReader;
 
-    public CourseServer(String courseName, String username, String firstName, String lastName, String discussionBoardsListFileName, PrintWriter printWriter, BufferedReader bufferedReader) {
+    private  int userNumber;
+
+    public CourseServer(String courseName, String username, String firstName, String lastName, String discussionBoardsListFileName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
@@ -27,6 +28,7 @@ public class CourseServer {
         this.discussionBoardsListFileName = discussionBoardsListFileName;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
+        this.userNumber = userNumber;
     }
 
     public void readForumListFile() throws Exception {
@@ -153,7 +155,7 @@ public class CourseServer {
         String receivedData = bufferedReader.readLine();
         String[] forumFileNames = receivedData.split("§§§");
 
-        discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1], forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader);
+        discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1], forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader, userNumber);
         discussionForumServer.readMessagesFile();
         discussionForumServer.readPointsFile();
         discussionForumServer.readUpvoteFile();
@@ -163,12 +165,12 @@ public class CourseServer {
     }
 
     public void backButtonStudent() throws Exception {
-        StudentServer studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader);
+        StudentServer studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
         studentServer.back();
     }
 
     public void backButtonTeacher() throws Exception {
-        TeacherServer teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader);
+        TeacherServer teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
         teacherServer.back();
     }
 
