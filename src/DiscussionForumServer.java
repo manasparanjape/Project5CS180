@@ -1,6 +1,4 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -162,7 +160,7 @@ public class DiscussionForumServer {
     public Timer timer;
 
     public void mainMethod() throws Exception {
-        choice = "-1";
+        /*choice = "-1";
         timer = new Timer(1000, new MyTimerActionListener() {
             public void actionPerformed(ActionEvent e) {
                 actionListenerMethod();
@@ -175,7 +173,7 @@ public class DiscussionForumServer {
         } catch (InterruptedException e) {
             System.out.println("Check 1");
         }
-        timer.stop();
+        timer.stop();*/
         choice = bufferedReader.readLine();
         switch (choice) {
             case "-1" -> back();
@@ -552,26 +550,5 @@ public class DiscussionForumServer {
         pw.close();
     }
 
-    public void actionListenerMethod() {
-        try {
-            System.out.println("Method reached");
-            if (bufferedReader.ready()) {
-                choice = bufferedReader.readLine();
-                timer.stop();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        if (!MainClass.forumUpdated.get(userNumber)) {
-            System.out.println("Check");
-        }
-    }
 }
 
-class MyTimerActionListener implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
-
-        System.out.println("asdf");
-
-    }
-}
