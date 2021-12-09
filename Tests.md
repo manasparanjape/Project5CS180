@@ -38,4 +38,3 @@
 5. User clicks open course button
 6. User clicks the OK button
 7. User clicks Open Discussion forums
-8. 
