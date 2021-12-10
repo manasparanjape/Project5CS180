@@ -82,7 +82,7 @@
 9. User enters password: banana
 10. Test passed: Password changed successfully 
 
-### Test 9: Student opens discussion forum
+### Test 9, 10, 11: Student opens discussion forum and sends/replies to messages
 1. User launches application
 2. User clicks login
 3. User enters username: student
@@ -95,3 +95,11 @@
 10. User clicks For statement
 11. User clicks If Statement
 12. Test passed: User is successfully brought to the discussion forums and can click through the different forums
+13. User clicks GUI
+14. User enters "Hi classmates" in the first text box
+15. User clicks Send/Reply button
+16. Test passed: User is able to send message in forum
+17. User enters "Good idea" in the first text box
+18. User enters "3" in the second text box
+19. User clicks Send/Reply button
+20. Test passed: User is able to reply to other messages
