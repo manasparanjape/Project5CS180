@@ -58,7 +58,31 @@
 11. User enters password: keepthedoctoraway
 12. Test passed: User successfully created an account and was able to log in
 
-### Test 7: Student opens discussion forum
+### Test 7: Delete Account
+1. User launches application
+2. User clicks delete account
+3. User enters the username: billy
+4. User enters the password: billnyethescienceguy
+5. User clicks OK on the account deletion confirmation message
+6. User clicks login
+7. User enters username: billy
+8. User enters password: billnyethescienceguy
+9. User receives error message "The account details entered were invalid"
+10. Test passed: Account successfully deleted 
+
+### Test 8: Change Account Password
+1. User launches application
+2. User clicks Change Password
+3. User enters the username: ms.apple
+4. User enters the password: keepthedoctoraway
+5. User enters new password: banana
+6. User clicks OK on confirmation message
+7. User clicks login
+8. User enters username: ms.apple
+9. User enters password: banana
+10. Test passed: Password changed successfully 
+
+### Test 9: Student opens discussion forum
 1. User launches application
 2. User clicks login
 3. User enters username: student
