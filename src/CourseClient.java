@@ -175,6 +175,13 @@ public class CourseClient {
     public void changeForum() throws Exception {
         discussionForumClient.printMessages();
         discussionForumClient.setTextArea(textArea);
+
+        /*if (bufferedReader.ready()) {
+            String receivedData = bufferedReader.readLine();
+            if (receivedData.equals("1")) {
+                changeForum();
+            }
+        }*/
     }
 
     public void runMethodTeacher() throws Exception {
@@ -532,7 +539,7 @@ public class CourseClient {
         teacherClient.runMethodTeacher();
     }
     public void backButtonStudentMethod() throws Exception {
-        printWriter.write("-1");
+        printWriter.write("0");
         printWriter.println();
         printWriter.flush();
         StudentClient studentClient = new StudentClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader), jframe, printWriter, bufferedReader);
@@ -548,7 +555,8 @@ public class CourseClient {
         if (receivedData.equals(" ")) {
             String errorMessage = "This course does not have any discussion forums.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            backButtonStudentMethod();
+            StudentClient studentClient = new StudentClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader), jframe, printWriter, bufferedReader);
+            studentClient.runMethodStudent();
         } else {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override

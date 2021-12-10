@@ -232,6 +232,9 @@ public class DiscussionForumClient {
 
     public void printMessages() throws Exception {
         String messages = bufferedReader.readLine();
+        if (messages.equals("0")) {
+            messages = bufferedReader.readLine();
+        }
         messages = messages.replaceAll("§§§", "\n");
         textArea.setText(messages);
     }

@@ -54,7 +54,7 @@ public class CourseServer {
 
     public String convertToSendFormat() {
         String output = "";
-        if (forumList != null && forumList.size() != 0)  {
+        if (forumList != null && forumList.size() != 1)  {
             for (int i = 0; i < forumList.size(); i++) {
                 output += forumList.get(i) + "§§§";
             }
@@ -136,12 +136,13 @@ public class CourseServer {
 
     public void openForum() throws Exception {
         readForumListFile();
-        printWriter.write(convertToSendFormat());
+        String forumListString = convertToSendFormat();
+        printWriter.write(forumListString);
         printWriter.println();
         printWriter.flush();
 
-        if (forumList != null && forumList.size() != 0) {
-            printWriter.write(convertToSendFormat());
+        if (!forumListString.equals(" ")) {
+            printWriter.write(forumListString);
             printWriter.println();
             printWriter.flush();
 

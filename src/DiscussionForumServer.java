@@ -1,9 +1,14 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.channels.spi.AbstractInterruptibleChannel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DiscussionForumServer {
     private String courseName;
@@ -157,23 +162,58 @@ public class DiscussionForumServer {
 
     public String choice;
 
-    public Timer timer;
+    //public Timer timer;
 
     public void mainMethod() throws Exception {
-        /*choice = "-1";
-        timer = new Timer(1000, new MyTimerActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                actionListenerMethod();
-            }
-        });
+        choice = "-1";
+        /*Timer timer = new Timer();
+        TimerTask timertask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("Method reached");
+                    if (bufferedReader.ready()) {
+                        System.out.println("Message ready");
+                        choice = bufferedReader.readLine();
+                        System.out.println(choice);
+                        timer.cancel();
+                        timer.purge();
 
-        timer.start();
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
-            System.out.println("Check 1");
-        }
-        timer.stop();*/
+                        System.out.println("It reaches here as well");
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if (!MainClass.forumUpdated.get(userNumber)) {
+                    System.out.println("Check");
+                }
+            }
+        };
+        timer.schedule(timertask, 100, 100);*/
+        /*boolean dataReceived = false;
+
+        while(!dataReceived) {
+            if (bufferedReader.ready()) {
+                dataReceived = true;
+                choice = bufferedReader.readLine();
+                printWriter.write("0");
+                printWriter.println();
+                printWriter.flush();
+            } else {
+                if (!MainClass.forumUpdated.get(userNumber)) {
+                    System.out.println("1");
+                    printWriter.println();
+                    printWriter.flush();
+                    printForum();
+                    MainClass.forumUpdated.set(userNumber, true);
+                }
+            }
+            Thread.sleep(100);
+        }*/
+
+        /*MyTimer myTimer = new MyTimer();
+        myTimer.start();*/
+
         choice = bufferedReader.readLine();
         switch (choice) {
             case "-1" -> back();
@@ -550,5 +590,61 @@ public class DiscussionForumServer {
         pw.close();
     }
 
-}
+    /*public void actionListenerMethod(ActionEvent e) {
+        try {
+            System.out.println("Method reached");
+            if (bufferedReader.ready()) {
+                System.out.println("Message ready");
+                choice = bufferedReader.readLine();
+                System.out.println(choice);
+                //((Timer)e.getSource()).stop();
 
+                System.out.println("It reaches here as well");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        if (!MainClass.forumUpdated.get(userNumber)) {
+            System.out.println("Check");
+        }
+    }
+
+    class MyTimerActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            actionListenerMethod(e);
+        }
+    }*/
+
+    /*class MyTimer implements ActionListener {
+        private Timer timer;
+        private MyTimer() {
+            timer = new Timer(1000, this);
+        }
+        public void start() {
+            timer.start();
+        }
+        public void stop() {
+            timer.stop();
+        }
+        public void actionPerformed(ActionEvent e) {
+            try {
+                System.out.println("Method reached");
+                if (bufferedReader.ready()) {
+                    System.out.println("Message ready");
+                    choice = bufferedReader.readLine();
+                    System.out.println(choice);
+                    //System.out.println(timer);
+                    //System.out.println(e.getSource());
+                    stop();
+                    System.out.println("It reaches here as well");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (!MainClass.forumUpdated.get(userNumber)) {
+                System.out.println("Check");
+            }
+        }
+    }*/
+}
