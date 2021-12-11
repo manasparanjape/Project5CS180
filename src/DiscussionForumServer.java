@@ -55,7 +55,7 @@ public class DiscussionForumServer {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
-        while (line != null) {
+        while (line != null && !line.isBlank()) {
             String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
@@ -73,14 +73,11 @@ public class DiscussionForumServer {
         String line = bfr.readLine();
         forumCreationTime = line.split("§§§")[1];
         line = bfr.readLine();
-        while (line != null) {
+        while (line != null && !line.isBlank()) {
             String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
             line = bfr.readLine();
-        }
-        if (output.size() > 0) {
-            output.remove(output.size() - 1);
         }
         bfr.close();
         messagesArray = output;
@@ -92,7 +89,7 @@ public class DiscussionForumServer {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<ArrayList<String>> output = new ArrayList<>();
         String line = bfr.readLine();
-        while (line != null) {
+        while (line != null && !line.isBlank()) {
             String[] separatedLine = line.split("§§§");
             ArrayList<String> singleLine = new ArrayList<>(Arrays.asList(separatedLine));
             output.add(singleLine);
