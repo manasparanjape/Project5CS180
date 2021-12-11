@@ -3,6 +3,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
 
@@ -320,8 +322,17 @@ public class MainClient {
 
         jframe.setSize(600, 400);
         jframe.setLocationRelativeTo(null);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jframe.setVisible(true);
+        jframe.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                printWriter.write("Close");
+                printWriter.println();
+                printWriter.flush();
+                System.exit(0);
+            }
+        });
 
         JPanel topPanel = new JPanel();
         JPanel centerPanel = new JPanel(new GridLayout(2,2,30,30));
@@ -341,7 +352,6 @@ public class MainClient {
         container.add(topPanel);
         container.add(centerPanel);
     }
-
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 2000);

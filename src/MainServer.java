@@ -236,6 +236,5 @@ public class MainServer {
             case "3" -> deleteAccountMethod();
             case "4" -> changePasswordMethod();
         }
-        System.out.println("Main method ended");
     }
 }

@@ -53,6 +53,10 @@ public class AccountServer {
             }
             case "1" -> openCourseMethod();
             case "2" -> createCourseMethod();
+            case "Close" -> {
+                MainServer.getUsernames().remove(username);
+                Thread.currentThread().stop();
+            }
         }
     }
 }

@@ -221,6 +221,10 @@ public class DiscussionForumServer {
             case "5" -> dashBoard();
             case "6" -> changeTopic();
             case "7" -> sendMessageViaFileImport();
+            case "Close" -> {
+                MainServer.getUsernames().remove(username);
+                Thread.currentThread().stop();
+            }
             default -> {
                 String discussionBoardsListFileName = courseName + "-forumslist.txt";
                 CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber);

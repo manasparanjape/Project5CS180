@@ -54,7 +54,7 @@ public class CourseServer {
 
     public String convertToSendFormat() {
         String output = "";
-        if (forumList != null && forumList.size() != 1)  {
+        if (forumList != null && forumList.size() != 0)  {
             for (int i = 0; i < forumList.size(); i++) {
                 output += forumList.get(i) + "§§§";
             }
@@ -66,6 +66,7 @@ public class CourseServer {
     }
 
     public void createForum() throws Exception {
+        readForumListFile();
         String newForumName = bufferedReader.readLine();
         if (!newForumName.equals(" ")) {
             if (discussionForumExists(newForumName)) {
@@ -88,11 +89,12 @@ public class CourseServer {
                 pw.close();
                 fos = new FileOutputStream(discussionBoardsListFileName, true);
                 pw = new PrintWriter(fos);
-                if (forumList.size() == 1) {
+                pw.println(newForumName);
+                /*if (forumList.size() == 1) {
                     pw.print(newForumName);
                 } else {
                     pw.print("\n" + newForumName);
-                }
+                }*/
                 pw.close();
                 printWriter.write("1");
             }
@@ -217,6 +219,10 @@ public class CourseServer {
             case "2" -> deleteForum();
             case "3" -> openForum();
             case "5" -> viewPoints();
+            case "Close" -> {
+                MainServer.getUsernames().remove(username);
+                Thread.currentThread().stop();
+            }
         }
     }
 }
