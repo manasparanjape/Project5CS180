@@ -43,6 +43,7 @@ public class MainClient {
     private static JLabel ifTeacherLabel = new JLabel("Are you a teacher or student?");
 
     private static BufferedReader bufferedReader;
+    private static BufferedReader dummyReader;
 
     private static PrintWriter printWriter;
 
@@ -97,7 +98,7 @@ public class MainClient {
         int accountCheck = securityCheckClient();
         if (accountCheck != 0) {
             if (bufferedReader.readLine().equals("1")) {
-                AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe, printWriter, bufferedReader);
+                AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe, printWriter, bufferedReader, dummyReader);
                 accountClient.mainMethod();
             } else {
                 String errorMessage = "This account has logged in on another device. Please log out from that device to log in here.";
@@ -355,7 +356,9 @@ public class MainClient {
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 2000);
+        Socket dummySocket = new Socket("localhost", 2001);
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        dummyReader = new BufferedReader(new InputStreamReader(dummySocket.getInputStream()));
         printWriter = new PrintWriter(socket.getOutputStream());
 
         SwingUtilities.invokeLater(new Runnable() {

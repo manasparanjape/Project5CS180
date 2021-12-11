@@ -11,13 +11,18 @@ public class DiscussionForumClient {
     private PrintWriter printWriter;
 
     private BufferedReader bufferedReader;
+    private BufferedReader dummyReader;
 
     private JTextArea textArea;
 
-    public DiscussionForumClient(PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea) {
+    private JButton discussionForumButton;
+
+    public DiscussionForumClient(PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea, BufferedReader dummyReader, JButton discussionForumButton) {
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.textArea = textArea;
+        this.dummyReader = dummyReader;
+        this.discussionForumButton = discussionForumButton;
     }
 
     public void send(String newPost, String messageNumberString) throws Exception {
@@ -185,7 +190,9 @@ public class DiscussionForumClient {
             printWriter.write(newTopic);
             printWriter.println();
             printWriter.flush();
+            discussionForumButton.setText(newTopic);
             printMessages();
+
         }
     }
 

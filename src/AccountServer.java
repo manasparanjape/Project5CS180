@@ -13,12 +13,13 @@ public class AccountServer {
     private StudentServer studentServer;
 
     private PrintWriter printWriter;
+    private PrintWriter dummyWriter;
 
     private BufferedReader bufferedReader;
 
     private int userNumber;
 
-    public AccountServer(String username, String firstname, String lastname, boolean ifTeacher, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
+    public AccountServer(String username, String firstname, String lastname, boolean ifTeacher, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
         this.username = username;
         this.firstName = firstname;
         this.lastName = lastname;
@@ -26,6 +27,7 @@ public class AccountServer {
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.userNumber = userNumber;
+        this.dummyWriter = dummyWriter;
     }
 
     public void openCourseMethod() throws Exception {
@@ -37,15 +39,15 @@ public class AccountServer {
     }
 
     public void createCourseMethod() throws Exception {
-        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
+        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
         teacherServer.createCourse();
     }
 
     public void mainMethod() throws Exception {
         String choice = bufferedReader.readLine();
-        studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
-        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
-        MainServer mainServer = new MainServer(bufferedReader, printWriter);
+        studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
+        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
+        MainServer mainServer = new MainServer(bufferedReader, printWriter, dummyWriter);
         switch (choice) {
             case "0" -> {
                 MainServer.getUsernames().remove(username);

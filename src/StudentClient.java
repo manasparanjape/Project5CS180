@@ -24,8 +24,9 @@ public class StudentClient {
     private PrintWriter printWriter;
 
     private BufferedReader bufferedReader;
+    private BufferedReader dummyReader;
 
-    public StudentClient(String username, String firstName, String lastName, CourseClient courseClient, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader) {
+    public StudentClient(String username, String firstName, String lastName, CourseClient courseClient, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,6 +34,7 @@ public class StudentClient {
         this.jframe = jframe;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
+        this.dummyReader = dummyReader;
     }
 
     public void openCourse() throws Exception {
@@ -43,7 +45,7 @@ public class StudentClient {
             printWriter.flush();
             String errorMessage = "No course has been created yet.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader);
+            AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader, dummyReader);
             accountClient.mainMethod();
         } else {
             Object[] options = receivedData.split("§§§");
@@ -53,7 +55,7 @@ public class StudentClient {
                 printWriter.write(selectedCourse);
                 printWriter.println();
                 printWriter.flush();
-                courseClient = new CourseClient(selectedCourse, username, firstName, lastName, null, jframe, printWriter, bufferedReader);
+                courseClient = new CourseClient(selectedCourse, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -68,7 +70,7 @@ public class StudentClient {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
-                AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader);
+                AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader, dummyReader);
                 accountClient.mainMethod();
             }
         }
@@ -90,7 +92,7 @@ public class StudentClient {
         printWriter.write("0");
         printWriter.println();
         printWriter.flush();
-        AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader);
+        AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
     }
 

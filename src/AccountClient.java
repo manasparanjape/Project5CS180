@@ -35,8 +35,9 @@ public class AccountClient {
     private PrintWriter printWriter;
 
     private BufferedReader bufferedReader;
+    private BufferedReader dummyReader;
 
-    public AccountClient(String username, String firstname, String lastname, boolean ifTeacher, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader) {
+    public AccountClient(String username, String firstname, String lastname, boolean ifTeacher, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
         this.username = username;
         this.firstName = firstname;
         this.lastName = lastname;
@@ -44,6 +45,7 @@ public class AccountClient {
         this.jframe = jframe;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
+        this.dummyReader = dummyReader;
     }
 
     public void runMethodTeacher() {
@@ -104,12 +106,12 @@ public class AccountClient {
     }
 
     public void teacherMainMethod() throws Exception {
-        teacherClient = new TeacherClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader);
+        teacherClient = new TeacherClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
         runMethodTeacher();
     }
 
     public void studentMainMethod() throws Exception {
-        studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader);
+        studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
         runMethodStudent();
     }
 
@@ -132,10 +134,10 @@ public class AccountClient {
         printWriter.println();
         printWriter.flush();
         if (ifTeacher) {
-            studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader);
+            studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
             teacherClient.openCourse();
         } else {
-            studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader);
+            studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
             studentClient.openCourse();
         }
     }

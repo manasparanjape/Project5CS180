@@ -6,9 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class TeacherClient {
-    String username;
-    String firstName;
-    String lastName;
+    private String username;
+    private String firstName;
+    private String lastName;
     private static String newCourseNamePrompt = "What would you like to name the new course?";
     private static String newCourseCreated = "New course has been created!";
     private static String courseSelectionPrompt = "Which course would you like to open?";
@@ -17,19 +17,20 @@ public class TeacherClient {
 
     private ArrayList<String> courseList = new ArrayList<>();
 
-    JFrame jframe;
+    private JFrame jframe;
 
-    JButton createDiscussionForumButton;
-    JButton deleteDiscussionForumButton;
-    JButton openDiscussionForumsButton;
-    JButton createDiscussionForumViaFileImportButton;
-    JButton backButton;
+    private JButton createDiscussionForumButton;
+    private JButton deleteDiscussionForumButton;
+    private JButton openDiscussionForumsButton;
+    private JButton createDiscussionForumViaFileImportButton;
+    private JButton backButton;
 
-    BufferedReader bufferedReader;
+    private BufferedReader bufferedReader;
+    private BufferedReader dummyReader;
 
-    PrintWriter printWriter;
+    private PrintWriter printWriter;
 
-    public TeacherClient(String username, String firstName, String lastName, CourseClient courseClient, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader) {
+    public TeacherClient(String username, String firstName, String lastName, CourseClient courseClient, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -37,6 +38,7 @@ public class TeacherClient {
         this.jframe = jframe;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
+        this.dummyReader = dummyReader;
     }
 
     public void createDiscussionForumButtonMethod() throws IOException {
@@ -67,7 +69,7 @@ public class TeacherClient {
         printWriter.write("-1");
         printWriter.println();
         printWriter.flush();
-        AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader);
+        AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
     }
 
@@ -172,7 +174,7 @@ public class TeacherClient {
             printWriter.flush();
             String dummy = bufferedReader.readLine();
         }
-        AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader);
+        AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
     }
 
@@ -184,7 +186,7 @@ public class TeacherClient {
             printWriter.flush();
             String errorMessage = "No course has been created yet.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader);
+            AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
             accountClient.mainMethod();
         } else {
             Object[] options = receivedData.split("§§§");
@@ -194,7 +196,7 @@ public class TeacherClient {
                 printWriter.write(selectedCourse);
                 printWriter.println();
                 printWriter.flush();
-                courseClient = new CourseClient(selectedCourse, username, firstName, lastName, null, jframe, printWriter, bufferedReader);
+                courseClient = new CourseClient(selectedCourse, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -209,7 +211,7 @@ public class TeacherClient {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
-                AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader);
+                AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
                 accountClient.mainMethod();
             }
         }

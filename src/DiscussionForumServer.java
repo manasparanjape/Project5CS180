@@ -26,6 +26,7 @@ public class DiscussionForumServer {
     private ArrayList<ArrayList<String>> upvotesArray = new ArrayList<>();
 
     private PrintWriter printWriter;
+    private static PrintWriter dummyWriter;
 
     private BufferedReader bufferedReader;
 
@@ -33,9 +34,11 @@ public class DiscussionForumServer {
 
     public static final Object object = new Object();
 
+    private ArrayList<String> forumList = new ArrayList<>();
+
     private int userNumber;
 
-    public DiscussionForumServer(String courseName, String forumName, String messagesFileName, String pointsFileName, String upvoteFileName, String firstName, String lastName, String username, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
+    public DiscussionForumServer(String courseName, String forumName, String messagesFileName, String pointsFileName, String upvoteFileName, String firstName, String lastName, String username, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
@@ -47,6 +50,7 @@ public class DiscussionForumServer {
         this.bufferedReader = bufferedReader;
         this.courseName = courseName;
         this.userNumber = userNumber;
+        this.dummyWriter = dummyWriter;
     }
 
     public void readUpvoteFile() throws IOException {
@@ -157,61 +161,11 @@ public class DiscussionForumServer {
         printWriter.flush();
     }
 
-    public String choice;
-
-    //public Timer timer;
-
     public void mainMethod() throws Exception {
-        choice = "-1";
-        /*Timer timer = new Timer();
-        TimerTask timertask = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    System.out.println("Method reached");
-                    if (bufferedReader.ready()) {
-                        System.out.println("Message ready");
-                        choice = bufferedReader.readLine();
-                        System.out.println(choice);
-                        timer.cancel();
-                        timer.purge();
+        //NewThread newThread = new NewThread();
+        //newThread.start();
 
-                        System.out.println("It reaches here as well");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                if (!MainClass.forumUpdated.get(userNumber)) {
-                    System.out.println("Check");
-                }
-            }
-        };
-        timer.schedule(timertask, 100, 100);*/
-        /*boolean dataReceived = false;
-
-        while(!dataReceived) {
-            if (bufferedReader.ready()) {
-                dataReceived = true;
-                choice = bufferedReader.readLine();
-                printWriter.write("0");
-                printWriter.println();
-                printWriter.flush();
-            } else {
-                if (!MainClass.forumUpdated.get(userNumber)) {
-                    System.out.println("1");
-                    printWriter.println();
-                    printWriter.flush();
-                    printForum();
-                    MainClass.forumUpdated.set(userNumber, true);
-                }
-            }
-            Thread.sleep(100);
-        }*/
-
-        /*MyTimer myTimer = new MyTimer();
-        myTimer.start();*/
-
-        choice = bufferedReader.readLine();
+        String choice = bufferedReader.readLine();
         switch (choice) {
             case "-1", "-2" -> back();
             case "1" -> send();
@@ -227,7 +181,7 @@ public class DiscussionForumServer {
             }
             default -> {
                 String discussionBoardsListFileName = courseName + "-forumslist.txt";
-                CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber);
+                CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
                 courseServer.changeForum();
             }
         }
@@ -235,7 +189,7 @@ public class DiscussionForumServer {
 
     public void back() throws Exception {
         String discussionBoardsListFileName = courseName + "-forumslist.txt";
-        CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber);
+        CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
         courseServer.mainMethod();
     }
 
@@ -430,13 +384,52 @@ public class DiscussionForumServer {
         mainMethod();
     }
 
+    public void readForumListFile() throws Exception {
+        File f = new File(courseName + "-forumslist.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> output = new ArrayList<>();
+        String line = bfr.readLine();
+        while (line != null && !line.isBlank()) {
+            output.add(line);
+            line = bfr.readLine();
+        }
+        forumList = output;
+    }
+
+    public int findForumInForumList() {
+        for (int i = 0; i < forumList.size(); i++) {
+            if (forumName.equals(forumList.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void writeToForumListFile() throws FileNotFoundException {
+        String output = "";
+        for (int i = 0; i < forumList.size(); i++) {
+            output += forumList.get(i) + "\n";
+        }
+        output = output.substring(0, output.length() - 1);
+        String discussionForumListFileName = courseName + "-forumslist.txt";
+        FileOutputStream fos = new FileOutputStream(discussionForumListFileName, false);
+        PrintWriter pw = new PrintWriter(fos);
+        pw.println(output);
+    }
+
     public void changeTopic() throws Exception {
         String newTopic = bufferedReader.readLine();
         if (!newTopic.equals(" ")) {
+            readForumListFile();
+            System.out.println(forumList);
+            forumList.set(findForumInForumList(), newTopic);
             forumName = newTopic;
+            System.out.println(forumList);
             DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
             forumCreationTime = LocalDateTime.now().format(format);
             writeToMessagesFile();
+            writeToForumListFile();
             printForum();
         }
         mainMethod();
@@ -591,61 +584,39 @@ public class DiscussionForumServer {
         pw.close();
     }
 
-    /*public void actionListenerMethod(ActionEvent e) {
-        try {
-            System.out.println("Method reached");
-            if (bufferedReader.ready()) {
-                System.out.println("Message ready");
-                choice = bufferedReader.readLine();
-                System.out.println(choice);
-                //((Timer)e.getSource()).stop();
+    class NewThread extends Thread {
+        public void run() {
+            boolean dataReceived = false;
+            while(!dataReceived) {
+                System.out.println(MainClass.forumUpdated);
+                System.out.println(Thread.currentThread().toString() + userNumber);
+                try {
+                    if (bufferedReader.ready()) {
+                        dataReceived = true;
+                        dummyWriter.write("0");
+                        dummyWriter.println();
+                        dummyWriter.flush();
+                        Thread.currentThread().stop();
+                    } else {
+                        if (!MainClass.forumUpdated.get(userNumber)) {
+                            System.out.println("Point reached");
+                            dummyWriter.write("1");
+                            dummyWriter.println();
+                            dummyWriter.flush();
+                            printForum();
+                            MainClass.forumUpdated.set(userNumber, true);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Thread.currentThread().sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                System.out.println("It reaches here as well");
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        if (!MainClass.forumUpdated.get(userNumber)) {
-            System.out.println("Check");
         }
     }
-
-    class MyTimerActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            actionListenerMethod(e);
-        }
-    }*/
-
-    /*class MyTimer implements ActionListener {
-        private Timer timer;
-        private MyTimer() {
-            timer = new Timer(1000, this);
-        }
-        public void start() {
-            timer.start();
-        }
-        public void stop() {
-            timer.stop();
-        }
-        public void actionPerformed(ActionEvent e) {
-            try {
-                System.out.println("Method reached");
-                if (bufferedReader.ready()) {
-                    System.out.println("Message ready");
-                    choice = bufferedReader.readLine();
-                    System.out.println(choice);
-                    //System.out.println(timer);
-                    //System.out.println(e.getSource());
-                    stop();
-                    System.out.println("It reaches here as well");
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            if (!MainClass.forumUpdated.get(userNumber)) {
-                System.out.println("Check");
-            }
-        }
-    }*/
 }
