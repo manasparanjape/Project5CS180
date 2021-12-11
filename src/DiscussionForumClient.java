@@ -180,7 +180,11 @@ public class DiscussionForumClient {
 
     public void changeTopic() throws Exception {
         String newTopic = JOptionPane.showInputDialog(null, topicChangePrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
-        if (newTopic == null || newTopic.isBlank()) {
+        if (newTopic == null) {
+            printWriter.write(" ");
+            printWriter.println();
+            printWriter.flush();
+        } else if (newTopic.isBlank()) {
             printWriter.write(" ");
             printWriter.println();
             printWriter.flush();
