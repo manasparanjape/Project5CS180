@@ -31,7 +31,7 @@ public class TeacherServer {
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
-        while (line != null) {
+        while (line != null && !line.isBlank()) {
             courseList.add(line);
             line = bfr.readLine();
         }
@@ -85,7 +85,7 @@ public class TeacherServer {
                 courseList.add(newCourseName);
                 FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt", false);
                 PrintWriter pw = new PrintWriter(fos);
-                pw.println();
+                pw.print("");
                 pw.close();
                 fos = new FileOutputStream(coursesListFileName, true);
                 pw = new PrintWriter(fos);
