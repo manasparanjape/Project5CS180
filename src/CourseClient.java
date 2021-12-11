@@ -539,7 +539,7 @@ public class CourseClient {
         teacherClient.runMethodTeacher();
     }
     public void backButtonStudentMethod() throws Exception {
-        printWriter.write("0");
+        printWriter.write("-2");
         printWriter.println();
         printWriter.flush();
         StudentClient studentClient = new StudentClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader), jframe, printWriter, bufferedReader);

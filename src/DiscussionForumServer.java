@@ -216,7 +216,7 @@ public class DiscussionForumServer {
 
         choice = bufferedReader.readLine();
         switch (choice) {
-            case "-1", "0" -> back();
+            case "-1", "-2" -> back();
             case "1" -> send();
             case "2" -> upvote();
             case "3" -> deleteMessage();
