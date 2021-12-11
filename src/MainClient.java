@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -305,7 +306,7 @@ public class MainClient {
     public static void mainRunMethod() throws IOException {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new BorderLayout());
+        container.setLayout(new GridLayout(2,1));
         container.revalidate();
 
         loginButton = new JButton("Login");
@@ -317,19 +318,30 @@ public class MainClient {
         changePasswordButton = new JButton("Change Password");
         changePasswordButton.addActionListener(actionListener);
 
-        jframe.setSize(900, 600);
+        jframe.setSize(600, 400);
         jframe.setLocationRelativeTo(null);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setVisible(true);
 
-        JPanel centerPanel = new JPanel();
+        JPanel topPanel = new JPanel();
+        JPanel centerPanel = new JPanel(new GridLayout(2,2,30,30));
+
+        JLabel titleText = new JLabel("Learning Management System Discussion Board");
+        titleText.setFont(new Font("Calibri", Font.BOLD, 28));
+        topPanel.add(titleText);
+
         centerPanel.add(loginButton);
         centerPanel.add(createNewAccountButton);
         centerPanel.add(deleteAccountButton);
         centerPanel.add(changePasswordButton);
 
+        topPanel.setBorder(new EmptyBorder(80, 20, 20, 20));
+        centerPanel.setBorder(new EmptyBorder(20, 20, 80, 20));
+
+        container.add(topPanel);
         container.add(centerPanel);
     }
+
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost", 2000);
