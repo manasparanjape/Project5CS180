@@ -35,10 +35,8 @@ public class MainClass {
         public void run() {
             MainServer mainServer = new MainServer(bufferedReader, printWriter, dummyWriter);
             try {
-                System.out.println(Thread.currentThread());
                 mainServer.mainRunMethod();
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
     }
 }

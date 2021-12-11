@@ -47,6 +47,7 @@ public class CourseClient {
 
     private BufferedReader bufferedReader;
     private BufferedReader dummyReader;
+    private Thread newThread;
 
     public CourseClient(String courseName, String username, String firstName, String lastName, DiscussionForumClient discussionForumClient, JFrame jFrame, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
         this.courseName = courseName;
@@ -177,6 +178,23 @@ public class CourseClient {
     public void changeForum() throws Exception {
         discussionForumClient.printMessages();
         discussionForumClient.setTextArea(textArea);
+
+        newThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String action = dummyReader.readLine();
+                    if (action.equals("0")) {
+                        Thread.currentThread().stop();
+                    } else if (action.equals("1")) {
+                        discussionForumClient.printMessages();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        newThread.start();
     }
 
     public void runMethodTeacher() throws Exception {
@@ -243,6 +261,7 @@ public class CourseClient {
             discussionForumButtonsArray.get(i).addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    newThread.stop();
                     String selectedForum = discussionForumButtonsArray.get(finalI).getText();
                     try {
                         printWriter.write("0");
@@ -330,6 +349,7 @@ public class CourseClient {
             discussionForumButtonsArray.get(i).addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    newThread.stop();
                     String selectedForum = discussionForumButtonsArray.get(finalI).getText();
                     try {
                         printWriter.write("0");
@@ -453,6 +473,7 @@ public class CourseClient {
     };
 
     public void sendButtonMethod() {
+        newThread.stop();
         printWriter.write("1");
         printWriter.println();
         printWriter.flush();
@@ -467,6 +488,7 @@ public class CourseClient {
         messageNumberField.setText("");
     }
     public void upvoteButtonMethod() {
+        newThread.stop();
         printWriter.write("2");
         printWriter.println();
         printWriter.flush();
@@ -479,6 +501,7 @@ public class CourseClient {
         messageNumberField.setText("");
     }
     public void deleteButtonMethod() {
+        newThread.stop();
         printWriter.write("3");
         printWriter.println();
         printWriter.flush();
@@ -491,6 +514,7 @@ public class CourseClient {
         messageNumberField.setText("");
     }
     public void gradeStudentButtonMethod() {
+        newThread.stop();
         printWriter.write("4");
         printWriter.println();
         printWriter.flush();
@@ -501,6 +525,7 @@ public class CourseClient {
         }
     }
     public void dashboardButtonMethod() throws IOException {
+        newThread.stop();
         printWriter.write("5");
         printWriter.println();
         printWriter.flush();
@@ -519,6 +544,7 @@ public class CourseClient {
         }
     }
     public void changeTopicButtonMethod() {
+        newThread.stop();
         printWriter.write("6");
         printWriter.println();
         printWriter.flush();
@@ -529,12 +555,14 @@ public class CourseClient {
         }
     }
     public void sendMessageViaFileImportButtonMethod() throws Exception {
+        newThread.stop();
         printWriter.write("7");
         printWriter.println();
         printWriter.flush();
         discussionForumClient.sendMessageViaFileImport();
     }
     public void backButtonTeacherMethod() {
+        newThread.stop();
         printWriter.write("-1");
         printWriter.println();
         printWriter.flush();
@@ -542,6 +570,7 @@ public class CourseClient {
         teacherClient.runMethodTeacher();
     }
     public void backButtonStudentMethod() throws Exception {
+        newThread.stop();
         printWriter.write("-2");
         printWriter.println();
         printWriter.flush();
@@ -549,6 +578,7 @@ public class CourseClient {
         studentClient.runMethodStudent();
     }
     public void backButtonPointsMethod() {
+        newThread.stop();
         StudentClient studentClient = new StudentClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader),jframe, printWriter, bufferedReader, dummyReader);
         studentClient.runMethodStudent();
     }

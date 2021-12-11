@@ -31,6 +31,7 @@ public class AccountServer {
     }
 
     public void openCourseMethod() throws Exception {
+        System.out.println(Thread.currentThread());
         if (ifTeacher) {
             teacherServer.openCourse();
         } else {

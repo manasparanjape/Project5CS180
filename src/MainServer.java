@@ -25,7 +25,7 @@ public class MainServer {
 
     private static ArrayList<String> usernames = new ArrayList<>();
 
-    private int userNumber = 0;
+    private static int userNumber = 0;
 
     public MainServer(BufferedReader bufferedReader, PrintWriter printWriter, PrintWriter dummyWriter) {
         this.bufferedReader = bufferedReader;

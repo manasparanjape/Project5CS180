@@ -162,6 +162,9 @@ public class DiscussionForumServer {
     }
 
     public void mainMethod() throws Exception {
+        //NewThread newThread = new NewThread();
+        //newThread.start();
+
         String choice = bufferedReader.readLine();
         switch (choice) {
             case "-1", "-2" -> back();
@@ -394,40 +397,58 @@ public class DiscussionForumServer {
         forumList = output;
     }
 
-    public int findForumInForumList() {
-        for (int i = 0; i < forumList.size(); i++) {
-            if (forumName.equals(forumList.get(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public void writeToForumListFile() throws FileNotFoundException {
         String output = "";
         for (int i = 0; i < forumList.size(); i++) {
             output += forumList.get(i) + "\n";
         }
-        output = output.substring(0, output.length() - 1);
-        String discussionForumListFileName = courseName + "-forumslist.txt";
-        FileOutputStream fos = new FileOutputStream(discussionForumListFileName, false);
+        FileOutputStream fos = new FileOutputStream(courseName + "-forumslist.txt", false);
         PrintWriter pw = new PrintWriter(fos);
-        pw.println(output);
+        pw.print(output);
+        pw.close();
+    }
+
+    public void changeFileNames(String newTopic) {
+        String discussionForumMessagesFileName = courseName + "-" + forumName + "-messages" + ".txt";
+        String discussionForumPointsFileName = courseName + "-" + forumName + "-points" + ".txt";
+        String discussionForumUpvotesFileName = courseName + "-" + forumName + "-upvotes" + ".txt";
+
+        String newDiscussionForumMessagesFileName = courseName + "-" + newTopic + "-messages" + ".txt";
+        String newDiscussionForumPointsFileName = courseName + "-" + newTopic + "-points" + ".txt";
+        String newDiscussionForumUpvotesFileName = courseName + "-" + newTopic + "-upvotes" + ".txt";
+
+        File f1 = new File(discussionForumMessagesFileName);
+        File newf1 = new File(newDiscussionForumMessagesFileName);
+        f1.renameTo(newf1);
+        File f2 = new File(discussionForumPointsFileName);
+        File newf2 = new File(newDiscussionForumPointsFileName);
+        f2.renameTo(newf2);
+        File f3 = new File(discussionForumUpvotesFileName);
+        File newf3 = new File(newDiscussionForumUpvotesFileName);
+        f3.renameTo(newf3);
     }
 
     public void changeTopic() throws Exception {
         String newTopic = bufferedReader.readLine();
         if (!newTopic.equals(" ")) {
             readForumListFile();
-            System.out.println(forumList);
-            forumList.set(findForumInForumList(), newTopic);
-            forumName = newTopic;
-            System.out.println(forumList);
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
-            forumCreationTime = LocalDateTime.now().format(format);
-            writeToMessagesFile();
-            writeToForumListFile();
-            printForum();
+            if (!forumList.contains(newTopic)) {
+                printWriter.write("1");
+                printWriter.println();
+                printWriter.flush();
+                forumList.set(forumList.indexOf(forumName), newTopic);
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
+                forumCreationTime = LocalDateTime.now().format(format);
+                changeFileNames(newTopic);
+                forumName = newTopic;
+                writeToMessagesFile();
+                writeToForumListFile();
+                printForum();
+            } else {
+                printWriter.write("0");
+                printWriter.println();
+                printWriter.flush();
+            }
         }
         mainMethod();
     }
@@ -579,5 +600,41 @@ public class DiscussionForumServer {
             pw.println(toWrite);
         }
         pw.close();
+    }
+
+    class NewThread extends Thread {
+        public void run() {
+            boolean dataReceived = false;
+            while(!dataReceived) {
+                System.out.println(MainClass.forumUpdated);
+                System.out.println(Thread.currentThread().toString() + userNumber);
+                try {
+                    if (bufferedReader.ready()) {
+                        dataReceived = true;
+                        dummyWriter.write("0");
+                        dummyWriter.println();
+                        dummyWriter.flush();
+                        Thread.currentThread().stop();
+                    } else {
+                        if (!MainClass.forumUpdated.get(userNumber)) {
+                            System.out.println("Point reached");
+                            dummyWriter.write("1");
+                            dummyWriter.println();
+                            dummyWriter.flush();
+                            printForum();
+                            MainClass.forumUpdated.set(userNumber, true);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Thread.currentThread().sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 }

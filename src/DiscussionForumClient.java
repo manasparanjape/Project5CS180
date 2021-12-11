@@ -190,9 +190,15 @@ public class DiscussionForumClient {
             printWriter.write(newTopic);
             printWriter.println();
             printWriter.flush();
-            discussionForumButton.setText(newTopic);
-            printMessages();
-
+            String receivedData = bufferedReader.readLine();
+            System.out.println(receivedData);
+            if (receivedData.equals("0")) {
+                String errorMessage = "A forum with that name already exists!";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                discussionForumButton.setText(newTopic);
+                printMessages();
+            }
         }
     }
 

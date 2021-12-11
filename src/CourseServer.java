@@ -92,11 +92,6 @@ public class CourseServer {
                 fos = new FileOutputStream(discussionBoardsListFileName, true);
                 pw = new PrintWriter(fos);
                 pw.println(newForumName);
-                /*if (forumList.size() == 1) {
-                    pw.print(newForumName);
-                } else {
-                    pw.print("\n" + newForumName);
-                }*/
                 pw.close();
                 printWriter.write("1");
             }
