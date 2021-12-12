@@ -169,12 +169,13 @@ public class CourseServer {
             discussionForumServer.readUpvoteFile();
 
             discussionForumServer.printForum();
+            discussionForumServer.mainMethod();
         } else {
             printWriter.write("0");
             printWriter.println();
             printWriter.flush();
+            mainMethod();
         }
-        mainMethod();
     }
 
     public void backButtonStudent() throws Exception {
@@ -221,7 +222,7 @@ public class CourseServer {
         String choice = bufferedReader.readLine();
         switch (choice) {
             case "-1" -> backButtonTeacher();
-            case "0" -> backButtonStudent();
+            case "-2" -> backButtonStudent();
             case "1", "4" -> createForum();
             case "2" -> deleteForum();
             case "3" -> openForum();

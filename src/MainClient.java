@@ -398,10 +398,10 @@ public class MainClient {
 
     public static void main(String[] args) throws IOException {
         try {
-            Socket socket = new Socket("172.20.10.5", 2002);
-            Socket dummySocket = new Socket("172.20.10.5", 2001);
-            //Socket socket = new Socket("localhost", 2002);
-            //Socket dummySocket = new Socket("localhost", 2001);
+            //Socket socket = new Socket("172.20.10.5", 2002);
+            //Socket dummySocket = new Socket("172.20.10.5", 2001);
+            Socket socket = new Socket("localhost", 2002);
+            Socket dummySocket = new Socket("localhost", 2001);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             dummyReader = new BufferedReader(new InputStreamReader(dummySocket.getInputStream()));
             printWriter = new PrintWriter(socket.getOutputStream());

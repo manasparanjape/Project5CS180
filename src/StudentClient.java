@@ -97,7 +97,7 @@ public class StudentClient {
         courseClient.studentDiscussionForumOpened();
     }
     public void backMethod() throws Exception {
-        printWriter.write("0");
+        printWriter.write("-2");
         printWriter.println();
         printWriter.flush();
         AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader, dummyReader);
