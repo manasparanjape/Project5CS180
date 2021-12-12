@@ -358,7 +358,7 @@ public class MainClient {
         JPanel centerPanel = new JPanel(new GridLayout(2,2,30,30));
         centerPanel.setBackground(Color.decode("#000000"));
 
-        JLabel titleText = new JLabel("Learning Management System Discussion Board");
+        JLabel titleText = new JLabel("Learning Management System\n Discussion Board");
         titleText.setFont(new Font("Calibri", Font.BOLD, 28));
         topPanel.add(titleText);
 
