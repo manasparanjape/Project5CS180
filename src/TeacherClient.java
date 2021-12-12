@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class TeacherClient {
@@ -177,7 +178,14 @@ public class TeacherClient {
                 printWriter.println();
                 printWriter.flush();
 
-                String receivedData = bufferedReader.readLine();
+                String receivedData = null;
+                try {
+                    receivedData = bufferedReader.readLine();
+                } catch (SocketException e) {
+                    String errorMessage = "The server unexpectedly closed. Please try again later";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }
                 if (receivedData.equals("1")) {
                     JOptionPane.showMessageDialog(null, newCourseCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else if (receivedData.equals("0")){
@@ -189,14 +197,27 @@ public class TeacherClient {
             printWriter.write(" ");
             printWriter.println();
             printWriter.flush();
-            String dummy = bufferedReader.readLine();
-        }
+
+            try {
+                String dummy = bufferedReader.readLine();
+            } catch (SocketException e) {
+                String errorMessage = "The server unexpectedly closed. Please try again later";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }        }
         AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
     }
 
     public void openCourse() throws Exception {
-        String receivedData = bufferedReader.readLine();
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         if (receivedData.isBlank()) {
             printWriter.write(" ");
             printWriter.println();

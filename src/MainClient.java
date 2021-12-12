@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class MainClient {
     private static String usernamePrompt = "Please enter your username.";
@@ -71,7 +72,13 @@ public class MainClient {
                 printWriter.println();
                 printWriter.flush();
 
-                String accountVerificationString = bufferedReader.readLine();
+                String accountVerificationString = null;
+                try {
+                    accountVerificationString = bufferedReader.readLine();
+                } catch (SocketException e) {
+                    String errorMessage = "The server unexpectedly closed. Please try again later";
+                    System.exit(0);
+                }
                 String[] accountVerificationArray = accountVerificationString.split("§§§");
                 output = Integer.parseInt(accountVerificationArray[0]);
 
@@ -100,7 +107,14 @@ public class MainClient {
         printWriter.flush();
         int accountCheck = securityCheckClient();
         if (accountCheck != 0) {
-            if (bufferedReader.readLine().equals("1")) {
+            String accountType = null;
+            try {
+                accountType = bufferedReader.readLine();
+            } catch (SocketException e) {
+                String errorMessage = "The server unexpectedly closed. Please try again later";
+                System.exit(0);
+            }
+            if (accountType.equals("1")) {
                 AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe, printWriter, bufferedReader, dummyReader);
                 accountClient.mainMethod();
             } else {
@@ -213,7 +227,14 @@ public class MainClient {
             printWriter.println();
             printWriter.flush();
 
-            String accountVerificationString = bufferedReader.readLine();
+            String accountVerificationString = null;
+            try {
+                accountVerificationString = bufferedReader.readLine();
+            } catch (SocketException e) {
+                errorMessage = "The server unexpectedly closed. Please try again later";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
             if (accountVerificationString.equals("0")) {
                 errorMessage = usernameUnavailablePrompt;
                 JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);

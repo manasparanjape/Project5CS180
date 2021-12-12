@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class StudentClient {
@@ -38,7 +39,14 @@ public class StudentClient {
     }
 
     public void openCourse() throws Exception {
-        String receivedData = bufferedReader.readLine();
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         if (receivedData.isBlank()) {
             printWriter.write(" ");
             printWriter.println();

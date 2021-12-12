@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -75,7 +76,14 @@ public class CourseClient {
                 printWriter.println();
                 printWriter.flush();
 
-                String receivedData = bufferedReader.readLine();
+                String receivedData = null;
+                try {
+                    receivedData = bufferedReader.readLine();
+                } catch (SocketException e) {
+                    String errorMessage = "The server unexpectedly closed. Please try again later";
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }
                 if (receivedData.equals("0")) {
                     String errorMessage = "A discussion forum with that name already exists in this course.";
                     JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
@@ -93,7 +101,14 @@ public class CourseClient {
     }
 
     public void deleteForum() throws Exception {
-        String receivedData = bufferedReader.readLine();
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         if (receivedData.equals(" ")) {
             printWriter.write(" ");
             printWriter.println();
@@ -149,7 +164,14 @@ public class CourseClient {
                     printWriter.println();
                     printWriter.flush();
 
-                    String receivedData = bufferedReader.readLine();
+                    String receivedData = null;
+                    try {
+                        receivedData = bufferedReader.readLine();
+                    } catch (SocketException e) {
+                        String errorMessage = "The server unexpectedly closed. Please try again later";
+                        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                    }
                     if (receivedData.equals("0")) {
                         String errorMessage = "A discussion forum with that name already exists in this course.";
                         JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
@@ -258,7 +280,14 @@ public class CourseClient {
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.add(backButtonTeacher);
 
-        String receivedData = bufferedReader.readLine();
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         String[] receivedDataArray = receivedData.split("§§§");
         ArrayList<String> forumList = new ArrayList<>(Arrays.asList(receivedDataArray));
         for (int i = 0; i < forumList.size(); i++) {
@@ -346,7 +375,14 @@ public class CourseClient {
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.add(backButtonStudent);
 
-        String receivedData = bufferedReader.readLine();
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         String[] receivedDataArray = receivedData.split("§§§");
         ArrayList<String> forumList = new ArrayList<>(Arrays.asList(receivedDataArray));
         for (int i = 0; i < forumList.size(); i++) {
@@ -419,7 +455,14 @@ public class CourseClient {
         textArea.setEditable(false);
         JScrollPane areaScrollPane = new JScrollPane(textArea);
         areaScrollPane.setPreferredSize(new Dimension(20, 100));
-        String pointsString = bufferedReader.readLine();
+        String pointsString = null;
+        try {
+            pointsString = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         pointsString = pointsString.replaceAll("§§§", "\n" );
         textArea.setText(pointsString);
 
@@ -592,7 +635,14 @@ public class CourseClient {
     }
 
     public void studentDiscussionForumOpened() throws Exception {
-        String receivedData = bufferedReader.readLine();
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         if (receivedData.equals(" ")) {
             String errorMessage = "This course does not have any discussion forums.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
@@ -613,7 +663,14 @@ public class CourseClient {
     }
 
     public void teacherDiscussionForumOpened() throws Exception {
-        String receivedData = bufferedReader.readLine();
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         if (receivedData.equals(" ")) {
             String errorMessage = "This course does not have any discussion forums.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
