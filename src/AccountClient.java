@@ -68,7 +68,7 @@ public class AccountClient {
         logoutButton.setPreferredSize(new Dimension(130,100));
         logoutButton.setBackground(Color.decode("#c0c0c0"));
 
-        jframe.setSize(600, 400);
+        //jframe.setSize(600, 400);
 
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.decode("#CEB888"));

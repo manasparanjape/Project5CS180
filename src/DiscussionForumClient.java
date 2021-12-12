@@ -255,7 +255,6 @@ public class DiscussionForumClient {
                 jframe.setVisible(false);
         jframe.dispose();
             }
-            System.out.println(receivedData);
             if (receivedData.equals("0")) {
                 String errorMessage = "A forum with that name already exists!";
                 JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
