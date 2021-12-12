@@ -152,6 +152,7 @@ public class CourseServer {
     }
 
     public void changeForum() throws Exception {
+        readForumListFile();
         String receivedData = bufferedReader.readLine();
         String[] forumFileNames = receivedData.split("§§§");
 
