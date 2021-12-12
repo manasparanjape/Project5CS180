@@ -285,7 +285,7 @@ public class CourseClient {
                 public void actionPerformed(ActionEvent e) {
                     String selectedForum = discussionForumButtonsArray.get(finalI).getText();
                     try {
-                        printWriter.write("0");
+                        printWriter.write("-2");
                         printWriter.println();
                         printWriter.flush();
                         changeDiscussionForum(selectedForum);
@@ -380,7 +380,7 @@ public class CourseClient {
                 public void actionPerformed(ActionEvent e) {
                     String selectedForum = discussionForumButtonsArray.get(finalI).getText();
                     try {
-                        printWriter.write("0");
+                        printWriter.write("-2");
                         printWriter.println();
                         printWriter.flush();
                         changeDiscussionForum(selectedForum);
