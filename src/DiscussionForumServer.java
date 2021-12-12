@@ -416,13 +416,10 @@ public class DiscussionForumServer {
 
         File f1 = new File(discussionForumMessagesFileName);
         File newf1 = new File(newDiscussionForumMessagesFileName);
-        System.out.println(f1.renameTo(newf1));
         File f2 = new File(discussionForumPointsFileName);
         File newf2 = new File(newDiscussionForumPointsFileName);
-        System.out.println(f2.renameTo(newf2));
         File f3 = new File(discussionForumUpvotesFileName);
         File newf3 = new File(newDiscussionForumUpvotesFileName);
-        System.out.println(f3.renameTo(newf3));
 
         messagesFileName = newDiscussionForumMessagesFileName;
         pointsFileName = newDiscussionForumPointsFileName;

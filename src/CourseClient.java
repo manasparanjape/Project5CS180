@@ -427,7 +427,6 @@ public class CourseClient {
         jframe.dispose();
         }
         if (receivedData.equals("1")) {
-            System.out.println("Point reached");
             int i = 0;
             boolean buttonFound = false;
             while (i < discussionForumButtonsArray.size() && !buttonFound) {

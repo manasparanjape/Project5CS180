@@ -153,11 +153,8 @@ public class CourseServer {
         readForumListFile();
         String receivedData = bufferedReader.readLine();
         String[] forumFileNames = receivedData.split("§§§");
-        System.out.println(forumFileNames[0]);
-        System.out.println(forumList);
 
         if (forumList.contains(forumFileNames[0])) {
-            System.out.println("Point reached");
             printWriter.write("1");
             printWriter.println();
             printWriter.flush();
