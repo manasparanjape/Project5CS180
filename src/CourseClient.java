@@ -344,7 +344,7 @@ public class CourseClient {
         newMessageFieldLabel = new JLabel("New Message");
         messageNumberFieldLabel = new JLabel("Message No. to reply/upvote");
 
-        //jframe.setSize(900, 600);
+        jframe.setSize(900, 600);
         //jframe.setLocationRelativeTo(null);
         //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //jframe.setVisible(true);
