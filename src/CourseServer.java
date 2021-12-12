@@ -39,7 +39,7 @@ public class CourseServer {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<String> output = new ArrayList<>();
         String line = bfr.readLine();
-        while (line != null) {
+        while (line != null && !line.isBlank()) {
             output.add(line);
             line = bfr.readLine();
         }
@@ -64,6 +64,7 @@ public class CourseServer {
         } else {
             output = " ";
         }
+
         return output;
     }
 
