@@ -39,7 +39,7 @@ public class CourseServer {
         BufferedReader bfr = new BufferedReader(fr);
         ArrayList<String> output = new ArrayList<>();
         String line = bfr.readLine();
-        while (line != null) {
+        while (line != null && !line.isBlank()) {
             output.add(line);
             line = bfr.readLine();
         }
@@ -64,6 +64,7 @@ public class CourseServer {
         } else {
             output = " ";
         }
+
         return output;
     }
 
@@ -123,10 +124,7 @@ public class CourseServer {
             for (String s : forumList) {
                 output.append(s).append("\n");
             }
-            if (output.length() > 0) {
-                output = new StringBuilder(output.substring(0, output.length() - 1));
-            }
-            pw.println(output);
+            pw.print(output);
             pw.close();
         }
 

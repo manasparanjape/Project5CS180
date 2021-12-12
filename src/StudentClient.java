@@ -45,7 +45,8 @@ public class StudentClient {
         } catch (SocketException e) {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            jframe.setVisible(false);
+        jframe.dispose();
         }
         if (receivedData.isBlank()) {
             printWriter.write(" ");
