@@ -15,12 +15,13 @@ public class CourseServer {
     private ArrayList<String> forumList = new ArrayList<>();
 
     private PrintWriter printWriter;
+    private PrintWriter dummyWriter;
 
     private BufferedReader bufferedReader;
 
     private  int userNumber;
 
-    public CourseServer(String courseName, String username, String firstName, String lastName, String discussionBoardsListFileName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
+    public CourseServer(String courseName, String username, String firstName, String lastName, String discussionBoardsListFileName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
@@ -29,6 +30,7 @@ public class CourseServer {
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.userNumber = userNumber;
+        this.dummyWriter = dummyWriter;
     }
 
     public void readForumListFile() throws Exception {
@@ -54,7 +56,7 @@ public class CourseServer {
 
     public String convertToSendFormat() {
         String output = "";
-        if (forumList != null && forumList.size() != 1)  {
+        if (forumList != null && forumList.size() != 0)  {
             for (int i = 0; i < forumList.size(); i++) {
                 output += forumList.get(i) + "§§§";
             }
@@ -66,6 +68,7 @@ public class CourseServer {
     }
 
     public void createForum() throws Exception {
+        readForumListFile();
         String newForumName = bufferedReader.readLine();
         if (!newForumName.equals(" ")) {
             if (discussionForumExists(newForumName)) {
@@ -88,11 +91,7 @@ public class CourseServer {
                 pw.close();
                 fos = new FileOutputStream(discussionBoardsListFileName, true);
                 pw = new PrintWriter(fos);
-                if (forumList.size() == 1) {
-                    pw.print(newForumName);
-                } else {
-                    pw.print("\n" + newForumName);
-                }
+                pw.println(newForumName);
                 pw.close();
                 printWriter.write("1");
             }
@@ -156,7 +155,7 @@ public class CourseServer {
         String receivedData = bufferedReader.readLine();
         String[] forumFileNames = receivedData.split("§§§");
 
-        discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1], forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader, userNumber);
+        discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1], forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader, userNumber, dummyWriter);
         discussionForumServer.readMessagesFile();
         discussionForumServer.readPointsFile();
         discussionForumServer.readUpvoteFile();
@@ -166,12 +165,12 @@ public class CourseServer {
     }
 
     public void backButtonStudent() throws Exception {
-        StudentServer studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
+        StudentServer studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
         studentServer.back();
     }
 
     public void backButtonTeacher() throws Exception {
-        TeacherServer teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber);
+        TeacherServer teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
         teacherServer.back();
     }
 
@@ -186,7 +185,6 @@ public class CourseServer {
             String line = bfr.readLine();
             boolean pointsFound = false;
             while (line != null) {
-                System.out.println(line + "$");
                 if (line.contains(username)) {
                     String[] splitLine = line.split("§§§");
                     output.append(splitLine[1]).append("\n");
@@ -199,13 +197,11 @@ public class CourseServer {
             }
         }
         String toSend = String.valueOf(output);
-        System.out.println(toSend + "Check Functionality");
         toSend = toSend.replaceAll("\n", "§§§");
         printWriter.write(toSend);
         printWriter.println();
         printWriter.flush();
         mainMethod();
-        System.out.println(output);
     }
 
     public void mainMethod() throws Exception {
@@ -217,6 +213,10 @@ public class CourseServer {
             case "2" -> deleteForum();
             case "3" -> openForum();
             case "5" -> viewPoints();
+            case "Close" -> {
+                MainServer.getUsernames().remove(username);
+                Thread.currentThread().stop();
+            }
         }
     }
 }

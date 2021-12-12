@@ -19,16 +19,18 @@ public class MainServer {
     private BufferedReader bufferedReader;
 
     private PrintWriter printWriter;
+    private PrintWriter dummyWriter;
 
     public static final Object object = new Object();
 
     private static ArrayList<String> usernames = new ArrayList<>();
 
-    private int userNumber = 0;
+    private static int userNumber = 0;
 
-    public MainServer(BufferedReader bufferedReader, PrintWriter printWriter) {
+    public MainServer(BufferedReader bufferedReader, PrintWriter printWriter, PrintWriter dummyWriter) {
         this.bufferedReader = bufferedReader;
         this.printWriter = printWriter;
+        this.dummyWriter = dummyWriter;
     }
 
     public static ArrayList<String> getUsernames() {
@@ -162,7 +164,7 @@ public class MainServer {
                 printWriter.flush();
                 usernames.add(username);
                 MainClass.forumUpdated.add(true);
-                AccountServer accountServer = new AccountServer(username, firstName, lastName, ifTeacher, printWriter, bufferedReader, userNumber);
+                AccountServer accountServer = new AccountServer(username, firstName, lastName, ifTeacher, printWriter, bufferedReader, userNumber, dummyWriter);
                 userNumber++;
                 accountServer.mainMethod();
             }
@@ -236,6 +238,5 @@ public class MainServer {
             case "3" -> deleteAccountMethod();
             case "4" -> changePasswordMethod();
         }
-        System.out.println("Main method ended");
     }
 }

@@ -10,6 +10,7 @@ public class TeacherServer {
     private ArrayList<String> courseList = new ArrayList<>();
 
     private PrintWriter printWriter;
+    private PrintWriter dummyWriter;
 
     private BufferedReader bufferedReader;
 
@@ -17,13 +18,14 @@ public class TeacherServer {
 
     private int userNumber;
 
-    public TeacherServer(String username, String firstName, String lastName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
+    public TeacherServer(String username, String firstName, String lastName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.userNumber = userNumber;
+        this.dummyWriter = dummyWriter;
     }
 
     public void readCourseListsFile() throws IOException {
@@ -31,7 +33,7 @@ public class TeacherServer {
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
         String line = bfr.readLine();
-        while (line != null) {
+        while (line != null && !line.isBlank()) {
             courseList.add(line);
             line = bfr.readLine();
         }
@@ -56,11 +58,11 @@ public class TeacherServer {
 
         String chosenCourse = bufferedReader.readLine();
         if (chosenCourse.equals(" ")) {
-            AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber);
+            AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber, dummyWriter);
             accountServer.mainMethod();
         } else {
             String discussionBoardsListFileName = chosenCourse + "-forumslist.txt";
-            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber);
+            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
             courseServer.mainMethod();
         }
     }
@@ -85,7 +87,7 @@ public class TeacherServer {
                 courseList.add(newCourseName);
                 FileOutputStream fos = new FileOutputStream(newCourseName + "-forumslist.txt", false);
                 PrintWriter pw = new PrintWriter(fos);
-                pw.println();
+                pw.print("");
                 pw.close();
                 fos = new FileOutputStream(coursesListFileName, true);
                 pw = new PrintWriter(fos);
@@ -98,12 +100,12 @@ public class TeacherServer {
         }
         printWriter.println();
         printWriter.flush();
-        AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber);
+        AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber, dummyWriter);
         accountServer.mainMethod();
     }
 
     public void back() throws Exception {
-        AccountServer accountServer = new AccountServer(username, firstName, lastName, true, printWriter, bufferedReader, userNumber);
+        AccountServer accountServer = new AccountServer(username, firstName, lastName, true, printWriter, bufferedReader, userNumber, dummyWriter);
         accountServer.mainMethod();
     }
 }

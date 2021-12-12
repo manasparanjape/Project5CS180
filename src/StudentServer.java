@@ -10,18 +10,20 @@ public class StudentServer {
     private ArrayList<String> courseList = new ArrayList<>();
 
     private PrintWriter printWriter;
+    private PrintWriter dummyWriter;
 
     private BufferedReader bufferedReader;
 
     private int userNumber;
 
-    public StudentServer(String username, String firstName, String lastName,  PrintWriter printWriter, BufferedReader bufferedReader, int userNumber) {
+    public StudentServer(String username, String firstName, String lastName,  PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.userNumber = userNumber;
+        this.dummyWriter = dummyWriter;
     }
 
     public void readCourseListsFile() throws IOException {
@@ -54,17 +56,17 @@ public class StudentServer {
 
         String chosenCourse = bufferedReader.readLine();
         if (chosenCourse.equals(" ")) {
-            AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber);
+            AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber, dummyWriter);
             accountServer.mainMethod();
         } else {
             String discussionBoardsListFileName = chosenCourse + "-forumslist.txt";
-            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName, lastName, discussionBoardsListFileName,printWriter, bufferedReader, userNumber);
+            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName, lastName, discussionBoardsListFileName,printWriter, bufferedReader, userNumber, dummyWriter);
             courseServer.mainMethod();
         }
     }
 
     public void back() throws Exception {
-        AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber);
+        AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber, dummyWriter);
         accountServer.mainMethod();
     }
 }

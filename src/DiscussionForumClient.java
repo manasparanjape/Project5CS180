@@ -11,13 +11,18 @@ public class DiscussionForumClient {
     private PrintWriter printWriter;
 
     private BufferedReader bufferedReader;
+    private BufferedReader dummyReader;
 
     private JTextArea textArea;
 
-    public DiscussionForumClient(PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea) {
+    private JButton discussionForumButton;
+
+    public DiscussionForumClient(PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea, BufferedReader dummyReader, JButton discussionForumButton) {
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.textArea = textArea;
+        this.dummyReader = dummyReader;
+        this.discussionForumButton = discussionForumButton;
     }
 
     public void send(String newPost, String messageNumberString) throws Exception {
@@ -175,7 +180,11 @@ public class DiscussionForumClient {
 
     public void changeTopic() throws Exception {
         String newTopic = JOptionPane.showInputDialog(null, topicChangePrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
-        if (newTopic == null || newTopic.isBlank()) {
+        if (newTopic == null) {
+            printWriter.write(" ");
+            printWriter.println();
+            printWriter.flush();
+        } else if (newTopic.isBlank()) {
             printWriter.write(" ");
             printWriter.println();
             printWriter.flush();
@@ -185,7 +194,15 @@ public class DiscussionForumClient {
             printWriter.write(newTopic);
             printWriter.println();
             printWriter.flush();
-            printMessages();
+            String receivedData = bufferedReader.readLine();
+            System.out.println(receivedData);
+            if (receivedData.equals("0")) {
+                String errorMessage = "A forum with that name already exists!";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                discussionForumButton.setText(newTopic);
+                printMessages();
+            }
         }
     }
 

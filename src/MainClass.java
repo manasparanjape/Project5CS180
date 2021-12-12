@@ -6,33 +6,37 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class MainClass implements Runnable {
+public class MainClass {
 
     public static ArrayList<Boolean> forumUpdated = new ArrayList<>();
 
+    private static BufferedReader bufferedReader;
+
+    private static PrintWriter printWriter;
+    private static PrintWriter dummyWriter;
+
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(2000);
+        ServerSocket dummyServerSocket = new ServerSocket(2001);
         serverSocket.setReuseAddress(true);
+        dummyServerSocket.setReuseAddress(true);
         while (true) {
             Socket socket = serverSocket.accept();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    MainServer mainServer = new MainServer(bufferedReader, printWriter);
-                    try {
-                        mainServer.mainRunMethod();
-                    } catch (Exception ignored) {
-                    }
-                }
-            });
+            Socket dummySocket = dummyServerSocket.accept();
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream());
+            dummyWriter = new PrintWriter(dummySocket.getOutputStream());
+            NewThreadMain t = new NewThreadMain();
             t.start();
         }
     }
 
-    @Override
-    public void run() {
-
+    static class NewThreadMain extends Thread {
+        public void run() {
+            MainServer mainServer = new MainServer(bufferedReader, printWriter, dummyWriter);
+            try {
+                mainServer.mainRunMethod();
+            } catch (Exception ignored) {}
+        }
     }
 }
