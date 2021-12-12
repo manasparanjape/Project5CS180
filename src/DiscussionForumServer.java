@@ -426,6 +426,10 @@ public class DiscussionForumServer {
         File f3 = new File(discussionForumUpvotesFileName);
         File newf3 = new File(newDiscussionForumUpvotesFileName);
         f3.renameTo(newf3);
+
+        messagesFileName = newDiscussionForumMessagesFileName;
+        pointsFileName = newDiscussionForumPointsFileName;
+        upvoteFileName = newDiscussionForumUpvotesFileName;
     }
 
     public void changeTopic() throws Exception {
@@ -436,13 +440,13 @@ public class DiscussionForumServer {
                 printWriter.write("1");
                 printWriter.println();
                 printWriter.flush();
+                changeFileNames(newTopic);
                 forumList.set(forumList.indexOf(forumName), newTopic);
+                forumName = newTopic;
+                writeToForumListFile();
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss MM-dd-yyyy");
                 forumCreationTime = LocalDateTime.now().format(format);
-                changeFileNames(newTopic);
-                forumName = newTopic;
                 writeToMessagesFile();
-                writeToForumListFile();
                 printForum();
             } else {
                 printWriter.write("0");
