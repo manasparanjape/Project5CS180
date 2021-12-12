@@ -251,7 +251,7 @@ public class CourseClient {
         newMessageField = new JTextField(30);
         messageNumberField = new JTextField(3);
 
-        //jframe.setSize(900, 600);
+        jframe.setSize(900, 600);
         //jframe.setLocationRelativeTo(null);
         //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //jframe.setVisible(true);
