@@ -124,9 +124,6 @@ public class CourseServer {
             for (String s : forumList) {
                 output.append(s).append("\n");
             }
-            if (output.length() > 0) {
-                output = new StringBuilder(output.substring(0, output.length() - 1));
-            }
             pw.println(output);
             pw.close();
         }
