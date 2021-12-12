@@ -1,4 +1,0 @@
-Threads
-Graphical User Interface
-rules
-If statement

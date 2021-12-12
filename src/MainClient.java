@@ -361,7 +361,7 @@ public class MainClient {
         changePasswordButton.addActionListener(actionListener);
         changePasswordButton.setBackground(Color.decode("#c0c0c0"));
 
-        jframe.setSize(600, 400);
+        jframe.setSize(900, 600);
         jframe.setLocationRelativeTo(null);
         jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jframe.setVisible(true);
