@@ -184,7 +184,7 @@
 5. User clicks open course button
 6. User clicks the OK button while the dropdown is on CS 180
 7. User clicks Create new discussion forum via file import
-8. User enters "Welcome" into the forum name text box
+8. User selects the file "teacherForum.txt" from the file select menu
 9. User clicks OK on confirmation message
 10. User clicks Open discussion forums
 11. User clicks back, clicks back, clicks logout
