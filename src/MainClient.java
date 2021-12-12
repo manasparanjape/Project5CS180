@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 
 public class MainClient {
@@ -375,11 +376,19 @@ public class MainClient {
     }
 
     public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("localhost", 2002);
-        Socket dummySocket = new Socket("localhost", 2001);
-        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        dummyReader = new BufferedReader(new InputStreamReader(dummySocket.getInputStream()));
-        printWriter = new PrintWriter(socket.getOutputStream());
+        try {
+            Socket socket = new Socket("localhost", 2002);
+            Socket dummySocket = new Socket("localhost", 2001);
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            dummyReader = new BufferedReader(new InputStreamReader(dummySocket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream());
+        } catch (ConnectException e) {
+            String errorMessage = "The server is not running at this time, please try again later!";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+
+
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
