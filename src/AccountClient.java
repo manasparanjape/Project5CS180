@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,31 +52,42 @@ public class AccountClient {
     public void runMethodTeacher() {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new BorderLayout());
+        container.setLayout(new GridLayout(2,1));
         container.revalidate();
 
         createCourseButton = new JButton("Create Course");
         createCourseButton.addActionListener(actionListener);
+        createCourseButton.setPreferredSize(new Dimension(130,100));
+        createCourseButton.setBackground(Color.decode("#c0c0c0"));
         openCourseButton = new JButton("Open Course");
         openCourseButton.addActionListener(actionListener);
+        openCourseButton.setPreferredSize(new Dimension(130, 100));
+        openCourseButton.setBackground(Color.decode("#c0c0c0"));
         logoutButton = new JButton("Logout");
         logoutButton.addActionListener(actionListener);
+        logoutButton.setPreferredSize(new Dimension(130,100));
+        logoutButton.setBackground(Color.decode("#c0c0c0"));
 
-        //jframe.setSize(900, 600);
-        //jframe.setLocationRelativeTo(null);
-        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //jframe.setVisible(true);
+        jframe.setSize(600, 400);
+
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(Color.decode("#CEB888"));
+
+        JLabel titleText = new JLabel("Teacher Options");
+        titleText.setFont(new Font("Calibri", Font.BOLD, 28));
+        topPanel.add(titleText);
 
         JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(Color.decode("#000000"));
         centerPanel.add(openCourseButton);
         centerPanel.add(createCourseButton);
+        centerPanel.add(logoutButton);
 
-        JPanel leftPanel = new JPanel(new GridLayout(2, 1));
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.add(logoutButton);
+        topPanel.setBorder(new EmptyBorder(80, 20, 20, 20));
+        centerPanel.setBorder(new EmptyBorder(20, 20, 80, 20));
 
-        container.add(centerPanel, BorderLayout.CENTER);
-        container.add(leftPanel, BorderLayout.WEST);
+        container.add(topPanel);
+        container.add(centerPanel);
     }
 
     public void runMethodStudent() {
