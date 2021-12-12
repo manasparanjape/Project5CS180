@@ -170,7 +170,7 @@ public class CourseServer {
             printWriter.println();
             printWriter.flush();
         }
-        discussionForumServer.mainMethod();
+        mainMethod();
     }
 
     public void backButtonStudent() throws Exception {
