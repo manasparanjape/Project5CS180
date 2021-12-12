@@ -311,18 +311,17 @@ public class MainClient {
 
         loginButton = new JButton("Login");
         loginButton.addActionListener(actionListener);
-        loginButton.setPreferredSize(new Dimension(70, 70));
-        //topPanel.setBackground(Color.decode("#CEB888"));
         loginButton.setBackground(Color.decode("#c0c0c0"));
+        //topPanel.setBackground(Color.decode("#CEB888"));
         createNewAccountButton = new JButton("Create new account");
         createNewAccountButton.addActionListener(actionListener);
-        createNewAccountButton.setPreferredSize(new Dimension(70, 70));
+        createNewAccountButton.setBackground(Color.decode("#c0c0c0"));
         deleteAccountButton = new JButton("Delete account");
         deleteAccountButton.addActionListener(actionListener);
-        deleteAccountButton.setPreferredSize(new Dimension(70, 70));
+        deleteAccountButton.setBackground(Color.decode("#c0c0c0"));
         changePasswordButton = new JButton("Change Password");
         changePasswordButton.addActionListener(actionListener);
-        changePasswordButton.setPreferredSize(new Dimension(70, 70));
+        changePasswordButton.setBackground(Color.decode("#c0c0c0"));
 
         jframe.setSize(600, 400);
         jframe.setLocationRelativeTo(null);

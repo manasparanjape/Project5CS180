@@ -56,17 +56,17 @@ public class AccountClient {
         createCourseButton = new JButton("Create Course");
         createCourseButton.addActionListener(actionListener);
         createCourseButton.setPreferredSize(new Dimension(130,100));
+        createCourseButton.setBackground(Color.decode("#c0c0c0"));
         openCourseButton = new JButton("Open Course");
         openCourseButton.addActionListener(actionListener);
         openCourseButton.setPreferredSize(new Dimension(130, 100));
+        openCourseButton.setBackground(Color.decode("#c0c0c0"));
         logoutButton = new JButton("Logout");
         logoutButton.addActionListener(actionListener);
         logoutButton.setPreferredSize(new Dimension(130,100));
+        logoutButton.setBackground(Color.decode("#c0c0c0"));
 
         jframe.setSize(600, 400);
-        //jframe.setLocationRelativeTo(null);
-        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //jframe.setVisible(true);
 
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.decode("#CEB888"));
