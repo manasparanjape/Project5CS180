@@ -311,12 +311,18 @@ public class MainClient {
 
         loginButton = new JButton("Login");
         loginButton.addActionListener(actionListener);
+        loginButton.setPreferredSize(new Dimension(70, 70));
+        //topPanel.setBackground(Color.decode("#CEB888"));
+        loginButton.setBackground(Color.decode("#c0c0c0"));
         createNewAccountButton = new JButton("Create new account");
         createNewAccountButton.addActionListener(actionListener);
+        createNewAccountButton.setPreferredSize(new Dimension(70, 70));
         deleteAccountButton = new JButton("Delete account");
         deleteAccountButton.addActionListener(actionListener);
+        deleteAccountButton.setPreferredSize(new Dimension(70, 70));
         changePasswordButton = new JButton("Change Password");
         changePasswordButton.addActionListener(actionListener);
+        changePasswordButton.setPreferredSize(new Dimension(70, 70));
 
         jframe.setSize(600, 400);
         jframe.setLocationRelativeTo(null);
@@ -324,7 +330,9 @@ public class MainClient {
         jframe.setVisible(true);
 
         JPanel topPanel = new JPanel();
+        topPanel.setBackground(Color.decode("#CEB888"));
         JPanel centerPanel = new JPanel(new GridLayout(2,2,30,30));
+        centerPanel.setBackground(Color.decode("#000000"));
 
         JLabel titleText = new JLabel("Learning Management System Discussion Board");
         titleText.setFont(new Font("Calibri", Font.BOLD, 28));
