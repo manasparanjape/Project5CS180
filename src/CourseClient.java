@@ -205,20 +205,28 @@ public class CourseClient {
 
         backButtonTeacher = new JButton("Back");
         backButtonTeacher.addActionListener(actionListener);
+        backButtonTeacher.setBackground(Color.decode("#c0c0c0"));
         sendButton = new JButton("Send/Reply");
         sendButton.addActionListener(actionListener);
+        sendButton.setBackground(Color.decode("#c0c0c0"));
         upvoteButton = new JButton("Upvote");
         upvoteButton.addActionListener(actionListener);
+        upvoteButton.setBackground(Color.decode("#c0c0c0"));
         deleteMessageButton = new JButton("Delete Message");
         deleteMessageButton.addActionListener(actionListener);
+        deleteMessageButton.setBackground(Color.decode("#c0c0c0"));
         gradeStudentButton = new JButton("Grade");
         gradeStudentButton.addActionListener(actionListener);
+        gradeStudentButton.setBackground(Color.decode("#c0c0c0"));
         dashboardButton = new JButton("View Dashboard");
         dashboardButton.addActionListener(actionListener);
+        dashboardButton.setBackground(Color.decode("#c0c0c0"));
         changeTopicButton = new JButton("Change Topic");
         changeTopicButton.addActionListener(actionListener);
+        changeTopicButton.setBackground(Color.decode("#c0c0c0"));
         sendMessageViaFileImportButton = new JButton("Import File with message");
         sendMessageViaFileImportButton.addActionListener(actionListener);
+        sendMessageViaFileImportButton.setBackground(Color.decode("#c0c0c0"));
 
         newMessageFieldLabel = new JLabel("New Message");
         messageNumberFieldLabel = new JLabel("Message No. to reply/delete");

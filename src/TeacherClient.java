@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -113,37 +114,53 @@ public class TeacherClient {
     public void runMethodTeacher() {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new BorderLayout());
+        container.setLayout(new GridLayout(2,1));
         container.revalidate();
 
         createDiscussionForumButton = new JButton("Create new discussion forum");
         createDiscussionForumButton.addActionListener(actionListener);
+        createDiscussionForumButton.setBackground(Color.decode("#c0c0c0"));
+        createDiscussionForumButton.setPreferredSize(new Dimension(130,100));
         deleteDiscussionForumButton = new JButton("Delete discussion forum");
         deleteDiscussionForumButton.addActionListener(actionListener);
+        deleteDiscussionForumButton.setBackground(Color.decode("#c0c0c0"));
+        deleteDiscussionForumButton.setPreferredSize(new Dimension(130,100));
         openDiscussionForumsButton = new JButton("Open discussion forums");
         openDiscussionForumsButton.addActionListener(actionListener);
+        openDiscussionForumsButton.setBackground(Color.decode("#c0c0c0"));
+        openDiscussionForumsButton.setPreferredSize(new Dimension(130,100));
         createDiscussionForumViaFileImportButton = new JButton("Create new discussion forum via file import");
         createDiscussionForumViaFileImportButton.addActionListener(actionListener);
+        createDiscussionForumViaFileImportButton.setBackground(Color.decode("#c0c0c0"));
+        createDiscussionForumViaFileImportButton.setPreferredSize(new Dimension(130,100));
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
+        backButton.setBackground(Color.decode("#c0c0c0"));
+        backButton.setPreferredSize(new Dimension(130,100));
 
-        //jframe.setSize(900, 600);
-        //jframe.setLocationRelativeTo(null);
-        //jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //jframe.setVisible(true);
+        JPanel topPanel = new JPanel();
+        //topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setBackground(Color.decode("#CEB888"));
 
-        JPanel centerPanel = new JPanel();
+        JPanel centerPanel = new JPanel(new GridLayout(3,2,20,20));
         centerPanel.add(openDiscussionForumsButton);
         centerPanel.add(createDiscussionForumButton);
         centerPanel.add(deleteDiscussionForumButton);
         centerPanel.add(createDiscussionForumViaFileImportButton);
+        centerPanel.add(backButton);
+        centerPanel.setBackground(Color.decode("#000000"));
 
-        JPanel leftPanel = new JPanel(new GridLayout(2, 1));
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.add(backButton);
+        jframe.setSize(700, 600);
 
-        container.add(centerPanel, BorderLayout.CENTER);
-        container.add(leftPanel, BorderLayout.WEST);
+        JLabel titleText = new JLabel("Discussion Forum Options");
+        titleText.setFont(new Font("Calibri", Font.BOLD, 28));
+        topPanel.add(titleText);
+
+        topPanel.setBorder(new EmptyBorder(80, 20, 20, 20));
+        centerPanel.setBorder(new EmptyBorder(20, 20, 80, 20));
+
+        container.add(topPanel);
+        container.add(centerPanel);
     }
 
     public void createCourse() throws Exception {

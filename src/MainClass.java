@@ -16,7 +16,7 @@ public class MainClass {
     private static PrintWriter dummyWriter;
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(2000);
+        ServerSocket serverSocket = new ServerSocket(2002);
         ServerSocket dummyServerSocket = new ServerSocket(2001);
         serverSocket.setReuseAddress(true);
         dummyServerSocket.setReuseAddress(true);

@@ -1,5 +1,7 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -109,23 +111,32 @@ public class MainClient {
     public static void createNewAccountButtonMethod() throws IOException {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new BorderLayout());
+        container.setLayout(new GridLayout(2,1));
         container.revalidate();
 
         createAccountButton = new JButton("Create Account");
         createAccountButton.addActionListener(actionListener);
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
-
         usernameField = new JTextField(20);
+        usernameLabel.setForeground(Color.decode("#CEB888"));
+        usernameLabel.setBorder(new LineBorder(Color.decode("#CEB888")));
         usernameField.setMaximumSize(usernameField.getPreferredSize());
         passwordField = new JTextField(20);
+        passwordLabel.setForeground(Color.decode("#CEB888"));
+        passwordLabel.setBorder(new LineBorder(Color.decode("#CEB888")));
         passwordField.setMaximumSize(passwordField.getPreferredSize());
         firstNameField = new JTextField(20);
+        firstNameLabel.setForeground(Color.decode("#CEB888"));
+        firstNameLabel.setBorder(new LineBorder(Color.decode("#CEB888")));
         firstNameField.setMaximumSize(firstNameField.getPreferredSize());
         lastNameField = new JTextField(20);
+        lastNameLabel.setForeground(Color.decode("#CEB888"));
+        lastNameLabel.setBorder(new LineBorder(Color.decode("#CEB888")));
         lastNameField.setMaximumSize(lastNameField.getPreferredSize());
         ifTeacherField = new JTextField(20);
+        ifTeacherLabel.setForeground(Color.decode("#CEB888"));
+        ifTeacherLabel.setBorder(new LineBorder(Color.decode("#CEB888")));
         ifTeacherField.setMaximumSize(ifTeacherField.getPreferredSize());
 
         jframe.setSize(900, 600);
@@ -133,12 +144,11 @@ public class MainClient {
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setVisible(true);
 
-        JPanel leftPanel = new JPanel();
-        JPanel rightPanel = new JPanel();
         JPanel topPanel = new JPanel();
-
-        JPanel centerPanel = new JPanel(new GridLayout(20, 1));
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        topPanel.setBackground(Color.decode("#CEB888"));
+        JPanel centerPanel = new JPanel(new GridLayout(6, 2));
+        centerPanel.setBackground(Color.decode("#000000"));
+        //centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.add(usernameLabel);
         centerPanel.add(usernameField);
         centerPanel.add(passwordLabel);
@@ -150,13 +160,17 @@ public class MainClient {
         centerPanel.add(ifTeacherLabel);
         centerPanel.add(ifTeacherField);
         centerPanel.add(createAccountButton);
+        centerPanel.add(backButton);
 
-        leftPanel.add(backButton);
+        JLabel titleText = new JLabel("Learning Management System Discussion Board");
+        titleText.setFont(new Font("Calibri", Font.BOLD, 28));
+        topPanel.add(titleText);
 
-        container.add(leftPanel, BorderLayout.WEST);
-        container.add(rightPanel, BorderLayout.EAST);
-        container.add(topPanel, BorderLayout.NORTH);
-        container.add(centerPanel, BorderLayout.CENTER);
+        topPanel.setBorder(new EmptyBorder(80, 20, 20, 20));
+        centerPanel.setBorder(new EmptyBorder(20, 20, 80, 20));
+
+        container.add(topPanel);
+        container.add(centerPanel);
     }
     public static void createAccountButtonMethod() throws IOException {
         printWriter.write("2");
@@ -315,7 +329,6 @@ public class MainClient {
         loginButton = new JButton("Login");
         loginButton.addActionListener(actionListener);
         loginButton.setBackground(Color.decode("#c0c0c0"));
-        //topPanel.setBackground(Color.decode("#CEB888"));
         createNewAccountButton = new JButton("Create new account");
         createNewAccountButton.addActionListener(actionListener);
         createNewAccountButton.setBackground(Color.decode("#c0c0c0"));
@@ -362,7 +375,7 @@ public class MainClient {
     }
 
     public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("localhost", 2000);
+        Socket socket = new Socket("localhost", 2002);
         Socket dummySocket = new Socket("localhost", 2001);
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         dummyReader = new BufferedReader(new InputStreamReader(dummySocket.getInputStream()));
