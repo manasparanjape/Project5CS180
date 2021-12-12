@@ -1,4 +1,4 @@
 Threads
-GUI
-For statement
+Graphical User Interface
+rules
 If statement
