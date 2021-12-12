@@ -184,7 +184,8 @@ public class TeacherClient {
                 } catch (SocketException e) {
                     String errorMessage = "The server unexpectedly closed. Please try again later";
                     JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-                    System.exit(0);
+                    jframe.setVisible(false);
+        jframe.dispose();
                 }
                 if (receivedData.equals("1")) {
                     JOptionPane.showMessageDialog(null, newCourseCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -203,7 +204,8 @@ public class TeacherClient {
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
                 JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
+                jframe.setVisible(false);
+        jframe.dispose();
             }        }
         AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
@@ -216,7 +218,8 @@ public class TeacherClient {
         } catch (SocketException e) {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            jframe.setVisible(false);
+        jframe.dispose();
         }
         if (receivedData.isBlank()) {
             printWriter.write(" ");

@@ -77,7 +77,8 @@ public class MainClient {
                     accountVerificationString = bufferedReader.readLine();
                 } catch (SocketException e) {
                     String errorMessage = "The server unexpectedly closed. Please try again later";
-                    System.exit(0);
+                    jframe.setVisible(false);
+        jframe.dispose();
                 }
                 String[] accountVerificationArray = accountVerificationString.split("§§§");
                 output = Integer.parseInt(accountVerificationArray[0]);
@@ -112,7 +113,8 @@ public class MainClient {
                 accountType = bufferedReader.readLine();
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
-                System.exit(0);
+                jframe.setVisible(false);
+        jframe.dispose();
             }
             if (accountType.equals("1")) {
                 AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe, printWriter, bufferedReader, dummyReader);
@@ -233,7 +235,8 @@ public class MainClient {
             } catch (SocketException e) {
                 errorMessage = "The server unexpectedly closed. Please try again later";
                 JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
+                jframe.setVisible(false);
+        jframe.dispose();
             }
             if (accountVerificationString.equals("0")) {
                 errorMessage = usernameUnavailablePrompt;
@@ -371,7 +374,8 @@ public class MainClient {
                 printWriter.write("Close");
                 printWriter.println();
                 printWriter.flush();
-                System.exit(0);
+                jframe.setVisible(false);
+        jframe.dispose();
             }
         });
 
@@ -408,7 +412,8 @@ public class MainClient {
         } catch (ConnectException e) {
             String errorMessage = "The server is not running at this time, please try again later!";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+            jframe.setVisible(false);
+        jframe.dispose();
         }
 
         SwingUtilities.invokeLater(new Runnable() {
