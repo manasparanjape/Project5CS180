@@ -155,8 +155,11 @@ public class CourseServer {
         readForumListFile();
         String receivedData = bufferedReader.readLine();
         String[] forumFileNames = receivedData.split("§§§");
+        System.out.println(forumFileNames[0]);
+        System.out.println(forumList);
 
         if (forumList.contains(forumFileNames[0])) {
+            System.out.println("Point reached");
             printWriter.write("1");
             printWriter.println();
             printWriter.flush();
@@ -218,15 +221,15 @@ public class CourseServer {
         String choice = bufferedReader.readLine();
         switch (choice) {
             case "-1" -> backButtonTeacher();
-            case "0" -> backButtonStudent();
+            case "-2" -> backButtonStudent();
             case "1", "4" -> createForum();
             case "2" -> deleteForum();
             case "3" -> openForum();
             case "5" -> viewPoints();
             case "Close" -> {
                 MainServer.getUsernames().remove(username);
-                Thread.currentThread().stop();
             }
+            default -> changeForum();
         }
     }
 }
