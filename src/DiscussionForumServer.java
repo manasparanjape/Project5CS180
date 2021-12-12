@@ -99,6 +99,7 @@ public class DiscussionForumServer {
             output.add(singleLine);
             line = bfr.readLine();
         }
+        bfr.close();
         pointsArray = output;
     }
 
