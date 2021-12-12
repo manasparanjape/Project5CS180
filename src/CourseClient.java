@@ -49,6 +49,8 @@ public class CourseClient {
     private BufferedReader bufferedReader;
     private BufferedReader dummyReader;
 
+    private boolean ifTeacher;
+
     public CourseClient(String courseName, String username, String firstName, String lastName, DiscussionForumClient discussionForumClient, JFrame jFrame, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
         this.courseName = courseName;
         this.username = username;
@@ -202,6 +204,7 @@ public class CourseClient {
     }
 
     public void runMethodTeacher() throws Exception {
+        ifTeacher = true;
         Container container = jframe.getContentPane();
         container.removeAll();
         container.setLayout(new BorderLayout());
@@ -313,6 +316,7 @@ public class CourseClient {
     }
 
     public void runMethodStudent() throws Exception {
+        ifTeacher = false;
         Container container = jframe.getContentPane();
         container.removeAll();
         container.setLayout(new BorderLayout());
@@ -408,16 +412,34 @@ public class CourseClient {
         printWriter.println();
         printWriter.flush();
 
-        int i = 0;
-        boolean buttonFound = false;
-        while (i < discussionForumButtonsArray.size() && !buttonFound) {
-            if (forumName.equals(discussionForumButtonsArray.get(i).getText())) {
-                buttonFound = true;
-            }
-            i++;
+        String receivedData = null;
+        try {
+            receivedData = bufferedReader.readLine();
+        } catch (SocketException e) {
+            String errorMessage = "The server unexpectedly closed. Please try again later";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
-        discussionForumClient = new DiscussionForumClient(printWriter, bufferedReader, textArea, dummyReader, discussionForumButtonsArray.get(i - 1));
-        changeForum();
+        if (receivedData.equals("1")) {
+            int i = 0;
+            boolean buttonFound = false;
+            while (i < discussionForumButtonsArray.size() && !buttonFound) {
+                if (forumName.equals(discussionForumButtonsArray.get(i).getText())) {
+                    buttonFound = true;
+                }
+                i++;
+            }
+            discussionForumClient = new DiscussionForumClient(printWriter, bufferedReader, textArea, dummyReader, discussionForumButtonsArray.get(i - 1));
+            changeForum();
+        } else {
+            String errorMessage = "The discussion forum you chose may have been deleted or renamed.";
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+            if (ifTeacher) {
+                runMethodTeacher();
+            } else {
+                runMethodStudent();
+            }
+        }
     }
 
     public void viewPoints() throws IOException {

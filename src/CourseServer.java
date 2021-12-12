@@ -155,12 +155,21 @@ public class CourseServer {
         String receivedData = bufferedReader.readLine();
         String[] forumFileNames = receivedData.split("§§§");
 
-        discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1], forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader, userNumber, dummyWriter);
-        discussionForumServer.readMessagesFile();
-        discussionForumServer.readPointsFile();
-        discussionForumServer.readUpvoteFile();
+        if (forumList.contains(forumFileNames[0])) {
+            printWriter.write("1");
+            printWriter.println();
+            printWriter.flush();
+            discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1], forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader, userNumber, dummyWriter);
+            discussionForumServer.readMessagesFile();
+            discussionForumServer.readPointsFile();
+            discussionForumServer.readUpvoteFile();
 
-        discussionForumServer.printForum();
+            discussionForumServer.printForum();
+        } else {
+            printWriter.write("0");
+            printWriter.println();
+            printWriter.flush();
+        }
         discussionForumServer.mainMethod();
     }
 
