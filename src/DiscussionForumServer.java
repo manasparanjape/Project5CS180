@@ -162,9 +162,6 @@ public class DiscussionForumServer {
     }
 
     public void mainMethod() throws Exception {
-        //NewThread newThread = new NewThread();
-        //newThread.start();
-
         String choice = bufferedReader.readLine();
         switch (choice) {
             case "-1", "-2" -> back();
@@ -177,7 +174,6 @@ public class DiscussionForumServer {
             case "7" -> sendMessageViaFileImport();
             case "Close" -> {
                 MainServer.getUsernames().remove(username);
-                Thread.currentThread().stop();
             }
             default -> {
                 String discussionBoardsListFileName = courseName + "-forumslist.txt";
@@ -604,41 +600,5 @@ public class DiscussionForumServer {
             pw.println(toWrite);
         }
         pw.close();
-    }
-
-    class NewThread extends Thread {
-        public void run() {
-            boolean dataReceived = false;
-            while(!dataReceived) {
-                System.out.println(MainClass.forumUpdated);
-                System.out.println(Thread.currentThread().toString() + userNumber);
-                try {
-                    if (bufferedReader.ready()) {
-                        dataReceived = true;
-                        dummyWriter.write("0");
-                        dummyWriter.println();
-                        dummyWriter.flush();
-                        Thread.currentThread().stop();
-                    } else {
-                        if (!MainClass.forumUpdated.get(userNumber)) {
-                            System.out.println("Point reached");
-                            dummyWriter.write("1");
-                            dummyWriter.println();
-                            dummyWriter.flush();
-                            printForum();
-                            MainClass.forumUpdated.set(userNumber, true);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                try {
-                    Thread.currentThread().sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
     }
 }
