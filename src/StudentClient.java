@@ -7,7 +7,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.SocketException;
 import java.util.ArrayList;
-
+/**
+ * StudentClient.java
+ *
+ * Handles the Graphical User Interface when the user is the student and utilizes the student specific methods
+ * Displays information that only the student should be able to view
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class StudentClient {
     private String username;
     private String firstName;
@@ -27,7 +36,9 @@ public class StudentClient {
     private BufferedReader bufferedReader;
     private BufferedReader dummyReader;
 
-    public StudentClient(String username, String firstName, String lastName, CourseClient courseClient, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
+    public StudentClient(String username, String firstName, String lastName, CourseClient courseClient,
+                         JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader,
+                         BufferedReader dummyReader) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,7 +57,7 @@ public class StudentClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         if (receivedData.isBlank()) {
             printWriter.write(" ");
@@ -54,17 +65,20 @@ public class StudentClient {
             printWriter.flush();
             String errorMessage = "No course has been created yet.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader, dummyReader);
+            AccountClient accountClient = new AccountClient(username, firstName, lastName, false,
+                    jframe, printWriter, bufferedReader, dummyReader);
             accountClient.mainMethod();
         } else {
             Object[] options = receivedData.split("§§§");
-            Object selectedObject = JOptionPane.showInputDialog(null, courseSelectionPrompt, "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
+            Object selectedObject = JOptionPane.showInputDialog(null, courseSelectionPrompt,
+                    "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
             if (selectedObject != null) {
                 String selectedCourse = selectedObject.toString();
                 printWriter.write(selectedCourse);
                 printWriter.println();
                 printWriter.flush();
-                courseClient = new CourseClient(selectedCourse, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
+                courseClient = new CourseClient(selectedCourse, username, firstName, lastName,
+                        null, jframe, printWriter, bufferedReader, dummyReader);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -79,7 +93,8 @@ public class StudentClient {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
-                AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader, dummyReader);
+                AccountClient accountClient = new AccountClient(username, firstName, lastName,
+                        false, jframe, printWriter, bufferedReader, dummyReader);
                 accountClient.mainMethod();
             }
         }
@@ -101,7 +116,8 @@ public class StudentClient {
         printWriter.write("-2");
         printWriter.println();
         printWriter.flush();
-        AccountClient accountClient = new AccountClient(username, firstName, lastName, false, jframe, printWriter, bufferedReader, dummyReader);
+        AccountClient accountClient = new AccountClient(username, firstName, lastName,
+                false, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
     }
 

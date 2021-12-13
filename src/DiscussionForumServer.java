@@ -9,7 +9,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
-
+/**
+ * DiscussionForumServer.java
+ *
+ * Handles all the processing and backend portion of creating files, reading and writing to files for each
+ * Discussion Forum and keeps track of the current information of upvotes, points, messages for each discussion.
+ * Sends this information to the client
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class DiscussionForumServer {
     private String courseName;
     private String forumName;
@@ -32,13 +42,16 @@ public class DiscussionForumServer {
 
     private boolean ifDashboard = false;
 
-    public static final Object object = new Object();
+    public static final Object OBJ = new Object();
 
     private ArrayList<String> forumList = new ArrayList<>();
 
     private int userNumber;
 
-    public DiscussionForumServer(String courseName, String forumName, String messagesFileName, String pointsFileName, String upvoteFileName, String firstName, String lastName, String username, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
+    public DiscussionForumServer(String courseName, String forumName, String messagesFileName, String pointsFileName,
+                                 String upvoteFileName, String firstName, String lastName, String username,
+                                 PrintWriter printWriter, BufferedReader bufferedReader, int userNumber,
+                                 PrintWriter dummyWriter) {
         this.forumName = forumName;
         this.messagesFileName = messagesFileName;
         this.pointsFileName = pointsFileName;
@@ -110,7 +123,7 @@ public class DiscussionForumServer {
         if (messagesArray.size() > 0) {
             toWrite += "\n" + convertMessagesArrayToFileString();
         }
-        synchronized (object) {
+        synchronized (OBJ) {
             pw.println(toWrite);
         }
         pw.close();
@@ -178,7 +191,8 @@ public class DiscussionForumServer {
             }
             default -> {
                 String discussionBoardsListFileName = courseName + "-forumslist.txt";
-                CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
+                CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName,
+                        discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
                 courseServer.changeForum();
             }
         }
@@ -186,7 +200,8 @@ public class DiscussionForumServer {
 
     public void back() throws Exception {
         String discussionBoardsListFileName = courseName + "-forumslist.txt";
-        CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
+        CourseServer courseServer = new CourseServer(courseName, username, firstName, lastName,
+                discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
         courseServer.mainMethod();
     }
 
@@ -537,7 +552,7 @@ public class DiscussionForumServer {
             toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 3) + "\n");
         }
         toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
-        synchronized (object) {
+        synchronized (OBJ) {
             pw.println(toWrite);
         }
         pw.close();
@@ -594,7 +609,7 @@ public class DiscussionForumServer {
             toWrite.append(strings.get(0)).append("§§§").append(strings.get(1)).append("\n");
         }
         toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
-        synchronized (object) {
+        synchronized (OBJ) {
             pw.println(toWrite);
         }
         pw.close();

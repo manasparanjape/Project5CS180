@@ -11,7 +11,17 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
-
+/**
+ * MainClient.java
+ *
+ * The initial GUI that the user encounters when starting up the program.
+ * Where the user logs in, creates an account, deletes an account, oor changes their password
+ * and proceeds to use the program
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class MainClient {
     private static String usernamePrompt = "Please enter your username.";
     private static String passwordPrompt = "Please enter your password";
@@ -53,7 +63,8 @@ public class MainClient {
 
     public static int securityCheckClient() throws IOException {
         int output = 0;
-        username = JOptionPane.showInputDialog(null, usernamePrompt, "Account verification", JOptionPane.QUESTION_MESSAGE);
+        username = JOptionPane.showInputDialog(null, usernamePrompt, "Account verification",
+                JOptionPane.QUESTION_MESSAGE);
         if (username == null) {
             printWriter.write("-1");
             printWriter.println();
@@ -62,7 +73,8 @@ public class MainClient {
             printWriter.write("0");
             printWriter.println();
             printWriter.flush();
-            password = JOptionPane.showInputDialog(null, passwordPrompt, "Account verification", JOptionPane.QUESTION_MESSAGE);
+            password = JOptionPane.showInputDialog(null, passwordPrompt, "Account verification",
+                    JOptionPane.QUESTION_MESSAGE);
             if (password == null) {
                 printWriter.write("0");
                 printWriter.println();
@@ -78,14 +90,15 @@ public class MainClient {
                 } catch (SocketException e) {
                     String errorMessage = "The server unexpectedly closed. Please try again later";
                     jframe.setVisible(false);
-        jframe.dispose();
+                    jframe.dispose();
                 }
                 String[] accountVerificationArray = accountVerificationString.split("§§§");
                 output = Integer.parseInt(accountVerificationArray[0]);
 
                 if (output == 0) {
                     String errorMessage = "The account details entered were invalid";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     username = accountVerificationArray[1];
                     password = accountVerificationArray[2];
@@ -114,21 +127,24 @@ public class MainClient {
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
             if (accountType.equals("1")) {
-                AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe, printWriter, bufferedReader, dummyReader);
+                AccountClient accountClient = new AccountClient(username, firstName, lastName, ifTeacher, jframe,
+                        printWriter, bufferedReader, dummyReader);
                 accountClient.mainMethod();
             } else {
-                String errorMessage = "This account has logged in on another device. Please log out from that device to log in here.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                String errorMessage = "This account has logged in on another device. Please log out from that " +
+                        "device to log in here.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
     public static void createNewAccountButtonMethod() throws IOException {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new GridLayout(2,1));
+        container.setLayout(new GridLayout(2, 1));
         container.revalidate();
 
         createAccountButton = new JButton("Create Account");
@@ -225,7 +241,8 @@ public class MainClient {
         }
         if (accountSet) {
             username = username.toLowerCase();
-            printWriter.write("1" + username + "§§§" + password + "§§§" + firstName + "§§§" + lastName + "§§§" + ifTeacherField.getText().toLowerCase());
+            printWriter.write("1" + username + "§§§" + password + "§§§" + firstName + "§§§"
+                    + lastName + "§§§" + ifTeacherField.getText().toLowerCase());
             printWriter.println();
             printWriter.flush();
 
@@ -234,15 +251,18 @@ public class MainClient {
                 accountVerificationString = bufferedReader.readLine();
             } catch (SocketException e) {
                 errorMessage = "The server unexpectedly closed. Please try again later";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
             if (accountVerificationString.equals("0")) {
                 errorMessage = usernameUnavailablePrompt;
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, accountCreationSuccess, "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, accountCreationSuccess, "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
             mainRunMethod();
         } else {
@@ -263,7 +283,8 @@ public class MainClient {
         printWriter.flush();
         boolean accountVerification = (securityCheckClient() != 0);
         if (accountVerification) {
-            JOptionPane.showMessageDialog(null, accountDeletionSuccess, "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, accountDeletionSuccess, "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
     public static void changePasswordButtonMethod() throws IOException {
@@ -271,7 +292,9 @@ public class MainClient {
         printWriter.println();
         printWriter.flush();
         if (securityCheckClient() != 0) {
-            String newPassword = JOptionPane.showInputDialog(null, "What do you want to set your new password to?", "Account verification", JOptionPane.QUESTION_MESSAGE);
+            String newPassword = JOptionPane.showInputDialog(null,
+                    "What do you want to set your new password to?", "Account verification",
+                    JOptionPane.QUESTION_MESSAGE);
             if (newPassword == null) {
                 printWriter.write(" ");
                 printWriter.println();
@@ -281,18 +304,21 @@ public class MainClient {
                 printWriter.println();
                 printWriter.flush();
                 String errorMessage = "The password you entered is invalid.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else if (newPassword.equals(password)) {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
                 String errorMessage = "The new password you entered is the same as your old one.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else {
                 printWriter.write(newPassword);
                 printWriter.println();
                 printWriter.flush();
-                JOptionPane.showMessageDialog(null, "Your password has been changed!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Your password has been changed!",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -348,7 +374,7 @@ public class MainClient {
     public static void mainRunMethod() throws IOException {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new GridLayout(2,1));
+        container.setLayout(new GridLayout(2, 1));
         container.revalidate();
 
         loginButton = new JButton("Login");
@@ -375,13 +401,13 @@ public class MainClient {
                 printWriter.println();
                 printWriter.flush();
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
         });
 
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.decode("#CEB888"));
-        JPanel centerPanel = new JPanel(new GridLayout(2,2,30,30));
+        JPanel centerPanel = new JPanel(new GridLayout(2, 2, 30, 30));
         centerPanel.setBackground(Color.decode("#000000"));
 
         JLabel titleText = new JLabel("Learning Management System\n Discussion Board");
@@ -413,7 +439,7 @@ public class MainClient {
             String errorMessage = "The server is not running at this time, please try again later!";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
 
         SwingUtilities.invokeLater(new Runnable() {

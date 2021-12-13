@@ -6,7 +6,16 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.SocketException;
 import java.util.ArrayList;
-
+/**
+ * TeacherClient.java
+ *
+ * Handles the Graphical User Interface when the user is the teacher and utilizes the teacher specific methods
+ * Displays information that only the teacher should be able to view
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class TeacherClient {
     private String username;
     private String firstName;
@@ -32,7 +41,9 @@ public class TeacherClient {
 
     private PrintWriter printWriter;
 
-    public TeacherClient(String username, String firstName, String lastName, CourseClient courseClient, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
+    public TeacherClient(String username, String firstName, String lastName, CourseClient courseClient,
+                         JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader,
+                         BufferedReader dummyReader) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,7 +82,8 @@ public class TeacherClient {
         printWriter.write("-1");
         printWriter.println();
         printWriter.flush();
-        AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
+        AccountClient accountClient = new AccountClient(username, firstName, lastName,
+                true, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
     }
 
@@ -115,35 +127,35 @@ public class TeacherClient {
     public void runMethodTeacher() {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new GridLayout(2,1));
+        container.setLayout(new GridLayout(2, 1));
         container.revalidate();
 
         createDiscussionForumButton = new JButton("Create new discussion forum");
         createDiscussionForumButton.addActionListener(actionListener);
         createDiscussionForumButton.setBackground(Color.decode("#c0c0c0"));
-        createDiscussionForumButton.setPreferredSize(new Dimension(130,100));
+        createDiscussionForumButton.setPreferredSize(new Dimension(130, 100));
         deleteDiscussionForumButton = new JButton("Delete discussion forum");
         deleteDiscussionForumButton.addActionListener(actionListener);
         deleteDiscussionForumButton.setBackground(Color.decode("#c0c0c0"));
-        deleteDiscussionForumButton.setPreferredSize(new Dimension(130,100));
+        deleteDiscussionForumButton.setPreferredSize(new Dimension(130, 100));
         openDiscussionForumsButton = new JButton("Open discussion forums");
         openDiscussionForumsButton.addActionListener(actionListener);
         openDiscussionForumsButton.setBackground(Color.decode("#c0c0c0"));
-        openDiscussionForumsButton.setPreferredSize(new Dimension(130,100));
+        openDiscussionForumsButton.setPreferredSize(new Dimension(130, 100));
         createDiscussionForumViaFileImportButton = new JButton("Create new discussion forum via file import");
         createDiscussionForumViaFileImportButton.addActionListener(actionListener);
         createDiscussionForumViaFileImportButton.setBackground(Color.decode("#c0c0c0"));
-        createDiscussionForumViaFileImportButton.setPreferredSize(new Dimension(130,100));
+        createDiscussionForumViaFileImportButton.setPreferredSize(new Dimension(130, 100));
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
         backButton.setBackground(Color.decode("#c0c0c0"));
-        backButton.setPreferredSize(new Dimension(130,100));
+        backButton.setPreferredSize(new Dimension(130, 100));
 
         JPanel topPanel = new JPanel();
         //topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         topPanel.setBackground(Color.decode("#CEB888"));
 
-        JPanel centerPanel = new JPanel(new GridLayout(3,2,20,20));
+        JPanel centerPanel = new JPanel(new GridLayout(3, 2, 20, 20));
         centerPanel.add(openDiscussionForumsButton);
         centerPanel.add(createDiscussionForumButton);
         centerPanel.add(deleteDiscussionForumButton);
@@ -165,11 +177,13 @@ public class TeacherClient {
     }
 
     public void createCourse() throws Exception {
-        String newCourseName = JOptionPane.showInputDialog(null, newCourseNamePrompt, "New Course", JOptionPane.QUESTION_MESSAGE);
+        String newCourseName = JOptionPane.showInputDialog(null, newCourseNamePrompt,
+                "New Course", JOptionPane.QUESTION_MESSAGE);
         if (newCourseName != null) {
             if (newCourseName.isBlank()) {
                 String errorMessage = "Please enter a valid course name(ie. Not all spaces or blank).";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
@@ -183,15 +197,18 @@ public class TeacherClient {
                     receivedData = bufferedReader.readLine();
                 } catch (SocketException e) {
                     String errorMessage = "The server unexpectedly closed. Please try again later";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     jframe.setVisible(false);
-        jframe.dispose();
+                    jframe.dispose();
                 }
                 if (receivedData.equals("1")) {
-                    JOptionPane.showMessageDialog(null, newCourseCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
-                } else if (receivedData.equals("0")){
+                    JOptionPane.showMessageDialog(null, newCourseCreated, "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else if (receivedData.equals("0")) {
                     String errorMessage = "A course with that name already exists!";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
@@ -203,11 +220,14 @@ public class TeacherClient {
                 String dummy = bufferedReader.readLine();
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 jframe.setVisible(false);
-        jframe.dispose();
-            }        }
-        AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
+                jframe.dispose();
+            }
+        }
+        AccountClient accountClient = new AccountClient(username, firstName, lastName,
+                true, jframe, printWriter, bufferedReader, dummyReader);
         accountClient.mainMethod();
     }
 
@@ -219,7 +239,7 @@ public class TeacherClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         if (receivedData.isBlank()) {
             printWriter.write(" ");
@@ -227,17 +247,21 @@ public class TeacherClient {
             printWriter.flush();
             String errorMessage = "No course has been created yet.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
+            AccountClient accountClient = new AccountClient(username, firstName, lastName,
+                    true, jframe, printWriter, bufferedReader, dummyReader);
             accountClient.mainMethod();
         } else {
             Object[] options = receivedData.split("§§§");
-            Object selectedObject = JOptionPane.showInputDialog(null, courseSelectionPrompt, "Open Course", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
+            Object selectedObject = JOptionPane.showInputDialog(null,
+                    courseSelectionPrompt, "Open Course", JOptionPane.PLAIN_MESSAGE,
+                    null, options, JOptionPane.CLOSED_OPTION);
             if (selectedObject != null) {
                 String selectedCourse = selectedObject.toString();
                 printWriter.write(selectedCourse);
                 printWriter.println();
                 printWriter.flush();
-                courseClient = new CourseClient(selectedCourse, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
+                courseClient = new CourseClient(selectedCourse, username, firstName, lastName,
+                        null, jframe, printWriter, bufferedReader, dummyReader);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -252,7 +276,8 @@ public class TeacherClient {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
-                AccountClient accountClient = new AccountClient(username, firstName, lastName, true, jframe, printWriter, bufferedReader, dummyReader);
+                AccountClient accountClient = new AccountClient(username, firstName, lastName,
+                        true, jframe, printWriter, bufferedReader, dummyReader);
                 accountClient.mainMethod();
             }
         }

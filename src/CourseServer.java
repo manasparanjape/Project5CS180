@@ -2,7 +2,17 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
+/**
+ * CourseServer.java
+ *
+ * Handles all the processing and backend portion of creating files, writing to files for the Courses and keeps the
+ * Courses updated with the latest information
+ * Sends this information to the client
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class CourseServer {
     private String courseName;
     private String username;
@@ -21,7 +31,9 @@ public class CourseServer {
 
     private  int userNumber;
 
-    public CourseServer(String courseName, String username, String firstName, String lastName, String discussionBoardsListFileName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
+    public CourseServer(String courseName, String username, String firstName, String lastName,
+                        String discussionBoardsListFileName, PrintWriter printWriter, BufferedReader bufferedReader,
+                        int userNumber, PrintWriter dummyWriter) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
@@ -158,7 +170,9 @@ public class CourseServer {
             printWriter.write("1");
             printWriter.println();
             printWriter.flush();
-            discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1], forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader, userNumber, dummyWriter);
+            discussionForumServer = new DiscussionForumServer(courseName, forumFileNames[0], forumFileNames[1],
+                    forumFileNames[2], forumFileNames[3], firstName, lastName, username, printWriter, bufferedReader,
+                    userNumber, dummyWriter);
             discussionForumServer.readMessagesFile();
             discussionForumServer.readPointsFile();
             discussionForumServer.readUpvoteFile();
@@ -174,12 +188,14 @@ public class CourseServer {
     }
 
     public void backButtonStudent() throws Exception {
-        StudentServer studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
+        StudentServer studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader,
+                userNumber, dummyWriter);
         studentServer.back();
     }
 
     public void backButtonTeacher() throws Exception {
-        TeacherServer teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
+        TeacherServer teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader,
+                userNumber, dummyWriter);
         teacherServer.back();
     }
 

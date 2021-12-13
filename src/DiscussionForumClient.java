@@ -1,7 +1,16 @@
 import javax.swing.*;
 import java.io.*;
 import java.net.SocketException;
-
+/**
+ * DiscussionForumClient.java
+ *
+ * Handles the Graphical User Interface when the user is in a certain Discussion Forum. Takes in user input
+ * to change the display or to add information to the dicsussison forum
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class DiscussionForumClient {
     private static String topicChangePrompt = "What do you want to change the topic to?";
     private static String studentSpecificMessagesPrompt = "Please enter username of the student who's posts you want"
@@ -20,7 +29,8 @@ public class DiscussionForumClient {
 
     private JFrame jframe;
 
-    public DiscussionForumClient(PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea, BufferedReader dummyReader, JButton discussionForumButton, JFrame jframe) {
+    public DiscussionForumClient(PrintWriter printWriter, BufferedReader bufferedReader, JTextArea textArea,
+                                 BufferedReader dummyReader, JButton discussionForumButton, JFrame jframe) {
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
         this.textArea = textArea;
@@ -49,9 +59,11 @@ public class DiscussionForumClient {
             } else {
                 messageNumber = Integer.parseInt(messageNumberString);
                 if (messageNumber < 0 || messageNumber > messagesArraySize) {
-                    String errorMessage = "You did not input a valid integer. Please input 0 or leave blank if you want to post a message. Please input an integer between 1 and "
+                    String errorMessage = "You did not input a valid integer. Please input 0 or leave blank " +
+                            "if you want to post a message. Please input an integer between 1 and "
                             + messagesArraySize + " if you want to reply to a message.";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     errorCheck = true;
                     printWriter.write(" ");
                     printWriter.println();
@@ -61,7 +73,8 @@ public class DiscussionForumClient {
                 }
             }
         } catch (NumberFormatException e) {
-            String errorMessage = "You did not input an integer. Please input 0 or leave blank if you want to post a message. Please input an integer between 1 and "
+            String errorMessage = "You did not input an integer. Please input 0 or leave blank if " +
+                    "you want to post a message. Please input an integer between 1 and "
                     + messagesArraySize + " if you want to reply to a message.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             errorCheck = true;
@@ -75,7 +88,7 @@ public class DiscussionForumClient {
             printWriter.write(" ");
             printWriter.println();
             printWriter.flush();
-        } else if (!errorCheck){
+        } else if (!errorCheck) {
             if (reply) {
                 printWriter.write(newPost + "§§§" + messageNumber);
             } else {
@@ -101,16 +114,20 @@ public class DiscussionForumClient {
                 receivedData = bufferedReader.readLine();
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
             if (receivedData.equals("1")) {
                 String errorMessage = "You entered an invalid option.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else if (receivedData.equals("2")) {
-                String errorMessage = "You have already upvoted this message. You cannot upvote the same message twice.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                String errorMessage = "You have already upvoted this message. " +
+                        "You cannot upvote the same message twice.";
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else if (receivedData.equals("3")) {
                 printMessages();
             }
@@ -143,14 +160,16 @@ public class DiscussionForumClient {
                 receivedData = bufferedReader.readLine();
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
             if (receivedData.equals("0")) {
                 numberValid = false;
                 String errorMessage = "You entered an invalid option.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
         if (numberValid) {
@@ -159,7 +178,8 @@ public class DiscussionForumClient {
     }
 
     public void gradeStudent() throws Exception {
-        String studentUsername = JOptionPane.showInputDialog(textArea, studentSpecificMessagesPrompt, "Student Grading", JOptionPane.QUESTION_MESSAGE);
+        String studentUsername = JOptionPane.showInputDialog(textArea, studentSpecificMessagesPrompt,
+                "Student Grading", JOptionPane.QUESTION_MESSAGE);
 
         if (studentUsername == null || studentUsername.isBlank()) {
             printWriter.write(" ");
@@ -175,17 +195,20 @@ public class DiscussionForumClient {
                 receivedData = bufferedReader.readLine();
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
 
             if (receivedData.equals("0")) {
                 String errorMessage = "The student username you entered does not exist!";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else {
                 printSpecificStudentMessages(studentUsername);
-                String pointsString = JOptionPane.showInputDialog(null, gradingStudentPrompt, "Student Grading", JOptionPane.QUESTION_MESSAGE);
+                String pointsString = JOptionPane.showInputDialog(null, gradingStudentPrompt,
+                        "Student Grading", JOptionPane.QUESTION_MESSAGE);
 
                 if (pointsString == null || pointsString.isBlank()) {
                     printWriter.write(" ");
@@ -201,15 +224,19 @@ public class DiscussionForumClient {
                         receivedData = bufferedReader.readLine();
                     } catch (SocketException e) {
                         String errorMessage = "The server unexpectedly closed. Please try again later";
-                        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                                JOptionPane.ERROR_MESSAGE);
                         jframe.setVisible(false);
-        jframe.dispose();
+                        jframe.dispose();
                     }
                     if (receivedData.equals("3")) {
-                        String errorMessage = "You did not enter an integer. Please enter an integer in order to assign points.";
-                        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                        String errorMessage = "You did not enter an integer. Please enter an integer in " +
+                                "order to assign points.";
+                        JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     } else if (receivedData.equals("4")) {
-                        JOptionPane.showMessageDialog(null, "Points assigned", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Points assigned",
+                                "Success", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             }
@@ -225,13 +252,14 @@ public class DiscussionForumClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         textArea.setText(toPrint);
     }
 
     public void changeTopic() throws Exception {
-        String newTopic = JOptionPane.showInputDialog(null, topicChangePrompt, "New Topic", JOptionPane.QUESTION_MESSAGE);
+        String newTopic = JOptionPane.showInputDialog(null, topicChangePrompt,
+                "New Topic", JOptionPane.QUESTION_MESSAGE);
         if (newTopic == null) {
             printWriter.write(" ");
             printWriter.println();
@@ -251,13 +279,15 @@ public class DiscussionForumClient {
                 receivedData = bufferedReader.readLine();
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
             if (receivedData.equals("0")) {
                 String errorMessage = "A forum with that name already exists!";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else {
                 discussionForumButton.setText(newTopic);
                 printMessages();
@@ -280,12 +310,14 @@ public class DiscussionForumClient {
                     output.append(line);
                     line = bfr.readLine();
                 }
-                output = new StringBuilder(output.toString().replace("\r\n", " ").replace("\n", " "));
+                output = new StringBuilder(output.toString().replace("\r\n", " ").replace(
+                        "\n", " "));
                 output = new StringBuilder(output.toString().replace(".", ". "));
                 String newPost = String.valueOf(output);
                 if (newPost == null || newPost.isBlank()) {
                     String errorMessage = "Please enter a valid post(ie. Not all spaces or blank).";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     printWriter.write(newPost);
                     printWriter.println();
@@ -294,10 +326,12 @@ public class DiscussionForumClient {
                 }
             } catch (FileNotFoundException e) {
                 String errorMessage = "The file you entered was not found.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } catch (IOException e) {
                 String errorMessage = "Error parsing contents of the file.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -314,16 +348,17 @@ public class DiscussionForumClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         if (messages.equals("0")) {
             try {
                 messages = bufferedReader.readLine();
             } catch (SocketException e) {
                 String errorMessage = "The server unexpectedly closed. Please try again later";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 jframe.setVisible(false);
-        jframe.dispose();
+                jframe.dispose();
             }
         }
         messages = messages.replaceAll("§§§", "\n");
@@ -338,7 +373,7 @@ public class DiscussionForumClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         toPrint = toPrint.replaceAll("§§§", "\n");
         textArea.setText(toPrint);

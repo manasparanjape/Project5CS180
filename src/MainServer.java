@@ -4,7 +4,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+/**
+ * MainServer.java
+ *
+ * Handles all the processing and backend portion of creating files, reading and writing to files allowing the user to
+ * either login, create an account, change their password, or delete their account.
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class MainServer {
     private String accountsFile = "AccountsFile.txt";
     private String username;
@@ -21,7 +30,7 @@ public class MainServer {
     private PrintWriter printWriter;
     private PrintWriter dummyWriter;
 
-    public static final Object object = new Object();
+    public static final Object OBJ = new Object();
 
     private static ArrayList<String> usernames = new ArrayList<>();
 
@@ -80,7 +89,7 @@ public class MainServer {
     public void writeToFile() throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(accountsFile, true);
         PrintWriter pw = new PrintWriter(fos);
-        synchronized (object) {
+        synchronized (OBJ) {
             pw.println(convertToString());
         }
         pw.close();
@@ -98,7 +107,7 @@ public class MainServer {
             toWrite.append(strings.get(4)).append("\n");
         }
         toWrite = new StringBuilder(toWrite.substring(0, toWrite.length() - 1));
-        synchronized (object) {
+        synchronized (OBJ) {
             pw.println(toWrite);
         }
         pw.close();
@@ -164,7 +173,8 @@ public class MainServer {
                 printWriter.flush();
                 usernames.add(username);
                 MainClass.forumUpdated.add(true);
-                AccountServer accountServer = new AccountServer(username, firstName, lastName, ifTeacher, printWriter, bufferedReader, userNumber, dummyWriter);
+                AccountServer accountServer = new AccountServer(username, firstName, lastName, ifTeacher,
+                        printWriter, bufferedReader, userNumber, dummyWriter);
                 userNumber++;
                 accountServer.mainMethod();
             }
@@ -232,11 +242,19 @@ public class MainServer {
         readFile();
         String choice = bufferedReader.readLine();
 
-        switch(choice) {
-            case "1" -> loginMethod();
-            case "2" -> createAccountMethod();
-            case "3" -> deleteAccountMethod();
-            case "4" -> changePasswordMethod();
+        switch(Integer.parseInt(choice)) {
+            case 1:
+                loginMethod();
+                break;
+            case 2:
+                createAccountMethod();
+                break;
+            case 3:
+                deleteAccountMethod();
+                break;
+            case 4:
+                changePasswordMethod();
+                break;
         }
     }
 }

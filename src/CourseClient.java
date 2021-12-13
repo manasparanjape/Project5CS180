@@ -6,7 +6,15 @@ import java.io.*;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+/**
+ * CourseClient.java
+ *
+ * Handles the Graphical User Interface when the user is in a certain course
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class CourseClient {
     private String courseName;
     private String username;
@@ -51,7 +59,9 @@ public class CourseClient {
 
     private boolean ifTeacher;
 
-    public CourseClient(String courseName, String username, String firstName, String lastName, DiscussionForumClient discussionForumClient, JFrame jFrame, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
+    public CourseClient(String courseName, String username, String firstName, String lastName,
+                        DiscussionForumClient discussionForumClient, JFrame jFrame, PrintWriter printWriter,
+                        BufferedReader bufferedReader, BufferedReader dummyReader) {
         this.courseName = courseName;
         this.username = username;
         this.firstName = firstName;
@@ -64,14 +74,16 @@ public class CourseClient {
     }
 
     public void createForum() throws IOException {
-        String newForumName = JOptionPane.showInputDialog(null, newForumNamePrompt, "New Forum", JOptionPane.QUESTION_MESSAGE);
+        String newForumName = JOptionPane.showInputDialog(null, newForumNamePrompt,
+                "New Forum", JOptionPane.QUESTION_MESSAGE);
         if (newForumName != null) {
             if (newForumName.isBlank()) {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
                 String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else {
                 printWriter.write(newForumName);
                 printWriter.println();
@@ -82,15 +94,18 @@ public class CourseClient {
                     receivedData = bufferedReader.readLine();
                 } catch (SocketException e) {
                     String errorMessage = "The server unexpectedly closed. Please try again later";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     jframe.setVisible(false);
-        jframe.dispose();
+                    jframe.dispose();
                 }
                 if (receivedData.equals("0")) {
                     String errorMessage = "A discussion forum with that name already exists in this course.";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 } else if (receivedData.equals("1")) {
-                    JOptionPane.showMessageDialog(null, newForumCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, newForumCreated, "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } else {
@@ -98,7 +113,10 @@ public class CourseClient {
             printWriter.println();
             printWriter.flush();
         }
-        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter, bufferedReader, dummyReader);
+        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName,
+                new CourseClient(courseName, username, firstName, lastName,
+                        null, jframe, printWriter, bufferedReader, dummyReader),
+                jframe, printWriter, bufferedReader, dummyReader);
         teacherClient.runMethodTeacher();
     }
 
@@ -110,7 +128,7 @@ public class CourseClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         if (receivedData.equals(" ")) {
             printWriter.write(" ");
@@ -120,21 +138,26 @@ public class CourseClient {
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Object[] options = receivedData.split("§§§");
-            Object selectedObject = JOptionPane.showInputDialog(null, deleteForumPrompt, "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
+            Object selectedObject = JOptionPane.showInputDialog(null, deleteForumPrompt,
+                    "Delete Forum", JOptionPane.PLAIN_MESSAGE, null, options, JOptionPane.CLOSED_OPTION);
             if (selectedObject != null) {
                 String toDeleteForum = selectedObject.toString();
                 printWriter.write(toDeleteForum);
                 printWriter.println();
                 printWriter.flush();
 
-                JOptionPane.showMessageDialog(null, forumDeleted, "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, forumDeleted, "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
             } else {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
             }
         }
-        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter, bufferedReader, dummyReader);
+        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName,
+                new CourseClient(courseName, username, firstName, lastName,
+                        null, jframe, printWriter, bufferedReader, dummyReader),
+                jframe, printWriter, bufferedReader, dummyReader);
         teacherClient.runMethodTeacher();
     }
 
@@ -153,7 +176,8 @@ public class CourseClient {
                     output.append(line);
                     line = bfr.readLine();
                 }
-                output = new StringBuilder(output.toString().replace("\r\n", " ").replace("\n", " "));
+                output = new StringBuilder(output.toString().replace("\r\n", " ").replace(
+                        "\n", " "));
                 output = new StringBuilder(output.toString().replace(".", ". "));
                 String newForumName = String.valueOf(output);
                 if (newForumName == null || newForumName.isBlank()) {
@@ -161,7 +185,8 @@ public class CourseClient {
                     printWriter.println();
                     printWriter.flush();
                     String errorMessage = "Please enter a valid discussion forum name(ie. Not all spaces or blank).";
-                    JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     printWriter.write(newForumName);
                     printWriter.println();
@@ -172,15 +197,18 @@ public class CourseClient {
                         receivedData = bufferedReader.readLine();
                     } catch (SocketException e) {
                         String errorMessage = "The server unexpectedly closed. Please try again later";
-                        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                                JOptionPane.ERROR_MESSAGE);
                         jframe.setVisible(false);
-        jframe.dispose();
+                        jframe.dispose();
                     }
                     if (receivedData.equals("0")) {
                         String errorMessage = "A discussion forum with that name already exists in this course.";
-                        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     } else if (receivedData.equals("1")) {
-                        JOptionPane.showMessageDialog(null, newForumCreated, "Success", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, newForumCreated, "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -188,16 +216,21 @@ public class CourseClient {
                 printWriter.println();
                 printWriter.flush();
                 String errorMessage = "The file you entered was not found.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             } catch (IOException e) {
                 printWriter.write(" ");
                 printWriter.println();
                 printWriter.flush();
                 String errorMessage = "Error parsing contents of the file.";
-                JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage, "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
-        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter, bufferedReader, dummyReader);
+        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName,
+                new CourseClient(courseName, username, firstName, lastName, null,
+                        jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter,
+                bufferedReader, dummyReader);
         teacherClient.runMethodTeacher();
     }
 
@@ -275,7 +308,7 @@ public class CourseClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         String[] receivedDataArray = receivedData.split("§§§");
         ArrayList<String> forumList = new ArrayList<>(Arrays.asList(receivedDataArray));
@@ -302,7 +335,8 @@ public class CourseClient {
         for (int i = 0; i < discussionForumButtonsArray.size(); i++) {
             leftPanel.add(discussionForumButtonsArray.get(i));
         }
-        JScrollPane leftScrollPane = new JScrollPane(leftPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane leftScrollPane = new JScrollPane(leftPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         leftScrollPane.setPreferredSize(new Dimension(150, 600));
 
         JPanel rightPanel = new JPanel(new GridLayout(4, 1));
@@ -371,7 +405,7 @@ public class CourseClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         String[] receivedDataArray = receivedData.split("§§§");
         ArrayList<String> forumList = new ArrayList<>(Arrays.asList(receivedDataArray));
@@ -398,7 +432,8 @@ public class CourseClient {
         for (int i = 0; i < discussionForumButtonsArray.size(); i++) {
             leftPanel.add(discussionForumButtonsArray.get(i));
         }
-        JScrollPane leftScrollPane = new JScrollPane(leftPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane leftScrollPane = new JScrollPane(leftPanel,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         leftScrollPane.setPreferredSize(new Dimension(150, 600));
 
         container.add(areaScrollPane, BorderLayout.CENTER);
@@ -413,7 +448,8 @@ public class CourseClient {
         String discussionForumPointsFileName = courseName + "-" + forumName + "-points" + ".txt";
         String discussionForumUpvotesFileName = courseName + "-" + forumName + "-upvotes" + ".txt";
 
-        printWriter.write(forumName + "§§§" + discussionForumMessagesFileName + "§§§" + discussionForumPointsFileName + "§§§" + discussionForumUpvotesFileName);
+        printWriter.write(forumName + "§§§" + discussionForumMessagesFileName + "§§§"
+                + discussionForumPointsFileName + "§§§" + discussionForumUpvotesFileName);
         printWriter.println();
         printWriter.flush();
 
@@ -424,7 +460,7 @@ public class CourseClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         if (receivedData.equals("1")) {
             int i = 0;
@@ -435,7 +471,8 @@ public class CourseClient {
                 }
                 i++;
             }
-            discussionForumClient = new DiscussionForumClient(printWriter, bufferedReader, textArea, dummyReader, discussionForumButtonsArray.get(i - 1), jframe);
+            discussionForumClient = new DiscussionForumClient(printWriter, bufferedReader, textArea,
+                    dummyReader, discussionForumButtonsArray.get(i - 1), jframe);
             changeForum();
         } else {
             String errorMessage = "The discussion forum you chose may have been deleted or renamed.";
@@ -470,7 +507,7 @@ public class CourseClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         pointsString = pointsString.replaceAll("§§§", "\n" );
         textArea.setText(pointsString);
@@ -618,18 +655,27 @@ public class CourseClient {
         printWriter.write("-1");
         printWriter.println();
         printWriter.flush();
-        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter, bufferedReader, dummyReader);
+        TeacherClient teacherClient = new TeacherClient(username, firstName, lastName,
+                new CourseClient(courseName, username, firstName, lastName,
+                        null, jframe, printWriter, bufferedReader, dummyReader),
+                jframe, printWriter, bufferedReader, dummyReader);
         teacherClient.runMethodTeacher();
     }
     public void backButtonStudentMethod() throws Exception {
         printWriter.write("-2");
         printWriter.println();
         printWriter.flush();
-        StudentClient studentClient = new StudentClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter, bufferedReader, dummyReader);
+        StudentClient studentClient = new StudentClient(username, firstName, lastName,
+                new CourseClient(courseName, username, firstName, lastName,
+                        null, jframe, printWriter, bufferedReader, dummyReader),
+                jframe, printWriter, bufferedReader, dummyReader);
         studentClient.runMethodStudent();
     }
     public void backButtonPointsMethod() {
-        StudentClient studentClient = new StudentClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader),jframe, printWriter, bufferedReader, dummyReader);
+        StudentClient studentClient = new StudentClient(username, firstName, lastName,
+                new CourseClient(courseName, username, firstName, lastName,
+                        null, jframe, printWriter, bufferedReader, dummyReader),
+                jframe, printWriter, bufferedReader, dummyReader);
         studentClient.runMethodStudent();
     }
 
@@ -641,12 +687,15 @@ public class CourseClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         if (receivedData.equals(" ")) {
             String errorMessage = "This course does not have any discussion forums.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            StudentClient studentClient = new StudentClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter, bufferedReader, dummyReader);
+            StudentClient studentClient = new StudentClient(username, firstName, lastName,
+                    new CourseClient(courseName, username, firstName, lastName,
+                            null, jframe, printWriter, bufferedReader, dummyReader),
+                    jframe, printWriter, bufferedReader, dummyReader);
             studentClient.runMethodStudent();
         } else {
             SwingUtilities.invokeLater(new Runnable() {
@@ -670,12 +719,15 @@ public class CourseClient {
             String errorMessage = "The server unexpectedly closed. Please try again later";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             jframe.setVisible(false);
-        jframe.dispose();
+            jframe.dispose();
         }
         if (receivedData.equals(" ")) {
             String errorMessage = "This course does not have any discussion forums.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-            TeacherClient teacherClient = new TeacherClient(username, firstName, lastName, new CourseClient(courseName, username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader), jframe, printWriter, bufferedReader, dummyReader);
+            TeacherClient teacherClient = new TeacherClient(username, firstName, lastName,
+                    new CourseClient(courseName, username, firstName, lastName,
+                            null, jframe, printWriter, bufferedReader, dummyReader),
+                    jframe, printWriter, bufferedReader, dummyReader);
             teacherClient.runMethodTeacher();
         } else {
             SwingUtilities.invokeLater(new Runnable() {

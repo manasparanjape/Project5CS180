@@ -13,7 +13,7 @@ import java.io.PrintWriter;
  *
  * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
  *
- * @version 11/15/2021
+ * @version 12/13/2021
  */
 
 public class AccountClient {
@@ -38,7 +38,10 @@ public class AccountClient {
     private BufferedReader bufferedReader;
     private BufferedReader dummyReader;
 
-    public AccountClient(String username, String firstname, String lastname, boolean ifTeacher, JFrame jframe, PrintWriter printWriter, BufferedReader bufferedReader, BufferedReader dummyReader) {
+    public AccountClient(String username, String firstname, String lastname,
+                         boolean ifTeacher, JFrame jframe,
+                         PrintWriter printWriter, BufferedReader bufferedReader,
+                         BufferedReader dummyReader) {
         this.username = username;
         this.firstName = firstname;
         this.lastName = lastname;
@@ -52,12 +55,12 @@ public class AccountClient {
     public void runMethodTeacher() {
         Container container = jframe.getContentPane();
         container.removeAll();
-        container.setLayout(new GridLayout(2,1));
+        container.setLayout(new GridLayout(2, 1));
         container.revalidate();
 
         createCourseButton = new JButton("Create Course");
         createCourseButton.addActionListener(actionListener);
-        createCourseButton.setPreferredSize(new Dimension(130,100));
+        createCourseButton.setPreferredSize(new Dimension(130, 100));
         createCourseButton.setBackground(Color.decode("#c0c0c0"));
         openCourseButton = new JButton("Open Course");
         openCourseButton.addActionListener(actionListener);
@@ -65,7 +68,7 @@ public class AccountClient {
         openCourseButton.setBackground(Color.decode("#c0c0c0"));
         logoutButton = new JButton("Logout");
         logoutButton.addActionListener(actionListener);
-        logoutButton.setPreferredSize(new Dimension(130,100));
+        logoutButton.setPreferredSize(new Dimension(130, 100));
         logoutButton.setBackground(Color.decode("#c0c0c0"));
 
         //jframe.setSize(600, 400);
@@ -118,12 +121,14 @@ public class AccountClient {
     }
 
     public void teacherMainMethod() throws Exception {
-        teacherClient = new TeacherClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
+        teacherClient = new TeacherClient(username, firstName, lastName,
+                null, jframe, printWriter, bufferedReader, dummyReader);
         runMethodTeacher();
     }
 
     public void studentMainMethod() throws Exception {
-        studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
+        studentClient = new StudentClient(username, firstName, lastName,
+                null, jframe, printWriter, bufferedReader, dummyReader);
         runMethodStudent();
     }
 
@@ -146,10 +151,12 @@ public class AccountClient {
         printWriter.println();
         printWriter.flush();
         if (ifTeacher) {
-            studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
+            studentClient = new StudentClient(username, firstName, lastName,
+                    null, jframe, printWriter, bufferedReader, dummyReader);
             teacherClient.openCourse();
         } else {
-            studentClient = new StudentClient(username, firstName, lastName, null, jframe, printWriter, bufferedReader, dummyReader);
+            studentClient = new StudentClient(username, firstName, lastName,
+                    null, jframe, printWriter, bufferedReader, dummyReader);
             studentClient.openCourse();
         }
     }

@@ -1,6 +1,16 @@
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
+/**
+ * AccountServer.java
+ *
+ * Handles all the processing and data storing and searching realting to Accounts
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
+
 public class AccountServer {
     private String username;
     private String firstName;
@@ -19,7 +29,9 @@ public class AccountServer {
 
     private int userNumber;
 
-    public AccountServer(String username, String firstname, String lastname, boolean ifTeacher, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
+    public AccountServer(String username, String firstname, String lastname,
+                         boolean ifTeacher, PrintWriter printWriter, BufferedReader bufferedReader,
+                         int userNumber, PrintWriter dummyWriter) {
         this.username = username;
         this.firstName = firstname;
         this.lastName = lastname;
@@ -39,14 +51,17 @@ public class AccountServer {
     }
 
     public void createCourseMethod() throws Exception {
-        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
+        teacherServer = new TeacherServer(username, firstName, lastName,
+                printWriter, bufferedReader, userNumber, dummyWriter);
         teacherServer.createCourse();
     }
 
     public void mainMethod() throws Exception {
         String choice = bufferedReader.readLine();
-        studentServer = new StudentServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
-        teacherServer = new TeacherServer(username, firstName, lastName, printWriter, bufferedReader, userNumber, dummyWriter);
+        studentServer = new StudentServer(username, firstName, lastName,
+                printWriter, bufferedReader, userNumber, dummyWriter);
+        teacherServer = new TeacherServer(username, firstName, lastName,
+                printWriter, bufferedReader, userNumber, dummyWriter);
         MainServer mainServer = new MainServer(bufferedReader, printWriter, dummyWriter);
         switch (choice) {
             case "0" -> {

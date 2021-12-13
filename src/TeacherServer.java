@@ -1,6 +1,16 @@
 import java.io.*;
 import java.util.ArrayList;
-
+/**
+ * TeacherServer.java
+ *
+ * Handles all the processing and backend portion of creating files, writing to files for the Teacher methods and
+ * keeps the Courses updated with the latest information
+ * Sends information to the client
+ *
+ * @author Manas Paranjape, Mehul Gajula, Rishabh Pandey, Avinash Mahesh, Kevin Ma
+ *
+ * @version 12/13/2021
+ */
 public class TeacherServer {
     private String username;
     private String firstName;
@@ -14,11 +24,13 @@ public class TeacherServer {
 
     private BufferedReader bufferedReader;
 
-    public static final Object object = new Object();
+    public static final Object OBJ = new Object();
 
     private int userNumber;
 
-    public TeacherServer(String username, String firstName, String lastName, PrintWriter printWriter, BufferedReader bufferedReader, int userNumber, PrintWriter dummyWriter) {
+    public TeacherServer(String username, String firstName, String lastName,
+                         PrintWriter printWriter, BufferedReader bufferedReader,
+                         int userNumber, PrintWriter dummyWriter) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,11 +70,13 @@ public class TeacherServer {
 
         String chosenCourse = bufferedReader.readLine();
         if (chosenCourse.equals(" ")) {
-            AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber, dummyWriter);
+            AccountServer accountServer = new AccountServer(username, firstName, lastName,
+                    false, printWriter, bufferedReader, userNumber, dummyWriter);
             accountServer.mainMethod();
         } else {
             String discussionBoardsListFileName = chosenCourse + "-forumslist.txt";
-            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName, lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
+            CourseServer courseServer = new CourseServer(chosenCourse, username, firstName,
+                    lastName, discussionBoardsListFileName, printWriter, bufferedReader, userNumber, dummyWriter);
             courseServer.mainMethod();
         }
     }
@@ -91,7 +105,7 @@ public class TeacherServer {
                 pw.close();
                 fos = new FileOutputStream(coursesListFileName, true);
                 pw = new PrintWriter(fos);
-                synchronized (object) {
+                synchronized (OBJ) {
                     pw.println(newCourseName);
                 }
                 pw.close();
@@ -100,12 +114,14 @@ public class TeacherServer {
         }
         printWriter.println();
         printWriter.flush();
-        AccountServer accountServer = new AccountServer(username, firstName, lastName, false, printWriter, bufferedReader, userNumber, dummyWriter);
+        AccountServer accountServer = new AccountServer(username, firstName, lastName,
+                false, printWriter, bufferedReader, userNumber, dummyWriter);
         accountServer.mainMethod();
     }
 
     public void back() throws Exception {
-        AccountServer accountServer = new AccountServer(username, firstName, lastName, true, printWriter, bufferedReader, userNumber, dummyWriter);
+        AccountServer accountServer = new AccountServer(username, firstName, lastName,
+                true, printWriter, bufferedReader, userNumber, dummyWriter);
         accountServer.mainMethod();
     }
 }
