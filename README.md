@@ -1,213 +1,404 @@
 # Project4CS180 Documentation
-
 ### Compiling & Running
-- Main class contains a main method that is used to run the program.
-- Main includes static methods from other classes, so they need to be compiled
-- In order to run the code in Vocareum, first cd into the correct folder: $ cd Project4CS180/src
-
+- mainClass contains a main method that is used to run the program.
+            - Main includes static methods from other classes, so they need to be compiled
+- In order to run the code in Vocareum, first cd into the correct folder cd Project4CS180/src
 ### Submissions
-- Manas Paranjape submitted the code on Vocareum
+            - Manas Paranjape submitted the code on Vocareum
 - Rishabh Pandey submitted the report on Brightspace
 ### Descriptions of Classes
-- Main
-    - Consists of methods that are used in the creation and deletion of accounts. All the accounts, both students and teachers, are written to the Accounts.txt file. Changes to accounts are made to the Accounts.txt file. 
-    - Methods:
-      - ConvertToString 
-        - creates an output string for each user with all their information separated using “§§§”
-        - Ex. username§§§password§§§firstN§§§lastN§§§ifTeacher 
-      - write + read file 
-        - reads text file to an ArrayList inside an ArrayList called “output” 
-        - ArrayList<ArrayList<String>> output = new ArrayList<>(); 
-        - Sets the output to an array list called accountDetailsArray 
-        - uses split() to read values 
-      - checkUsernameAvailability 
-        - uses a while loop to check the first index of every array (first index is the username value)
-        - username is not case sensitive 
-      - getNewAccountDetails
-        - prompts the user to input a username, password, first name, and last name
-        - checks for their availability
-        - creates account and writes it to the Accounts.txt file
-      - findAccount
-        - reads the Accounts.txt file and checks if the first index (username) matches the username parameter
-      - securityCheck
-        - takes the username and password input from the user and checks whether it matches with what is stored in the Accounts.txt file
-        - has a return value of 0, 1, or 2 which equals invalid, student. or teacher, respectively
-      - deleteAccount
-        - checks if the user is signed in first, using the securityCheck method
-        - goes through the array list of accounts and checks if the first index (username) is equal to the username of the logged in user
-        - overwrites the Accounts.txt file with all the users except the one that had the matching username as the if-condition.
-        - if(!accountDetailsArray.get(i).get(0).equals(username)){...}
-      - main
-        - Runs as the primary method and allows users to access their account, create their account or delete it.
-- Teacher
+- MainClient and MainServer
+    - Consists of methods that are used in the creation and deletion of accounts. All the accounts, both students and teachers, are written to the Accounts.txt file. Changes to accounts are made to the Accounts.txt file.
+        - Methods:
+        - convertToString
+            - creates an output string for each user with all their information separated using “§§§”
+            - Ex. username§§§password§§§firstN§§§lastN§§§ifTeacher
+        - write + read file
+            - reads text file to an ArrayList inside an ArrayList called “output”
+            - ArrayList<ArrayList<String>> output = new ArrayList<>();
+            - Sets the output to an array list called accountDetailsArray
+            - uses split() to read values
+            - synchronized
+        - checkUsernameAvailability
+            - uses a while loop to check the first index of every array (first index is the username value)
+            - username is not case sensitive
+        - writeAllAccountsToFile
+            - writes all accounts to a file
+            - synchronized
+        - securityCheckServer
+            - takes the username and password input from the user and checks whether it matches with what is stored in the Accounts.txt file
+            - outputs true if password and username match, false otherwise
+        - loginMethod
+            - checks if the given username and password is correct via securityCheckServer method, logins user in if the combination is correct
+        - createAccountMethod
+            - checks for username availability
+            - create account if username is available
+        - deleteAccountMethod
+            - checks if the user is signed in first, using the securityCheckServer method
+            - deletes the user account info from the system if the security check is passed
+        - changePasswordMethod
+            - checks if the user is signed in first, using the securityCheckServer method
+            - changes the user password to the new password if the security check is passed
+        - mainRunMethod
+            - Lets the user either login, create an account, delete an account, or edit their account password
+            - securityCheckClient
+            - asks for account verification via GUI interface
+            - GUI error message if details are incorrect
+        - loginButtonMethod
+            - tries to login the user using securityCheckClient
+            - if successful, an accountClient object is created and   accountClient.mainMethod runs
+            - if a user is logged on somewhere else, a GUI error message will pop up
+        - createNewAccountButtonMethod
+            - creates GUI interface that allows a user to create a new account
+        - createAccountButtonMethod
+            - takes care of the actual code that allows a new user to create a new account
+            - displays variety of errors such as invalid name, username, or password
+        - deleteAccountButtonMethod
+            - checks if you are logged in via securityCheckClient
+            - displays a GUI information message on successful deletion of account
+        - changePasswordButtonMethod
+            - checks if you are logged in via securityCheckClient
+            - asks for password change if successful
+            - gives GUI error messages depending on the situation
+            - gives GUI success message on successful password change
+        - actionPerformed
+            - action listener for login, create new account, delete account, change account, back buttons
+        - mainRunMethod
+            - creates GUI interface with 4 buttons:
+                - login
+                - create new account
+                - delete account
+                - change password
+        - main
+            - creates a new socket, bufferedReaders and writer
+        - run
+            - runs mainRunMethod
+- TeacherClient/TeacherServer
     - Teachers have four options to choose which action should be performed: open discussion forum, create discussion forum, delete discussion forum, and view dashboard. 
-    - Methods
-      - readCourseListsFile
-        - reads all the courses that are in the “CoursesList.txt” file
-        - stores all the course names in the courseList array list
-        - often used within other methods.
-      - courseExists
-        - checks if the course is already present in the courseList array list
-        - returns boolean
-      - createCourse
-        - takes user input for course name and checks whether the value is null or already exists
-        - if not, course with given input name is created
-        - adds course name to courseList array list
-        - writes course name to text file using PrintWriter 
-      - openCourse
-        - checks if user inputted course is present in the courseList array list
-        - if the course exists, it creates a new course object and reads all the discussion forum title names for that specific course
-        - openCourseMainMethod is called to allow user to open a specific forum or view how many points they received
-      - openCourseMainMethod:
-        - gives the user four options: open discussion forum, create forum, delete forum, and show dashboard
-      - printCourseList:
-        - uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
-        - prints out the cumulative string
-
-- Student
-  - general description
-  - Methods:
-      - printCourseList
-        - uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
-        - prints out the cumulative string
-      - readCourseListsFile
-        - adds all the courses to an array list called courseList
-      - courseExists
-        - checks if the course is already present in the courseList array list
-        - returns boolean
-      - openCourse
-        - checks if user inputted course is present in the courseList array list
-      - openCourseMainMethod
-        - gives the user 2 options: open discussion forum and view points
-- DiscussionForum
-  - Discussion Forum stores all the information about the forums, including the forum name, the file that stores the messages for that forum, the user who created that forum, the points associated with that forum, the number of votes for replies
-  - Methods: 
-      - readNewPostFile
-        - takes input from the user for the file destination
-        - reads the file and appends it to a StringBuilder object called output
-        - cleans up the file by replacing unnecessary hidden characters (\r\n and \n with spaces and “.” with “. ”)
-      - readUpvotesFile
-        - reads the file with all the upvotes stored 
-        - splits each line by separating by user and points and stores that information in an ArrayList
-        - stores that points array list in an another ArrayList, which holds all the arraylists of points for that discussion forum
-        - returns the array list that holds all the points for that discussion forum
-      - checkAlreadyUpvoted
-        - takes messageNumber as a parameter and checks if that message has been upvoted
-        - iterates through the array list called upvotesArray 
-        - first checks if the username matches the user’s username
-      - readMessagesFile
-        - reads the file that stores all the messages in the discussion forum
-        - splits the information in each line and stores it into an ArrayList
-        - stores that array list into another array list that stores all the messages, and assigns that array to the messages Array
-      - checkUsernameInUpvotesArray
-        - checks whether the username is found in the upvotes array 
-        - returns true if username found, false if not found
-      - printMessages
-        - reads the Messages file, then adds all the information stored in the discussion forum to a string
-        - displays messages in the following format 
-          - <message_index> <message> <full name> <time> <date> 
-          - Upvotes: <upvotes> (only if there are any upvotes)
-          - Reply to message no.: <message no.> (only if it is a reply)
-      - convertMessagesArrayToFileString
-        - adds all the messages stored in the discussion to a file. 
-        - information for each message split by “§§§” and different messages on different lines
-      - writeToMessagesFile
-        - once the messages are converted to a singular string by the convertMessagesArrayToFileString, they are stored in the specified file
-      - postMessage
-        - checks whether the user wants enter their response through the terminal or upload a file
-        - make sure the file is valid, and then adds the information of that message to a new array
-        - adds that new array to the messages Array, which holds all the messages 
-      - replyToPost
-        - asks the user which message they want to reply to
-        - checks how they want to provide their reply to the message (through terminal or file upload)
-        - adds the all the information for the new reply to an array list, then adds that array list to the messages Array
-        - updates all the information in the messages file
-      - upvote
-        - prompts the user to input the messageNumber of the message that they are trying to upvote
-        - default value of messageNumber is 0, which doesn’t make any changes
-        - checks if the messageNumber is in the range of the arraylist size 
-        - increments the upvotes value by one, and sets the value to the new upvotes value
-        - checks if the username of the user who got upvoted exists in the upvotesArray
-          - if not, the username is added to the array
-      - writeToUpvotesFile
-        - writes all the information in the upvotes array to the upvotess file, using “§§§” as the delimiter
-      - changeTopic
-        - changes the name of the topic and updates the creation time to when it was changed
-        - writes these changes to the file
-      - readPointsFile
-        - reads the points file, and stores information in each line into an array, and stores each array into another array
-        - assigns the array to the points array
-      - printSpecificStudentMessages
-        - goes through the messages array and checks if a specific student has posted any replies to the discussion forum
-        - prints all their posts if they have posted at least once
-        - if they haven’t posted, then it notifies that they haven’t posted anything
-      - checkUsernameNonexistence
-        - reads the accounts file and adds all the accounts to a new array of accounts
-        - checks if the given username exists already or not
-        - if the given username is found, this method returns false, else true
-      - responseGrading
-        - receives student username from user, and iterates through points array to find the given username
-        - once found, method prints the students messages and student receives a grade for that message
-        - adds the new information to the points array and updates the points file
+        - Methods
+        - createDiscussionForumButtonMethod
+            - runs courseClient.createForum method
+        - deleteDiscussionForumButtonMethod
+            - runs courseClient.deleteForum method
+        - openDiscussionForumsButtonMethod
+            - courseClient.teacherDiscussionForumOpened
+        - createDiscussionForumViaFileImportButtonMethod
+            - runs courseClient.createForumViaFileImport
+        - backMethod
+            - creates a new accountClient object
+            - runs accountClient.mainMethod
+        - actionPerformed
+            - action listener for createDiscussionForumButton, deleteDiscussionForumButton, openDiscussionForumsButton, backButton
+        - runMethodTeacher
+            - creates a GUI interface with 5 buttons:
+                - create discussion forum
+                - open discussion forum
+                - delete discussion forum
+                - create discussion forum via file import
+                - back button
+        - createCourse (Teacher Client)
+            - takes user input for course name and checks whether the value is null or already exists
+            - if not, course with given input name is created
+        - openCourse (Teacher Client)
+            - checks if user inputted course is present
+            - if the course exists, it creates a new course object and reads all the discussion forum title names for that specific course
+        - readCourseListsFile
+            - reads all the courses that are in the “CoursesList.txt” file
+            - stores all the course names in the courseList array list
+        - convertToSendFormat
+            - returns a String with the correct formatting for file writing
+        - openCourse (Teacher Server)
+            - checks if user inputted course is present in the courseList array list
+            - creates a forum list if one does not already exists
+        - courseExists
+            - checks if the course is already present in the courseList array list
+        - createCourse (Teacher Server)
+            - writes course name to text file using PrintWriter 
+            - synchronized
+        - back
+            - creates accountServer object
+            - run's accountServer.mainMethod();
+- Student Client/Server
+    - students can: view forum,  upvote message(s), reply to the post, post messages, or exit the forum
+        - Methods:
+        - printCourseList
+            - uses a for loop to iterate through the courseList array and appends every course to a StringBuilder object
+            - prints out the cumulative string
+        - readCourseListsFile
+            - adds all the courses to an array list called courseList
+        - convertToSendFormat
+            - returns a String with the correct formatting for file writing
+        - openCourse (Student Server)
+            - checks if user inputted course is present in the courseList array list
+            - creates a forum list if one does not already exists
+        - back
+            - creates accountServer object
+            - run's accountServer.mainMethod();
+        - openCourse (Student Client)
+            - checks if user inputted course is present
+            - if the course exists, it creates a new course object and reads all the discussion forum title names for that specific course
+            - GUI error message if user is attempting to create a course that is not open
+        - viewPointsButtonMethod
+            - controls the button that allows user to view amount of points they have 
+            - runs courseClient.viewPoints
+        - openDiscussionForumsButtonMethod
+            - controls the button that allows user to open discussion forums
+            - runs courseClient.studentDiscussionForumOpened
+        - backMethod
+            - controls the button that allows user to back out of the current screen
+            - creates a accountClient object
+            - runs accountClient.mainMethod();
+        - runMethodStudent
+            - creates a GUI  interface with 3 buttons
+                - open discussion forums
+                - view points
+                - back
+        - actionPerformed
+            - action listener for viewPointsButton, openDiscussionForumsButton, backButton
+- DiscussionForumClient/DicussionForumServer
+    - Discussion Forum stores all the information about the forums, including the forum name, the file that stores the messages for that forum, the user who created that forum, the points associated with that forum, the number of votes for replies
+        - Methods: 
+        - send
+            - tries to create and send a message
+            - if unsuccessful, display a corresponding GUI error message
+        - upvote
+            - prompts the user to input the messageNumber of the message that they are trying to upvote
+            - default value of messageNumber is 0, which doesn’t make any changes
+            - checks if the messageNumber is in the range of the arraylist size 
+            - increments the upvotes value by one, and sets the value to the new upvotes value
+            - checks if the username of the user who got upvoted exists in the upvotesArray
+            - if not, the username is added to the array
+        - deleteMessage
+            - prompts user for a message number
+            - deletes the corresponding message 
+            - if unsuccessful, display a relevant GUI error message
+        - gradeStudent
+            - prompts for a student username 
+            - if successful, prompts for a point value for a message
+            - if unsuccessful, display a relevant GUI error message
+        - dashBoard
+            - displays dashboard
+            - changeTopic
+            - changes the topic 
+            - if unsuccessful, display a relevant GUI error message
+        - sendMessageViaFileImport
+            - handles the code that takes a user given file and turn it into a message
+            - if unsuccessful, display a relevant GUI error message
+        - setTextArea
+            - sets text area
+        - printMessages
+            - uses buffered reader to read lines and converts them into readable information 
+            - displays messages in the following format 
+                - <message_index>. <message>
+                       <full name> <time> <date>
+				      Upvotes: <upvotes> (only if there are any upvotes)
+				      Reply to message no.: <message no.> (only if it is a reply)
+        - printSpecificStudentMessages
+            - prints a specific student message and convert them into readable information
+        - readUpvoteFile
+            - reads the file with upvotes and read everything onto an arraylist
+        - readMessagesFile
+            - reads the file that stores all the messages in the discussion forum splits the information in each line and stores it into an ArrayList
+stores that array list into another array list that stores all the messages, and assigns that array to the messages Array
+        - readPointsFile
+            - reads the points file, and stores information in each line into an array, and stores each array into another array
+            - assigns the array to the points array
+        - writeToMessagesFile
+            - once the messages are converted to a singular string by the convertMessagesArrayToFileString, they are stored in the specified file
+            - convertMessagesArrayToFileString
+            - converts the array messagesArray into a message that can be stored inside a text file
+        - printSpecificStudentMessages
+            - prints a message with a center format for a certain student
+        - mainMethod
+            - lists methods for execution  depending on which method is selected
+        - back
+            - creates courseServer object
+            - runs courseServer.mainMethod()
+        - send
+            - converts file data into a readable message 
+            - creates a new message to send
+        - upvote
+            - checks to see if a user has already upvoted with checkAlreadyUpvoted
+            - if not, upvote message
+        - deleteMessage
+            - deletes message from messagesArray 
+            - tells who deleted it
+        - gradeStudent
+            - checks if the student username exists
+            - if it does, add points to output array
+        - dashBoard
+            - displays the sorted amount of votes
+        - readForumListFile
+            - reads the list of forums via buffered reader
+        - writeToForumListFile
+            - writers the list of forums via print writer
+        - changeFileNames
+            - method allows the easy of changing file names
+        - changeTopic
+            - controls the formatting when changing topics
+        - sendMessageViaFileImport
+            - controls the formatting for messages that are sent via file import
+        - convertToPrintFormat
+            - converts messagesArray into a useable output of strings
+        - printForum
+            - runs the converToPrintFormat method
+        - checkAlreadyUpvoted
+            - takes messageNumber as a parameter and checks if that message - has been upvoted
+            - iterates through the array list called upvotesArray 
+            - first checks if the username matches the user’s username
+        - checkUsernameInUpvotesArray
+            - checks whether the username is found in the upvotes array 
+            - returns true if username found, false if not found
+        - writeToUpvotesFile
+            - writes all the information in the upvotes array to the upvotess file, using “§§§” as the delimiter
+        - sortUpvotesArray
+            - Sorts the arraylists by comparing the number of upvotes each message has received
+            - uses .get() method to access the number of upvotes
+            - uses a simple sorting algorithm
+            - assigning values to a temporary variable and switching the order of the messages if the previous message has more upvotes than the subsequent message
+        - checkUsernameNonexistence
+            - reads the accounts file and adds all the accounts to a new array of accounts
+            - checks if the given username exists already or not
+            - if the given username is found, this method returns false, else true
         - writeToPointsFile
-        - prints the information in the points array to the points file by using a delimiter of  “§§§”
-      - showDashboard
-        - displays the messages when they are sorted in order by lowest upvote to highest upvote
-      - sortUpvotesArray
-        - Sorts the arraylists by comparing the number of upvotes each message has received
-        - uses .get() method to access the number of upvotes
-        - uses a simple sorting algorithm
-        - assigning values to a temporary variable and switching the order of the messages if the previous message has more upvotes than the subsequent message
-- Course
+            - prints the information in the points array to the points file by using a delimiter of  “§§§”
+- CourseClient/CourseServer
     - Includes various methods which allow a student and teacher to interact with discussion forums
-    - Methods:
-      - readNewForumFile
-        - takes input from the user for the file destination
-        - reads the file and appends it to a StringBuilder object called output
-      - readForumListFile
-        - reads all the lines in the discussionBoardsListFileName and appends it to an array list called output
-        - assigns the output value to an array list called forumList
-      - discussionForumExists
-        - checks if the name is non-null and then checks if the forumList array list contains the forumName
-      - createForum
-        - Prompts the user regarding how they want to create the discussion board: enter the name of the forum via terminal or import text file with the forum name
-        - checks whether the course is non null and if it already exists in the forumList array list
-        - Adds the forum name to the array and also creates text files with the forum and course name for the messages, points, and upvotes .txt files
-      - deleteForum
-        - checks if the file is non-null and if it exists
-        - if it exists, it deletes all the files associated with that forum: messages, points, and upvotes
-        - rewrites all the discussion boards file names to the String Builder object called output
-      - viewPoints
-        - returns the points for a student for each forum
-        - opens the points txt file for the corresponding course and searches all the lines for if they contain the username of the given user
-        - the points for the user are tallied and printed out 
-      - studentDiscussionForumOpened
-        - displays a list of discussion forums and asks the user which discussion forum they want to open
-        - creates a discussion forum object
-        - calls the showDiscussionForumMainMethodStudent() method
-      - teacherDiscussionForumOpened
-        - displays a list of discussion forums and asks the user which discussion forum they want to open
-        - creates a discussion forum object
-        - calls the showDiscussionForumMainMethodTeacher() method
-      - showDiscussionForumMainMethodStudent
-        - Gives the student 5 choices for action: print messages, post messages, reply to a post, upvote a message, or exit
-      - showDiscussionForumMainMethodTeacher
-        - Gives the teacher 7 choices for action: print messages, post messages, reply to a post, grade a response, change the forum topic, show dashboard, or exit
-- Account
-  - The account class gives a list of options for the user, depending on whether the user is a teacher or a student. Teacher can create, open a course or exit the program, and students can either open a course or exit the program
-  - Methods:
-    - teacherMainMethod
-      - gives the teacher three options: create course, open course, or exit
-      - calls on the createCourse() or openCourse() method accordingly
-    - studentMainMethod
-      - gives the student two options: open a course or exit
-      - calls on the openCourse() method accordingly
-    - accountMainMethod
-      - decides which method to run in the main method depending on whether the user is a student or a teacher
-
-
-
-
-
-
+        - Methods:
+        - readForumListFile
+            - reads all the lines in the discussionBoardsListFileName and appends it to an array list called output
+        - discussionForumExists
+            - checks if the name is non-null and then checks if the forumList array list contains the forumName
+        - convertToSendFormat
+            - converts forumList into a string that can be written on a file
+        - createForum (CourseServer)
+            - Prompts the user regarding how they want to create the discussion board: enter the name of the forum via terminal or import text file with the forum name
+            - checks whether the course is non null and if it already exists in the forumList array list
+            - Adds the forum name to the array and also creates text files with the forum and course name for the messages, points, and upvotes .txt files
+            - Assigns the output value to an array list called forumList
+        - deleteForum (CourseClient)
+            - checks if the file is non-null and if it exists
+            - if it exists, it deletes all the files associated with that forum: messages, points, and upvotes
+            - rewrites all the discussion boards file names to the String Builder object called output
+        - openForum
+            - writes a formatted string with convertToSendFormat and writes it to a file
+        - changeForum
+            - creates a discussionForumServer object and runs discussionForumServer.readMessagesFile(); discussionForumServer.readPointsFile(); discussionForumServer.readUpvoteFile();
+            - reads messages file, points file, and upvotes file
+        - backButtonStudent
+            - creates studentServer object and runs studentServer.back
+        - backButtonTeacher
+            - creates teacherServer object and runs teacherServer.back
+        - viewPoints
+            - returns the points for a student for each forum
+            - opens the points txt file for the corresponding course and searches all the lines for if they contain the username of the given user the points for the user are tallied and printed out 
+        - mainMethod
+            - lists out cases and corresponding methods to run, depending on whichever option is selected
+        - createForum (CourseServer)
+            - creates a new Forum via a GUI interface
+            - displays relevant errors if some error occurs
+        - deleteForum (CourseServer)
+            - deletes a forum via a GUI interface
+            - displays relevant errors if some error occurs
+        - createForumViaFileImport
+            - creates a new forum via file import
+            - displays relevant errors if some error occurs
+        - changeForum
+            - changes the forum 
+            - runs  discussionForumClient.printMessages  discussionForumClient.setTextArea(textArea);
+        - runMethodTeacher
+            - creates a GUI interface with 4 buttons
+                - changeTopicButton
+                - dashboardButton
+                - gradeStudentButton
+                - deleteMessageButton
+        - runMethodStudent
+            - creates a GUI interface with 3 buttons and 2 text fields
+                - newMessageField
+                - sendButton
+                - messageNumberField
+                - upvoteButton
+        - sendMessageViaFileImportButton
+            - changeDiscussionForum
+            - changes the discussion forum
+            - displays relevant errors if something occurs
+        - viewPoints
+            - creates a GUI interface that allows user to view the amount of points someone has
+            - has button for backing out of window
+        - actionPerformed
+            - action listener that listens for button clicks for: backButtonTeacher, backButtonStudent, sendButton, upvoteButton, deleteMessageButton, gradeStudentButton, dashboardButton, changeTopicButton, sendMessageViaFileImportButton, and backButtonPoints
+        - sendButtonMethod
+            - button that controls the ability to send messages
+        - upvoteButtonMethod
+            - button that controls ability for a user to upvote a message
+        - deleteButtonMethod
+            - button that controls user ability to delete a message
+        - gradeStudentButtonMethod
+            - button that controls teacher ability to grade student messages
+        - dashboardButtonMethod
+            - button that controls user ability to view dashboard
+        - changeTopicButtonMethod
+            - button that controls user ability to change the topic
+        - sendMessageViaFileImportButtonMethod
+            - button that controls user ability to send messages via file import
+        - backButtonTeacherMethod
+            - button that controls user ability to back for teachers
+        - backButtonStudentMethod
+            - button that controls student ability to back
+        - backButtonPointsMethod
+            - button that controls user ability to back from the points dashboard
+        - studentDiscussionForumOpened
+            - displays a list of discussion forums and asks the user which discussion forum they want to open
+            - creates a discussion forum object
+            - calls the showDiscussionForumMainMethodStudent() method
+        - teacherDiscussionForumOpened
+            - displays a list of discussion forums and asks the user which discussion forum they want to open
+            - creates a discussion forum object
+            - calls the showDiscussionForumMainMethodTeacher() method
+- AccountClient and AccountServer
+    - The AccountClient and AccountServer classes replaces the original account class from project 4, adding GUI features and implementing networking
+    - These two combined classes gives options to the user, depending on whether they’re a student or a teacher
+    - Teacher can open a course, create a course or logout, and students can either open a course or logout
+        - Methods:
+        - runMethodTeacher
+            - creates a GUI interface for teacher with 3 buttons:
+                - create course
+                - open course
+                - logout
+        - runMethodStudent
+            - creates a GUI interface for a student with 2 buttons:
+                - create course
+                - logout
+        - teacherMainMethod
+            - creates a new teacher client object and runs runMethodTeacher
+        - studentMainMethod
+            - creates a new student client object and runs runMethodStudent
+        - mainMethod
+            - decides which main method to run depending on whether the user is a student or a teacher
+        - createCourseButtonMethod
+            - runs the method in teachers that creates a course with a GUI
+        - openCourseButtonMethod
+            - method that opens a course for the user
+            - uses ifTeacher method to check if the user is a student or teacher
+        - logoutButtonMethod
+            - logs user out and sends them back to the login screen
+        - actionPerformed
+            - action listener that listens for button clicks for actions that create a course, open a course, or logout, then runs the respective methods
+        - openCourseMethod
+            - opens a course  depending on whether the user is a student or teacher
+        - createCourseMethod
+            - creates a new teacher server object and runs the teacherServer.createCourse() method
+        - mainMethod
+            - creates studentServer, teacherServer, mainServer objects 
+                           options (depending on value given)
+                - removes username from an arraylist of usernames, also runs mainServer.mainRunMethod()
+                - runs openCourseMethod
+                - runs createCourseMethod
+                - removes username from an arraylist of usernames, also stops current thread
+- mainClass
+    - centralized class responsible for running the program
+        - main
+            - creates new socket and starts threads while new users are logging in
+        - NewThreadMain 
+            - runs mainServer.mainRunMethod
 
