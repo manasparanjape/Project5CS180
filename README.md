@@ -3,9 +3,12 @@
 - mainClass contains a main method that is used to run the program.
             - Main includes static methods from other classes, so they need to be compiled
 - In order to run the code in Vocareum, first cd into the correct folder cd Project4CS180/src
+- To update the messages screen to view new messages, you need to click on the button that corresponds with the page you are on
+	- we asked a TA, Mr. Nathaniel J krakauer if our implementation was fine, and we got the green light so we kept this as is.
 ### Submissions
-            - Manas Paranjape submitted the code on Vocareum
-- Rishabh Pandey submitted the report on Brightspace
+- Manas Paranjape submitted the code on Vocareum
+- Rishabh Pandey submitted the video and presentation on Brightspace
+- Kevin Ma submitted the report on Brightspace
 ### Descriptions of Classes
 - MainClient and MainServer
     - Consists of methods that are used in the creation and deletion of accounts. All the accounts, both students and teachers, are written to the Accounts.txt file. Changes to accounts are made to the Accounts.txt file.
