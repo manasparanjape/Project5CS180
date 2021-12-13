@@ -1,5 +1,40 @@
 # Testing for Project 5
 
+### Test 0: Create courses, forums, and messages for testing
+1. User launches application
+2. User clicks login
+3. User enters username: teacher
+4. User enters password: teacher
+5. User clicks Create course button
+6. User enters "CS 180" in the text box
+7. User clicks done and then clicks OK on the confirmation message
+8. User clicks Open course
+9. User clicks the OK button while the dropdown is on CS 180
+10. User clicks Create new discussion forum
+11. User enters "Threads" into the forum name text box
+12. User clicks OK on confirmation message
+13. User clicks Create new discussion forum
+14. User enters "GUI" into the forum name text box
+15. User clicks OK on confirmation message
+16. User clicks Create new discussion forum
+17. User enters "For statement" into the forum name text box
+18. User clicks OK on confirmation message
+19. User clicks Create new discussion forum
+20. User enters "If statement" into the forum name text box
+21. User clicks OK on confirmation message
+22. User clicks Open discussion forum
+23. User clicks on "Threads"
+24. User enters "Test Message" in the first text box
+25. User clicks the Send/reply button
+26. User repeats steps 24 and 25 another 6 times to create 7 messages in the Threads forum
+27. User clicks on "GUI"
+28. User repeats steps 24 and 25 another 7 times to create 7 messages in the GUI forum
+29. User clicks on "For statement"
+30. User repeats steps 24 and 25 another 7 times to create 7 messages in the For statement forum
+31. User clicks on "If statement"
+32. User repeats steps 24 and 25 another 7 times to create 7 messages in the If statement forum
+33. Test passed: CS 180 course and the 4 forums with messages have been created
+
 ### Test 1: Student Log in
 1. User launches application
 2. User clicks login
