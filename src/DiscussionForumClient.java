@@ -150,6 +150,10 @@ public class DiscussionForumClient {
             printWriter.println();
             printWriter.flush();
         } catch (NumberFormatException e) {
+            printWriter.write("0");
+            printWriter.println();
+            printWriter.flush();
+            String dummyReader = bufferedReader.readLine();
             String errorMessage = "You did not input an integer.";
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
             numberValid = false;

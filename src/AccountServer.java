@@ -72,7 +72,6 @@ public class AccountServer {
             case "2" -> createCourseMethod();
             case "Close" -> {
                 MainServer.getUsernames().remove(username);
-                Thread.currentThread().stop();
             }
         }
     }
